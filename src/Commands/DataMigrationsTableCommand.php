@@ -2,15 +2,15 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
-use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 use Exception;
-use Illuminate\Config\Repository as ConfigRepository;
-use Illuminate\Console\Command;
-use Illuminate\Database\Migrations\MigrationCreator;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Composer;
 use Illuminate\Support\Str;
+use Illuminate\Console\Command;
+use Illuminate\Support\Composer;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Database\Migrations\MigrationCreator;
+use Illuminate\Config\Repository as ConfigRepository;
+use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 
 /**
  * Class DataMigrationsTableCommand.

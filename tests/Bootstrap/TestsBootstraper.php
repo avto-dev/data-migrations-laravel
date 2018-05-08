@@ -2,8 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Bootstrap;
 
-use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
+use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 
 /**
  * Class TestsBootstraper.
@@ -44,6 +44,7 @@ class TestsBootstraper extends AbstractTestsBootstraper
                 $this->log('Previous storage directory deleted successfully');
             } else {
                 $this->log(sprintf('Cannot delete directory "%s"', $storage));
+
                 return false;
             }
         }
@@ -79,6 +80,7 @@ class TestsBootstraper extends AbstractTestsBootstraper
         foreach (glob(static::getMigrationsDirectoryPath() . DIRECTORY_SEPARATOR . '*.php') as $file_path) {
             if (! $this->files->delete($file_path)) {
                 $this->log(sprintf('Cannot delete file "%s"', $file_path), 'error');
+
                 return false;
             } else {
                 $this->log(sprintf('Migration file "%s" deleted successfully', basename($file_path)));

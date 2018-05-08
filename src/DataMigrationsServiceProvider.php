@@ -2,8 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use Illuminate\Contracts\Foundation\Application;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 /**
