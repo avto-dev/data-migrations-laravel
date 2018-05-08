@@ -64,12 +64,12 @@ $ composer test
 [badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/data-migrations-laravel.svg?style=flat&maxAge=30
 [badge_license]:https://img.shields.io/packagist/l/avto-dev/data-migrations-laravel.svg?style=flat&maxAge=30
 [badge_build_status]:https://scrutinizer-ci.com/g/avto-dev/data-migrations-laravel/badges/build.png?b=master
-[badge_styleci]:https://styleci.io/repos/66666/shield
+[badge_styleci]:https://styleci.io/repos/132609297/shield
 [badge_coverage]:https://scrutinizer-ci.com/g/avto-dev/data-migrations-laravel/badges/coverage.png?b=master
 [badge_quality]:https://scrutinizer-ci.com/g/avto-dev/data-migrations-laravel/badges/quality-score.png?b=master
 [badge_issues]:https://img.shields.io/github/issues/avto-dev/data-migrations-laravel.svg?style=flat&maxAge=30
 [link_packagist]:https://packagist.org/packages/avto-dev/data-migrations-laravel
-[link_styleci]:https://styleci.io/repos/66666/
+[link_styleci]:https://styleci.io/repos/132609297/
 [link_license]:https://github.com/avto-dev/data-migrations-laravel/blob/master/LICENSE
 [link_build_status]:https://scrutinizer-ci.com/g/avto-dev/data-migrations-laravel/build-status/master
 [link_coverage]:https://scrutinizer-ci.com/g/avto-dev/data-migrations-laravel/?branch=master
