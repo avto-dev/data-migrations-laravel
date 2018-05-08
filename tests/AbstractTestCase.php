@@ -3,7 +3,7 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 /**
  * Class AbstractTestCase.
@@ -31,7 +31,7 @@ abstract class AbstractTestCase extends BaseTestCase
         $this->prepareDatabase(true);
 
         if ($this->create_repository === true) {
-            $this->app->make(DataMigrationsRepositoryContract::class)->createRepository();
+            $this->app->make(RepositoryContract::class)->createRepository();
         }
     }
 

@@ -4,7 +4,7 @@ namespace AvtoDev\DataMigrationsLaravel\Contracts;
 
 use Illuminate\Database\Connection;
 
-interface DataMigrationsRepositoryContract
+interface RepositoryContract
 {
     /**
      * Resolve the database connection instance.

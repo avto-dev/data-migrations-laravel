@@ -4,14 +4,14 @@ namespace AvtoDev\DataMigrationsLaravel\Commands;
 
 use RuntimeException;
 use Illuminate\Console\Command;
-use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 /**
- * Class DataMigrationsTableCommand.
+ * Class InstallCommand.
  *
  * Command for crating migration file for data migrations.
  */
-class DataMigrationsTableCommand extends Command
+class InstallCommand extends Command
 {
     /**
      * The console command name.
@@ -30,13 +30,13 @@ class DataMigrationsTableCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param DataMigrationsRepositoryContract $repository
+     * @param RepositoryContract $repository
      *
      * @throws RuntimeException
      *
      * @return int
      */
-    public function handle(DataMigrationsRepositoryContract $repository)
+    public function handle(RepositoryContract $repository)
     {
         if ($repository->repositoryExists()) {
             $this->comment('Repository already exists in your database');

@@ -2,38 +2,34 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use Carbon\Carbon;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
+use Illuminate\Database\Schema\Blueprint;
 
-class DataMigrationsRepository implements DataMigrationsRepositoryContract
+class Repository implements RepositoryContract
 {
     /**
-     * @var Application
+     * @var Connection
      */
-    protected $app;
+    protected $connection;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $config = [
-        'table_name'      => null,
-        'connection'      => null,
-        'migrations_path' => null,
-    ];
+    protected $table_name;
 
     /**
-     * DataMigrationsRepository constructor.
+     * Repository constructor.
      *
-     * @param Application $app
-     * @param array       $config
+     * @param Connection $connection
+     * @param string     $table_name
      */
-    public function __construct(Application $app, array $config)
+    public function __construct(Connection $connection, $table_name)
     {
-        $this->app    = $app;
-        $this->config = array_replace_recursive($this->config, $config);
+        $this->connection = $connection;
+        $this->table_name = $table_name;
     }
 
     /**
@@ -41,7 +37,7 @@ class DataMigrationsRepository implements DataMigrationsRepositoryContract
      */
     public function getConnection()
     {
-        return $this->app->make('db')->connection($this->config['connection']);
+        return $this->connection;
     }
 
     /**
@@ -49,7 +45,7 @@ class DataMigrationsRepository implements DataMigrationsRepositoryContract
      */
     public function repositoryExists()
     {
-        return $this->getConnection()->getSchemaBuilder()->hasTable($this->config['table_name']);
+        return $this->getConnection()->getSchemaBuilder()->hasTable($this->table_name);
     }
 
     /**
@@ -59,7 +55,7 @@ class DataMigrationsRepository implements DataMigrationsRepositoryContract
     {
         $schema = $this->getConnection()->getSchemaBuilder();
 
-        $schema->create($this->config['table_name'], function (Blueprint $table) {
+        $schema->create($this->table_name, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('migration')->unique();
             $table->dateTime('migrated_at');
@@ -101,6 +97,6 @@ class DataMigrationsRepository implements DataMigrationsRepositoryContract
      */
     protected function table()
     {
-        return $this->getConnection()->table($this->config['table_name'])->useWritePdo();
+        return $this->getConnection()->table($this->table_name)->useWritePdo();
     }
 }

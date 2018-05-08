@@ -4,7 +4,7 @@ namespace AvtoDev\DataMigrationsLaravel;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 /**
  * Class DataMigrationsServiceProvider.
@@ -71,10 +71,10 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      */
     protected function registerRepository()
     {
-        $this->app->bind(DataMigrationsRepositoryContract::class, function (Application $app) {
-            return new DataMigrationsRepository(
-                $app, $app->make('config')->get(static::getConfigRootKeyName())
-            );
+        $this->app->singleton(RepositoryContract::class, function (Application $app) {
+            $config = $app->make('config')->get(static::getConfigRootKeyName());
+
+            return new Repository($app->make('db')->connection($config['connection']), $config['table_name']);
         });
     }
 
@@ -86,7 +86,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
     protected function registerArtisanCommands()
     {
         $this->commands([
-            Commands\DataMigrationsTableCommand::class,
+            Commands\InstallCommand::class,
         ]);
     }
 

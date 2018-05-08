@@ -4,12 +4,12 @@ namespace AvtoDev\DataMigrationsLaravel\Tests;
 
 use InvalidArgumentException;
 use Illuminate\Database\Connection;
-use AvtoDev\DataMigrationsLaravel\DataMigrationsRepository;
+use AvtoDev\DataMigrationsLaravel\Repository;
 
-class DataMigrationsRepositoryTest extends AbstractTestCase
+class RepositoryTest extends AbstractTestCase
 {
     /**
-     * @var DataMigrationsRepository
+     * @var Repository
      */
     protected $repository;
 
@@ -32,9 +32,10 @@ class DataMigrationsRepositoryTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->repository = new DataMigrationsRepository($this->app, [
-            'table_name' => $this->table_name,
-        ]);
+        $this->repository = new Repository(
+            $this->app->make('db')->connection(),
+            $this->table_name
+        );
     }
 
     /**
@@ -67,10 +68,10 @@ class DataMigrationsRepositoryTest extends AbstractTestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->repository = new DataMigrationsRepository($this->app, [
-            'table_name' => $this->table_name,
-            'connection' => 'foo bar',
-        ]);
+        $this->repository = new Repository(
+            $this->app->make('db')->connection('foo bar'),
+            $this->table_name
+        );
 
         $this->repository->getConnection();
     }
