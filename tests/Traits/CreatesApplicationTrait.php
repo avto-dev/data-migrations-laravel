@@ -2,9 +2,9 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Traits;
 
-use AvtoDev\DataMigrationsLaravel\Tests\Bootstrap\TestsBootstraper;
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
+use AvtoDev\DataMigrationsLaravel\Tests\Bootstrap\TestsBootstraper;
 
 trait CreatesApplicationTrait
 {

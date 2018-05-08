@@ -2,13 +2,13 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\Migrator;
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use Symfony\Component\Finder\SplFileInfo;
 use InvalidArgumentException;
+use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Finder\SplFileInfo;
+use AvtoDev\DataMigrationsLaravel\Migrator;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 class MigratorTest extends AbstractTestCase
 {
@@ -18,7 +18,7 @@ class MigratorTest extends AbstractTestCase
     protected $migrator;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setUp()
     {

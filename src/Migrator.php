@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 class Migrator
 {

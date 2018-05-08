@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 class Repository implements RepositoryContract
 {
