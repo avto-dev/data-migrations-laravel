@@ -2,9 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use Illuminate\Contracts\Foundation\Application;
+use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 
 /**
  * Class AbstractTestCase.
@@ -16,17 +15,24 @@ abstract class AbstractTestCase extends BaseTestCase
         Traits\ApplicationHelpersTrait;
 
     /**
+     * Create data migrations table into database?
+     *
+     * @var bool
+     */
+    protected $create_repository = true;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
     {
         parent::setUp();
 
-        $this->prepareDatabase();
+        $this->prepareDatabase(true);
 
-        $this->app->register(DataMigrationsServiceProvider::class);
-
-        $this->migrateDatabase();
+        if ($this->create_repository === true) {
+            $this->app->make(DataMigrationsRepositoryContract::class)->createRepository();
+        }
     }
 
     /**
@@ -47,22 +53,5 @@ abstract class AbstractTestCase extends BaseTestCase
     public function getDatabaseFilePath()
     {
         return static::getTemporaryDirectoryPath() . '/database.sqlite';
-    }
-
-    /**
-     * Мигрирует БД.
-     *
-     * @param Application|null $app
-     *
-     * @return void
-     */
-    public function migrateDatabase(Application $app = null)
-    {
-        $console = $this->console($app);
-
-        $console->call('migrate:install');
-        $console->call('migrate', [
-            '--path' => '../../../tests/temp/migrations', // Путь должен быть строго относительный :(
-        ]);
     }
 }

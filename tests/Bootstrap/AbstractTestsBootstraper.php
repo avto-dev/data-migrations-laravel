@@ -74,7 +74,7 @@ abstract class AbstractTestsBootstraper
             $output = $this->app->make(ConsoleOutput::class);
         }
 
-        $output->writeln(empty($message)
+        $output->writeln($message === null
             ? ''
             : sprintf('<%1$s>> Bootstrap:</%1$s> <%2$s>%3$s</%2$s>', 'comment', $style, $message)
         );

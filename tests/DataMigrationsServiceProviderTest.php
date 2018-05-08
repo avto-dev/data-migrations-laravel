@@ -2,8 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use AvtoDev\DataMigrationsLaravel\Repository;
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use AvtoDev\DataMigrationsLaravel\DataMigrationsRepository;
+use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 
 /**
@@ -42,12 +42,16 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
      */
     public function testConfigExists()
     {
-        $config = config($this->config_root_key);
+        $config = $this->app->make('config')->get($this->config_root_key);
 
         $this->assertIsArray($config);
 
-        foreach (['table_name'] as $key) {
+        foreach (['table_name', 'connection', 'migrations_path'] as $key) {
             $this->assertArrayHasKey($key, $config);
+        }
+
+        foreach (['table_name', 'migrations_path'] as $key) {
+            $this->assertNotEmpty($config[$key]);
         }
     }
 
@@ -58,7 +62,7 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
      */
     public function testServiceProviderLoading()
     {
-        $this->assertInstanceOf(Repository::class, $this->app[RepositoryContract::class]);
-        $this->assertInstanceOf(Repository::class, app(RepositoryContract::class));
+        $this->assertInstanceOf(DataMigrationsRepository::class, $this->app[DataMigrationsRepositoryContract::class]);
+        $this->assertInstanceOf(DataMigrationsRepository::class, app(DataMigrationsRepositoryContract::class));
     }
 }

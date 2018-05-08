@@ -2,6 +2,7 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Traits;
 
+use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplicationTrait
@@ -17,6 +18,8 @@ trait CreatesApplicationTrait
         $app = require __DIR__ . '/../../vendor/laravel/laravel/bootstrap/app.php';
 
         $app->make(Kernel::class)->bootstrap();
+
+        $app->register(DataMigrationsServiceProvider::class);
 
         return $app;
     }

@@ -47,4 +47,45 @@ trait AdditionalAssertsTrait
     {
         $this->assertTrue(is_string($value), 'Must be string');
     }
+
+    /**
+     * @param string      $table_name
+     * @param string|null $connection
+     *
+     * @return mixed
+     */
+    protected function tableExists($table_name, $connection = null)
+    {
+        return $this->app->make('db')->connection($connection)->getSchemaBuilder()->hasTable($table_name);
+    }
+
+    /**
+     * Assert that database has table.
+     *
+     * @param string      $table_name
+     * @param string|null $connection
+     *
+     * @return mixed
+     *
+     * @throws AssertionFailedError
+     */
+    public function assertTableExists($table_name, $connection = null)
+    {
+        return $this->assertTrue($this->tableExists($table_name, $connection));
+    }
+
+    /**
+     * Assert that database has no table.
+     *
+     * @param string      $table_name
+     * @param string|null $connection
+     *
+     * @return mixed
+     *
+     * @throws AssertionFailedError
+     */
+    public function assertTableNotExists($table_name, $connection = null)
+    {
+        return $this->assertFalse($this->tableExists($table_name, $connection));
+    }
 }
