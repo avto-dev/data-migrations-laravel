@@ -2,8 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Traits;
 
-use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
+use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 
 trait CreatesApplicationTrait
 {

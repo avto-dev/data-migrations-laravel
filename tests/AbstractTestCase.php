@@ -2,8 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
 
 /**
  * Class AbstractTestCase.

@@ -2,9 +2,9 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use AvtoDev\DataMigrationsLaravel\DataMigrationsRepository;
-use Illuminate\Database\Connection;
 use InvalidArgumentException;
+use Illuminate\Database\Connection;
+use AvtoDev\DataMigrationsLaravel\DataMigrationsRepository;
 
 class DataMigrationsRepositoryTest extends AbstractTestCase
 {

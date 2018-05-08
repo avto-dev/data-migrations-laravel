@@ -2,9 +2,9 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
-use Illuminate\Console\Command;
 use RuntimeException;
+use Illuminate\Console\Command;
+use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
 
 /**
  * Class DataMigrationsTableCommand.
@@ -32,9 +32,9 @@ class DataMigrationsTableCommand extends Command
      *
      * @param DataMigrationsRepositoryContract $repository
      *
-     * @return int
-     *
      * @throws RuntimeException
+     *
+     * @return int
      */
     public function handle(DataMigrationsRepositoryContract $repository)
     {

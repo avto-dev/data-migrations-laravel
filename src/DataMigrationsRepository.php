@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
 use Carbon\Carbon;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Database\Schema\Blueprint;
+use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
 
 class DataMigrationsRepository implements DataMigrationsRepositoryContract
 {
@@ -42,16 +42,6 @@ class DataMigrationsRepository implements DataMigrationsRepositoryContract
     public function getConnection()
     {
         return $this->app->make('db')->connection($this->config['connection']);
-    }
-
-    /**
-     * Get a query builder for the migration table.
-     *
-     * @return QueryBuilder
-     */
-    protected function table()
-    {
-        return $this->getConnection()->table($this->config['table_name'])->useWritePdo();
     }
 
     /**
@@ -102,5 +92,15 @@ class DataMigrationsRepository implements DataMigrationsRepositoryContract
         return $this->table()
             ->orderBy('id', 'desc')
             ->pluck('migration')->all();
+    }
+
+    /**
+     * Get a query builder for the migration table.
+     *
+     * @return QueryBuilder
+     */
+    protected function table()
+    {
+        return $this->getConnection()->table($this->config['table_name'])->useWritePdo();
     }
 }

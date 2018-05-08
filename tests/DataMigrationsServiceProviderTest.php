@@ -3,8 +3,8 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
 use AvtoDev\DataMigrationsLaravel\DataMigrationsRepository;
-use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
+use AvtoDev\DataMigrationsLaravel\Contracts\DataMigrationsRepositoryContract;
 
 /**
  * Class DataMigrationsServiceProviderTest.
