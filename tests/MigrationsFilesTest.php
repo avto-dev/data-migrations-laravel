@@ -2,12 +2,12 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use AvtoDev\DataMigrationsLaravel\MigrationsFiles;
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
+use AvtoDev\DataMigrationsLaravel\MigrationsFiles;
 
 class MigrationsFilesTest extends AbstractTestCase
 {

@@ -3,8 +3,8 @@
 namespace AvtoDev\DataMigrationsLaravel;
 
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 
 class MigrationsFiles

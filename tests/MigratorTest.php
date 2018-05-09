@@ -2,11 +2,7 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Finder\SplFileInfo;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
@@ -50,6 +46,4 @@ class MigratorTest extends AbstractTestCase
     {
         $this->assertInstanceOf(RepositoryContract::class, $this->migrator->getRepository());
     }
-
-
 }
