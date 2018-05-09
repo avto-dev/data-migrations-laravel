@@ -51,15 +51,13 @@ class Files implements SourceContract
         $path = $this->getPathForConnection($connection_name);
 
         if ($this->files->isDirectory($path)) {
-            $files = $this->files->files($path);
-
             $result = array_map(function ($file) {
                 if ($file instanceof SplFileInfo) {
                     return $file->getRealPath();
                 }
 
                 return realpath((string) $file);
-            }, $files);
+            }, $this->files->files($path));
 
             sort($result, SORT_NATURAL);
 
