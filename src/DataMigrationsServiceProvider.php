@@ -2,6 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
+use AvtoDev\DataMigrationsLaravel\Sources\Files;
 use Illuminate\Contracts\Foundation\Application;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
@@ -11,13 +13,6 @@ use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
  */
 class DataMigrationsServiceProvider extends IlluminateServiceProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
     /**
      * Get config root key name.
      *
@@ -39,16 +34,6 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
-
-    /**
      * Register any application services.
      *
      * @return void
@@ -58,10 +43,21 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
         $this->initializeConfigs();
 
         $this->registerRepository();
+        $this->registerMigrator();
 
         if ($this->app->runningInConsole()) {
             $this->registerArtisanCommands();
         }
+    }
+
+    /**
+     * Returns package configuration as an array.
+     *
+     * @return array
+     */
+    protected function getPackageConfiguration()
+    {
+        return $this->app->make('config')->get(static::getConfigRootKeyName());
     }
 
     /**
@@ -72,9 +68,26 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
     protected function registerRepository()
     {
         $this->app->singleton(RepositoryContract::class, function (Application $app) {
-            $config = $app->make('config')->get(static::getConfigRootKeyName());
+            $config = $this->getPackageConfiguration();
 
             return new Repository($app->make('db')->connection($config['connection']), $config['table_name']);
+        });
+    }
+
+    /**
+     * Register data migrator instance.
+     *
+     * @return void
+     */
+    protected function registerMigrator()
+    {
+        $this->app->singleton(MigratorContract::class, function (Application $app) {
+            $config = $this->getPackageConfiguration();
+
+            return new Migrator(
+                $app->make(RepositoryContract::class),
+                new Files($this->app->make('files'), $config['migrations_path'])
+            );
         });
     }
 

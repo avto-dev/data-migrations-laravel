@@ -2,6 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
+use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Repository;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
@@ -64,5 +66,8 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
     {
         $this->assertInstanceOf(Repository::class, $this->app[RepositoryContract::class]);
         $this->assertInstanceOf(Repository::class, app(RepositoryContract::class));
+
+        $this->assertInstanceOf(Migrator::class, $this->app[MigratorContract::class]);
+        $this->assertInstanceOf(Migrator::class, app(MigratorContract::class));
     }
 }

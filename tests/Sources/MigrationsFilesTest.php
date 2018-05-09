@@ -1,20 +1,21 @@
 <?php
 
-namespace AvtoDev\DataMigrationsLaravel\Tests;
+namespace AvtoDev\DataMigrationsLaravel\Tests\Sources;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Sources\Files;
+use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use Carbon\Carbon;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Finder\SplFileInfo;
-use AvtoDev\DataMigrationsLaravel\MigrationsFiles;
 
 class MigrationsFilesTest extends AbstractTestCase
 {
     /**
-     * @var MigrationsFiles
+     * @var Files
      */
-    protected $migration_files;
+    protected $files;
 
     /**
      * Create data migrations table into database?
@@ -30,10 +31,12 @@ class MigrationsFilesTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->migration_files = new MigrationsFiles(
+        $this->files = new Files(
             $this->app->make('files'),
-            __DIR__ . '/stubs/data_migrations'
+            __DIR__ . '/../stubs/data_migrations'
         );
+
+        $this->assertInstanceOf(SourceContract::class, $this->files);
     }
 
     /**
@@ -43,7 +46,7 @@ class MigrationsFilesTest extends AbstractTestCase
      */
     public function testGetFilesystem()
     {
-        $this->assertInstanceOf(Filesystem::class, $this->migration_files->getFilesystem());
+        $this->assertInstanceOf(Filesystem::class, $this->files->getFilesystem());
     }
 
     /**
@@ -53,20 +56,17 @@ class MigrationsFilesTest extends AbstractTestCase
      */
     public function testGetMigrationsFilesForDefaultConnection()
     {
-        $files       = $this->migration_files->getMigrationsFiles();
-        $files_names = array_map(function (SplFileInfo $file) {
-            return $file->getFilename();
-        }, $files);
+        $files = $this->files->migrations();
 
         $this->assertNotEmpty($files);
 
-        foreach ($files as $file) {
-            $this->assertInstanceOf(SplFileInfo::class, $file);
+        foreach ($files as $file_path) {
+            $this->assertFileExists($file_path);
         }
 
-        foreach ($files_names as $file_name) {
+        foreach ($files as $file_name) {
             $this->assertTrue(
-                Str::startsWith($file_name, ['2000_01_01_000001', '2000_01_01_000002', '2000_01_01_000003'])
+                Str::contains($file_name, ['2000_01_01_000001', '2000_01_01_000002', '2000_01_01_000003'])
             );
         }
     }
@@ -78,11 +78,11 @@ class MigrationsFilesTest extends AbstractTestCase
      */
     public function testGetMigrationsFilesForCustomConnections()
     {
-        $files = $this->migration_files->getMigrationsFiles('connection_2');
-        $this->assertStringStartsWith('2000_01_01_000010', $files[0]->getFilename());
+        $files = $this->files->migrations('connection_2');
+        $this->assertContains('2000_01_01_000010', $files[0]);
 
-        $files = $this->migration_files->getMigrationsFiles('connection_3');
-        $this->assertStringStartsWith('2000_01_01_000020', $files[0]->getFilename());
+        $files = $this->files->migrations('connection_3');
+        $this->assertContains('2000_01_01_000020', $files[0]);
     }
 
     /**
@@ -93,8 +93,9 @@ class MigrationsFilesTest extends AbstractTestCase
     public function testGetMigrationsFilesExceptionWithInvalidConnectionName()
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('~Directory.*does not exists~i');
 
-        $this->migration_files->getMigrationsFiles('foobar');
+        $this->files->migrations('foobar');
     }
 
     /**
@@ -110,12 +111,12 @@ class MigrationsFilesTest extends AbstractTestCase
             $now->format('Y_m_d')
             . '_' . str_pad($now->secondsSinceMidnight(), 6, '0', STR_PAD_LEFT)
             . '_' . 'foo.sql',
-            $this->migration_files->generateFileName('foo')
+            $this->files->generateFileName('foo')
         );
 
         $this->assertEquals(
             '2010_02_03_036920_bar.stub',
-            $this->migration_files->generateFileName('bar', Carbon::create(2010, 2, 3, 10, 15, 20), 'stub')
+            $this->files->generateFileName('bar', Carbon::create(2010, 2, 3, 10, 15, 20), 'stub')
         );
 
         $asserts = [
@@ -126,7 +127,7 @@ class MigrationsFilesTest extends AbstractTestCase
         ];
 
         foreach ($asserts as $what => $with) {
-            $this->assertStringEndsWith($with, $this->migration_files->generateFileName($what));
+            $this->assertStringEndsWith($with, $this->files->generateFileName($what));
         }
     }
 
@@ -148,7 +149,7 @@ class MigrationsFilesTest extends AbstractTestCase
 
         $this->assertDirectoryNotExists($path);
 
-        $migration_files = new MigrationsFiles($files, $path);
+        $migration_files = new Files($files, $path);
 
         $this->assertFileNotExists(
             $expected_path = $path . DIRECTORY_SEPARATOR . $migration_files->generateFileName($name = 'test_migration')
@@ -163,7 +164,7 @@ class MigrationsFilesTest extends AbstractTestCase
 
         $result = $migration_files->create('some 2', null, $connection = 'foo_connection', $content = 'bar');
         $this->assertDirectoryExists($path . DIRECTORY_SEPARATOR . $connection);
-        $this->assertEquals([$connection], $migration_files->getConnectionsNames());
+        $this->assertEquals([$connection], $migration_files->connections());
         $this->assertStringEqualsFile($result, $content);
 
         $files->deleteDirectory($path);
@@ -176,6 +177,24 @@ class MigrationsFilesTest extends AbstractTestCase
      */
     public function testGetConnectionsNames()
     {
-        $this->assertEquals(['connection_2', 'connection_3'], $this->migration_files->getConnectionsNames());
+        $this->assertEquals(['connection_2', 'connection_3'], $this->files->connections());
+    }
+
+    /**
+     * Test content getter.
+     *
+     * @return void
+     */
+    public function testGetContent()
+    {
+        $files_list = $this->files->migrations();
+        $this->assertStringStartsWith('CREATE TABLE foo_table', $this->files->getContent($files_list[0]));
+        $this->assertStringStartsWith('INSERT INTO foo_table', $this->files->getContent($files_list[1]));
+
+        $files_list = $this->files->migrations('connection_2');
+        $this->assertStringStartsWith('CREATE TABLE foo_table2', $this->files->getContent($files_list[0]));
+
+        $files_list = $this->files->migrations('connection_3');
+        $this->assertStringStartsWith('CREATE TABLE foo_table3', $this->files->getContent($files_list[0]));
     }
 }

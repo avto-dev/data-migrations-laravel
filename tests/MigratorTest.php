@@ -2,6 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Sources\Files;
 use Illuminate\Filesystem\Filesystem;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
@@ -22,19 +24,18 @@ class MigratorTest extends AbstractTestCase
 
         $this->migrator = new Migrator(
             $this->app->make(RepositoryContract::class),
-            $this->app->make('files'),
-            __DIR__ . '/stubs/data_migrations'
+            new Files($this->app->make('files'), __DIR__ . '/stubs/data_migrations')
         );
     }
 
     /**
-     * Test filesystem getter.
+     * Test source getter.
      *
      * @return void
      */
-    public function testGetFilesystem()
+    public function testGetSource()
     {
-        $this->assertInstanceOf(Filesystem::class, $this->migrator->getFilesystem());
+        $this->assertInstanceOf(SourceContract::class, $this->migrator->getSource());
     }
 
     /**

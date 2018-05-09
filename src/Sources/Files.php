@@ -1,13 +1,15 @@
 <?php
 
-namespace AvtoDev\DataMigrationsLaravel;
+namespace AvtoDev\DataMigrationsLaravel\Sources;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Symfony\Component\Finder\SplFileInfo;
 
-class MigrationsFiles
+class Files implements SourceContract
 {
     /**
      * @var Filesystem
@@ -20,7 +22,7 @@ class MigrationsFiles
     protected $migrations_path;
 
     /**
-     * MigrationsFiles constructor.
+     * Files constructor.
      *
      * @param Filesystem $files
      * @param string     $migrations_path
@@ -42,25 +44,51 @@ class MigrationsFiles
     }
 
     /**
-     * Get migrations files data.
+     * Returns path for directory with migrations (using connection name).
      *
-     * @param string|null $connection_name
+     * @param string null $connection_name
      *
-     * @return SplFileInfo[]
+     * @return string
      */
-    public function getMigrationsFiles($connection_name = null)
+    protected function getPathForConnection($connection_name = null)
     {
-        return $this->files->files($this->migrations_path . (\is_string($connection_name)
+        return $this->migrations_path . (\is_string($connection_name)
                 ? DIRECTORY_SEPARATOR . $connection_name
-                : ''));
+                : '');
     }
 
     /**
-     * Get array of all available connections names.
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    public function getConnectionsNames()
+    public function migrations($connection_name = null)
+    {
+        $path = $this->getPathForConnection($connection_name);
+
+        if ($this->files->isDirectory($path)) {
+            $files = $this->files->files($path);
+
+            return array_map(function ($file) {
+                if ($file instanceof SplFileInfo) {
+                    return $file->getRealPath();
+                }
+
+                return realpath((string) $file);
+            }, $files);
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            'Directory [%s] for %s does not exists',
+            $path,
+            \is_string($connection_name)
+                ? 'connection "' . $connection_name . '"'
+                : 'default connection'
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function connections()
     {
         return array_map(function ($directory_path) {
             return basename($directory_path);
@@ -87,25 +115,16 @@ class MigrationsFiles
                 $when->format('Y_m_d'),
                 \str_pad($when->secondsSinceMidnight(), 6, '0', STR_PAD_LEFT),
                 Str::slug($migration_name, '_'),
-            ]) . '.' . ltrim($extension, '.');
+            ]) . '.' . ltrim($extension, '. ');
     }
 
     /**
-     * Create migration file.
-     *
-     * @param string      $migration_name
-     * @param Carbon|null $date
-     * @param string|null $connection_name
-     * @param string|null $content
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function create($migration_name, Carbon $date = null, $connection_name = null, $content = null)
     {
         $file_name   = $this->generateFileName($migration_name, $date);
-        $target_dir  = $this->migrations_path . (\is_string($connection_name)
-                ? DIRECTORY_SEPARATOR . $connection_name
-                : '');
+        $target_dir  = $this->getPathForConnection($connection_name);
         $target_path = $target_dir . DIRECTORY_SEPARATOR . $file_name;
 
         if (! $this->files->isDirectory($target_dir)) {
@@ -115,5 +134,13 @@ class MigrationsFiles
         $this->files->put($target_path, $content);
 
         return $target_path;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContent($path)
+    {
+        return $this->files->get($path);
     }
 }

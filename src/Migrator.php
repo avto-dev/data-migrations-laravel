@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
-use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Finder\SplFileInfo;
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
-class Migrator
+class Migrator implements MigratorContract
 {
     /**
      * @var RepositoryContract
@@ -14,27 +14,20 @@ class Migrator
     protected $repository;
 
     /**
-     * @var string
+     * @var SourceContract
      */
-    protected $migrations_path;
-
-    /**
-     * @var Filesystem
-     */
-    protected $files;
+    protected $source;
 
     /**
      * Migrator constructor.
      *
      * @param RepositoryContract $repository
-     * @param Filesystem         $files
-     * @param string             $migrations_path
+     * @param SourceContract     $source
      */
-    public function __construct(RepositoryContract $repository, Filesystem $files, $migrations_path)
+    public function __construct(RepositoryContract $repository, SourceContract $source)
     {
-        $this->repository      = $repository;
-        $this->files           = $files;
-        $this->migrations_path = $migrations_path;
+        $this->repository = $repository;
+        $this->source     = $source;
     }
 
     /**
@@ -48,26 +41,12 @@ class Migrator
     }
 
     /**
-     * Get the file system instance.
+     * Get the migrations source instance.
      *
-     * @return Filesystem
+     * @return SourceContract
      */
-    public function getFilesystem()
+    public function getSource()
     {
-        return $this->files;
-    }
-
-    /**
-     * Get migrations files data.
-     *
-     * @param string|null $connection_name
-     *
-     * @return SplFileInfo[]
-     */
-    public function getMigrationsFiles($connection_name = null)
-    {
-        return $this->files->files($this->migrations_path . (\is_string($connection_name)
-                ? DIRECTORY_SEPARATOR . $connection_name
-                : ''));
+        return $this->source;
     }
 }
