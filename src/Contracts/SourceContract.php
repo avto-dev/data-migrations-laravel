@@ -12,9 +12,9 @@ interface SourceContract
      *
      * @param string|null $connection_name
      *
-     * @return string[]
-     *
      * @throws InvalidArgumentException
+     *
+     * @return string[]
      */
     public function migrations($connection_name = null);
 

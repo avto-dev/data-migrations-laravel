@@ -2,13 +2,13 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Sources;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
-use AvtoDev\DataMigrationsLaravel\Sources\Files;
-use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Illuminate\Filesystem\Filesystem;
+use AvtoDev\DataMigrationsLaravel\Sources\Files;
+use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 class MigrationsFilesTest extends AbstractTestCase
 {

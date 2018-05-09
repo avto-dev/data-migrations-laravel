@@ -2,12 +2,12 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Sources;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 class Files implements SourceContract
 {
@@ -41,20 +41,6 @@ class Files implements SourceContract
     public function getFilesystem()
     {
         return $this->files;
-    }
-
-    /**
-     * Returns path for directory with migrations (using connection name).
-     *
-     * @param string null $connection_name
-     *
-     * @return string
-     */
-    protected function getPathForConnection($connection_name = null)
-    {
-        return $this->migrations_path . (\is_string($connection_name)
-                ? DIRECTORY_SEPARATOR . $connection_name
-                : '');
     }
 
     /**
@@ -142,5 +128,19 @@ class Files implements SourceContract
     public function getContent($path)
     {
         return $this->files->get($path);
+    }
+
+    /**
+     * Returns path for directory with migrations (using connection name).
+     *
+     * @param string null $connection_name
+     *
+     * @return string
+     */
+    protected function getPathForConnection($connection_name = null)
+    {
+        return $this->migrations_path . (\is_string($connection_name)
+                ? DIRECTORY_SEPARATOR . $connection_name
+                : '');
     }
 }

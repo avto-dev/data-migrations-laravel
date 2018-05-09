@@ -2,9 +2,9 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
 use Illuminate\Contracts\Foundation\Application;
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
