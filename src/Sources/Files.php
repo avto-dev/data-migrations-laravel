@@ -53,13 +53,17 @@ class Files implements SourceContract
         if ($this->files->isDirectory($path)) {
             $files = $this->files->files($path);
 
-            return array_map(function ($file) {
+            $result = array_map(function ($file) {
                 if ($file instanceof SplFileInfo) {
                     return $file->getRealPath();
                 }
 
                 return realpath((string) $file);
             }, $files);
+
+            sort($result, SORT_NATURAL);
+
+            return $result;
         }
 
         throw new InvalidArgumentException(sprintf(
