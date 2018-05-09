@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
-use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Finder\SplFileInfo;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use Carbon\Carbon;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Migrator
 {
@@ -30,7 +30,7 @@ class Migrator
      *
      * @param RepositoryContract $repository
      * @param Filesystem         $files
-     * @param                    $migrations_path
+     * @param string             $migrations_path
      */
     public function __construct(RepositoryContract $repository, Filesystem $files, $migrations_path)
     {
@@ -69,29 +69,9 @@ class Migrator
     public function getMigrationsFiles($connection_name = null)
     {
         return $this->files->files($this->migrations_path . (\is_string($connection_name)
-            ? DIRECTORY_SEPARATOR . $connection_name
-            : ''));
+                ? DIRECTORY_SEPARATOR . $connection_name
+                : ''));
     }
 
-    /**
-     * Generate migration file name, based on migration name.
-     *
-     * @param string      $migration_name
-     * @param Carbon|null $date
-     *
-     * @return string
-     */
-    public function generateFileName($migration_name, Carbon $date = null)
-    {
-        /** @var Carbon $now */
-        $now = $date instanceof Carbon
-            ? $date->copy()
-            : Carbon::now();
 
-        return implode('_', [
-            $now->format('Y_m_d'),
-            \str_pad($now->secondsSinceMidnight(), 6, '0', STR_PAD_LEFT),
-            Str::slug($migration_name, '_'),
-        ]);
-    }
 }
