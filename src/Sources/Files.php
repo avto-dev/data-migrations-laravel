@@ -76,9 +76,9 @@ class Files implements SourceContract
      */
     public function connections()
     {
-        $result = array_sort(array_map(function ($directory_path) {
+        $result = array_map(function ($directory_path) {
             return basename($directory_path);
-        }, $this->files->directories($this->migrations_path)));
+        }, $this->files->directories($this->migrations_path));
 
         sort($result, SORT_NATURAL);
 
