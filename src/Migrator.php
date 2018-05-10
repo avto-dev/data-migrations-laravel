@@ -5,9 +5,17 @@ namespace AvtoDev\DataMigrationsLaravel;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Database\DatabaseManager;
 
 class Migrator implements MigratorContract
 {
+    /**
+     * Memory limit in safe mode.
+     */
+    const MIGRATE_SAFE_MEMORY = 1024 * 1024 * 63;
+
     /**
      * @var RepositoryContract
      */
@@ -19,6 +27,11 @@ class Migrator implements MigratorContract
     protected $source;
 
     /**
+     * @var DatabaseManager
+     */
+    protected $database;
+
+    /**
      * Migrator constructor.
      *
      * @param RepositoryContract $repository
@@ -28,25 +41,62 @@ class Migrator implements MigratorContract
     {
         $this->repository = $repository;
         $this->source     = $source;
+        $this->database   = Container::getInstance()->make('db');
     }
 
     /**
-     * Get migrations repository instance.
+     * {@inheritdoc}
      *
      * @return RepositoryContract
      */
-    public function getRepository()
+    public function repository()
     {
         return $this->repository;
     }
 
     /**
-     * Get the migrations source instance.
+     * {@inheritdoc}
      *
      * @return SourceContract
      */
-    public function getSource()
+    public function source()
     {
-        return $this->source;
+        return $this->source();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param null $connection
+     * @param bool $safe
+     */
+    public function migrate($connection = null, $safe = false)
+    {
+        if (! $this->repository()->repositoryExists()) {
+            $this->repository()->createRepository();
+        }
+
+        $migrated = $this->repository()->getMigrations();
+
+        if (empty($migrations = $this->source()->migrations($connection))) {
+            return;
+        }
+
+        foreach ($migrations as $migration) {
+
+            $migration_name = '';
+
+            if ($this->source() instanceof Filesystem) {
+                $migration_name = basename($migration, '.sql');
+            } // Another source types
+
+            if (! empty($migration_name) && ! in_array($migration_name, $migrated)) {
+                $content = $this->source()->getContent($migration);
+
+                $this->database->connection($connection)->statement($content);
+
+                $this->repository()->insert($migration_name);
+            }
+        }
     }
 }

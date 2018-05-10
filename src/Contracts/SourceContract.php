@@ -5,6 +5,9 @@ namespace AvtoDev\DataMigrationsLaravel\Contracts;
 use Carbon\Carbon;
 use InvalidArgumentException;
 
+/**
+ * Interface SourceContract.
+ */
 interface SourceContract
 {
     /**

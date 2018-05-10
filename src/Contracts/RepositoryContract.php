@@ -4,6 +4,9 @@ namespace AvtoDev\DataMigrationsLaravel\Contracts;
 
 use Illuminate\Database\Connection;
 
+/**
+ * Interface RepositoryContract.
+ */
 interface RepositoryContract
 {
     /**
@@ -26,6 +29,13 @@ interface RepositoryContract
      * @return void
      */
     public function createRepository();
+
+    /**
+     * Clear the migration repository data store.
+     *
+     * @return void
+     */
+    public function clearRepository();
 
     /**
      * Remove a migration record from the repository storage.
