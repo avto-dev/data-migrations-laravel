@@ -21,13 +21,20 @@ class LaravelLogExecutorTest extends AbstractTestCase
     protected $create_repository = false;
 
     /**
+     * Log file path.
+     *
+     * @var string
+     */
+    protected $log_file_path = __DIR__ . '/../temp/storage/logs/laravel.log';
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
     {
         parent::setUp();
 
-        $this->executor = new LaravelLogExecutor();
+        $this->executor = new LaravelLogExecutor;
     }
 
     /**
@@ -41,21 +48,38 @@ class LaravelLogExecutorTest extends AbstractTestCase
     }
 
     /**
-     * Test execute data.
+     * Test execute.
      *
      * @return void
      */
     public function testExecute()
     {
-        $data          = 'Test laravel log message';
-        $log_file_path = __DIR__ . '/../temp/storage/logs/laravel.log';
+        $data = 'Test laravel log message';
 
         $this->assertTrue($this->executor->execute($data));
 
-        $this->assertFileExists($log_file_path);
+        $this->assertFileExists($this->log_file_path);
 
         foreach ([$data, 'default', 'Data migration executed'] as $needle) {
-            $this->assertContains($needle, file_get_contents($log_file_path));
+            $this->assertContains($needle, file_get_contents($this->log_file_path));
+        }
+    }
+
+    /**
+     * Test execute with custom connection name.
+     *
+     * @return void
+     */
+    public function testExecuteWithCustomConnection()
+    {
+        $data = 'Custom statement';
+
+        $this->assertTrue($this->executor->execute($data, $connection = 'foo_bar'));
+
+        $this->assertFileExists($this->log_file_path);
+
+        foreach ([$data, $connection, 'Data migration executed'] as $needle) {
+            $this->assertContains($needle, file_get_contents($this->log_file_path));
         }
     }
 }
