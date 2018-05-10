@@ -2,10 +2,10 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 class MigratorTest extends AbstractTestCase
 {
