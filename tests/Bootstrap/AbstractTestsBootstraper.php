@@ -2,6 +2,7 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Bootstrap;
 
+use Throwable;
 use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
@@ -38,6 +39,17 @@ abstract class AbstractTestsBootstraper
      */
     public function __construct()
     {
+        set_exception_handler(function (Throwable $e) {
+            $this->log(sprintf(
+                'Exception: "%s" (file: %s, line: %d)',
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ), 'error');
+
+            exit(100);
+        });
+
         $this->app = $this->createApplication();
 
         $this->files = $this->app->make('files');
@@ -55,6 +67,8 @@ abstract class AbstractTestsBootstraper
                 }
             }
         }
+
+        restore_exception_handler();
 
         $this->log(null);
     }

@@ -29,7 +29,6 @@ abstract class AbstractTestCase extends BaseTestCase
         parent::setUp();
 
         $this->prepareDatabase(true);
-        $this->prepareLogging();
 
         if ($this->create_repository === true) {
             $this->app->make(RepositoryContract::class)->createRepository();
@@ -54,15 +53,5 @@ abstract class AbstractTestCase extends BaseTestCase
     public function getDatabaseFilePath()
     {
         return static::getTemporaryDirectoryPath() . '/database.sqlite';
-    }
-
-    /**
-     * Возвращает путь к файлу логов, используемых для тестов.
-     *
-     * @return string
-     */
-    public function getLoggingFilePath()
-    {
-        return static::getTemporaryDirectoryPath() . '/test.log';
     }
 }

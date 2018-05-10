@@ -2,7 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Executors;
 
-use Illuminate\Support\Facades\DB;
+use PDOException;
+use InvalidArgumentException;
 use Illuminate\Database\Connection;
 use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
@@ -49,16 +50,43 @@ class DatabaseStatementExecutorTest extends AbstractTestCase
      */
     public function testExecute()
     {
-        /** @var Connection $connection */
-        $connection = DB::connection();
+        $this->assertFalse($this->executor->execute(''));
+        $this->assertFalse($this->executor->execute(null));
 
+        /** @var Connection $connection */
+        $connection = $this->app->make('db')->connection();
         $table_name = 'executor_table_test';
+
         $connection->getSchemaBuilder()->dropIfExists($table_name);
 
         $data = "CREATE TABLE {$table_name} (test varchar(255));";
 
-        $this->executor->execute($data);
+        $this->assertTrue($this->executor->execute($data));
 
         $this->assertTrue($connection->getSchemaBuilder()->hasTable($table_name));
+    }
+
+    /**
+     * Test exception throws when invalid connection passed.
+     *
+     * @return void
+     */
+    public function testExecuteWithExceptionOnUnknownConnection()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->executor->execute('SELECT * FROM sqlite_master WHERE 1=1;', 'foo bar');
+    }
+
+    /**
+     * Test exception throws when invalid sql statement passed.
+     *
+     * @return void
+     */
+    public function testExecuteWithExceptionOnWrongSqlStatement()
+    {
+        $this->expectException(PDOException::class);
+
+        $this->assertFalse($this->executor->execute('SELECT * FROM foo_bar;'));
     }
 }

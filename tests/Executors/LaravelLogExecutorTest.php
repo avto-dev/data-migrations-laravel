@@ -48,9 +48,14 @@ class LaravelLogExecutorTest extends AbstractTestCase
     public function testExecute()
     {
         $data = 'Test laravel log message';
+        $log_file_path = __DIR__ . '/../temp/storage/logs/laravel.log';
 
-        $this->executor->execute($data);
+        $this->assertTrue($this->executor->execute($data));
 
-        $this->assertTrue(mb_strpos(file_get_contents($this->getLoggingFilePath()), $data) !== false);
+        $this->assertFileExists($log_file_path);
+
+        foreach ([$data, 'default', 'Data migration executed'] as $needle) {
+            $this->assertContains($needle, file_get_contents($log_file_path));
+        }
     }
 }

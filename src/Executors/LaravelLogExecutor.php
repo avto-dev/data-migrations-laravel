@@ -17,10 +17,15 @@ class LaravelLogExecutor implements ExecutorContract
      */
     public function execute($data, $connection_name = null)
     {
-        $message = ! is_null($connection_name)
-            ? sprintf('Execute in connection \'%s\': %s', (string) $connection_name, (string) $data)
-            : sprintf('Execute in default connection: %s', (string) $data);
+        $connection = \is_string($connection_name)
+            ? $connection_name
+            : 'default';
 
-        Log::info($message);
+        Log::info('Data migration executed', [
+            'connection' => $connection,
+            'data' => $data
+        ]);
+
+        return true;
     }
 }

@@ -30,6 +30,9 @@
     </logging>
     <php>
         <env name="APP_ENV" value="testing"/>
+        <env name="APP_LOG" value="single"/>
+        <env name="LOG_CHANNEL" value="single"/>
+        <env name="APP_LOG_LEVEL" value="debug"/>
         <env name="CACHE_DRIVER" value="array"/>
     </php>
 </phpunit>
