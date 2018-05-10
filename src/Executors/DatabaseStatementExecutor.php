@@ -3,7 +3,13 @@
 namespace AvtoDev\DataMigrationsLaravel\Executors;
 
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
+use Illuminate\Support\Facades\DB;
 
+/**
+ * Class DatabaseStatementExecutor.
+ *
+ * Executor that writing data into database.
+ */
 class DatabaseStatementExecutor implements ExecutorContract
 {
     /**
@@ -11,6 +17,10 @@ class DatabaseStatementExecutor implements ExecutorContract
      */
     public function execute($data, $connection_name = null)
     {
-        // Write code here, dude!
+        if (! is_string($data) || empty($data)) {
+            return;
+        }
+
+        DB::connection($connection_name)->statement($data);
     }
 }

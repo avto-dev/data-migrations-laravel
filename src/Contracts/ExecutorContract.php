@@ -2,6 +2,9 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Contracts;
 
+/**
+ * Interface ExecutorContract.
+ */
 interface ExecutorContract
 {
     /**

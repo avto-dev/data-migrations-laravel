@@ -32,6 +32,13 @@ trait ApplicationHelpersTrait
     abstract public function getDatabaseFilePath();
 
     /**
+     * Возвращает путь к файлу логов, используемых для тестов.
+     *
+     * @return string
+     */
+    abstract public function getLoggingFilePath();
+
+    /**
      * Возвращает контейнер консоли.
      *
      * @param ApplicationContract|null $app
@@ -121,6 +128,23 @@ trait ApplicationHelpersTrait
         }
 
         $app->make('db')->reconnect();
+    }
+
+    /**
+     * Define new logging file.
+     *
+     * @param ApplicationContract|null $app
+     *
+     * @return void
+     */
+    public function prepareLogging(ApplicationContract $app = null)
+    {
+        $config = $this->config($app);
+
+        $config->set('logging.default', 'test');
+        $config->set('logging.channels.test.driver', 'single');
+        $config->set('logging.channels.test.path', $this->getLoggingFilePath());
+        $config->set('logging.channels.test.level', 'debug');
     }
 
     /**
