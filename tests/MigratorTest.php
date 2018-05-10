@@ -34,7 +34,7 @@ class MigratorTest extends AbstractTestCase
      */
     public function testGetSource()
     {
-        $this->assertInstanceOf(SourceContract::class, $this->migrator->getSource());
+        $this->assertInstanceOf(SourceContract::class, $this->migrator->source());
     }
 
     /**
@@ -44,6 +44,11 @@ class MigratorTest extends AbstractTestCase
      */
     public function testGetRepository()
     {
-        $this->assertInstanceOf(RepositoryContract::class, $this->migrator->getRepository());
+        $this->assertInstanceOf(RepositoryContract::class, $this->migrator->repository());
+    }
+
+    public function testMigrate()
+    {
+        dump($this->migrator->migrate());
     }
 }

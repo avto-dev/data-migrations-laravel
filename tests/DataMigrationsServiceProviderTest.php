@@ -48,11 +48,11 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
 
         $this->assertIsArray($config);
 
-        foreach (['table_name', 'connection', 'migrations_path'] as $key) {
+        foreach (['table_name', 'connection', 'migrations_path', 'executor_class'] as $key) {
             $this->assertArrayHasKey($key, $config);
         }
 
-        foreach (['table_name', 'migrations_path'] as $key) {
+        foreach (['table_name', 'migrations_path', 'executor_class'] as $key) {
             $this->assertNotEmpty($config[$key]);
         }
     }

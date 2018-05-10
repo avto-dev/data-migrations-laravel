@@ -188,13 +188,13 @@ class MigrationsFilesTest extends AbstractTestCase
     public function testGetContent()
     {
         $files_list = $this->files->migrations();
-        $this->assertStringStartsWith('CREATE TABLE foo_table', $this->files->getContent($files_list[0]));
-        $this->assertStringStartsWith('INSERT INTO foo_table', $this->files->getContent($files_list[1]));
+        $this->assertStringStartsWith('CREATE TABLE foo_table', $this->files->get($files_list[0]));
+        $this->assertStringStartsWith('INSERT INTO foo_table', $this->files->get($files_list[1]));
 
         $files_list = $this->files->migrations('connection_2');
-        $this->assertStringStartsWith('CREATE TABLE foo_table2', $this->files->getContent($files_list[0]));
+        $this->assertStringStartsWith('CREATE TABLE foo_table2', $this->files->get($files_list[0]));
 
         $files_list = $this->files->migrations('connection_3');
-        $this->assertStringStartsWith('CREATE TABLE foo_table3', $this->files->getContent($files_list[0]));
+        $this->assertStringStartsWith('CREATE TABLE foo_table3', $this->files->get($files_list[0]));
     }
 }

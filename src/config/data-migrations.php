@@ -37,4 +37,15 @@ return [
     */
     'migrations_path' => env('DATA_MIGRATIONS_PATH', base_path('data_migrations')),
 
+    /*
+    | --------------------------------------------------------------------------
+    | Класс объекта, что выполняет применение миграций.
+    | --------------------------------------------------------------------------
+    |
+    | Вы можете переопределить данный класс на произвольный, главное что бы он
+    | реализовывал интерфейс
+    | \AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract.
+    */
+    'executor_class' => \AvtoDev\DataMigrationsLaravel\Executors\DatabaseStatementExecutor::class,
+
 ];

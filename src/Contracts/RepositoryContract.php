@@ -51,4 +51,11 @@ interface RepositoryContract
      * @return string[]
      */
     public function getMigrations();
+
+    /**
+     * Remove all migrations records.
+     *
+     * @return bool
+     */
+    public function clear();
 }

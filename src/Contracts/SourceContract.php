@@ -40,9 +40,9 @@ interface SourceContract
     /**
      * Get migration content.
      *
-     * @param string $path
+     * @param string $abstract
      *
-     * @return string
+     * @return mixed
      */
-    public function getContent($path);
+    public function get($abstract);
 }

@@ -99,4 +99,12 @@ class Repository implements RepositoryContract
     {
         return $this->getConnection()->table($this->table_name)->useWritePdo();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clear()
+    {
+        return $this->table()->delete() > 0;
+    }
 }

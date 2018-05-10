@@ -9,7 +9,7 @@ use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
-class Files implements SourceContract
+class Files implements SourceContract, MigrationNameIsFilePathInterface
 {
     /**
      * @var Filesystem
@@ -131,15 +131,15 @@ class Files implements SourceContract
     /**
      * {@inheritdoc}
      */
-    public function getContent($path)
+    public function get($abstract)
     {
         switch (true) {
-            case Str::endsWith($path, '.gz'):
-                return $this->readGZippedFile($path);
+            case Str::endsWith($abstract, '.gz'):
+                return $this->readGZippedFile($abstract);
             // Case '.zip', etc
         }
 
-        return $this->files->get($path);
+        return $this->files->get($abstract);
     }
 
     /**
