@@ -65,6 +65,15 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
+    public function clearRepository()
+    {
+        // $this->table()->truncate();
+        $this->table()->delete();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function delete($name)
     {
         $this->table()->where('migration', $name)->delete();
