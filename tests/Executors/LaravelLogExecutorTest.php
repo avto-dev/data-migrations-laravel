@@ -2,10 +2,10 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Executors;
 
+use Illuminate\Support\Str;
 use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Executors\LaravelLogExecutor;
-use Illuminate\Support\Str;
 
 class LaravelLogExecutorTest extends AbstractTestCase
 {

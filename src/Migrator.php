@@ -2,9 +2,9 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 class Migrator implements MigratorContract
 {
@@ -50,6 +50,11 @@ class Migrator implements MigratorContract
         return $this->source;
     }
 
+    public function migrate()
+    {
+        //dump($this->notMigrated());
+    }
+
     protected function notMigrated()
     {
         $migrated               = $this->repository->migrations();
@@ -58,10 +63,4 @@ class Migrator implements MigratorContract
 
         $not_migrated = array_diff($found_migrations_names, $migrated);
     }
-
-    public function migrate()
-    {
-        //dump($this->notMigrated());
-    }
-
 }

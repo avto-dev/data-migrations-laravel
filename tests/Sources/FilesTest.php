@@ -56,7 +56,7 @@ class FilesTest extends AbstractTestCase
     public function testGetMigrationsFilesForDefaultConnection()
     {
         $migrations = $this->files->migrations();
-        $names = array_values($migrations);
+        $names      = array_values($migrations);
 
         $this->assertNotEmpty($migrations);
 

@@ -2,12 +2,12 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Sources;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 class Files implements SourceContract
 {
@@ -156,6 +156,31 @@ class Files implements SourceContract
     }
 
     /**
+     * Converts migration name into migration path.
+     *
+     * @param string      $name
+     * @param string|null $connection_name
+     *
+     * @return string
+     */
+    public function nameToPath($name, $connection_name = null)
+    {
+        return $this->getPathForConnection($connection_name) . DIRECTORY_SEPARATOR . ltrim($name, '\\\/');
+    }
+
+    /**
+     * Converts migration path into migration name.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function pathToName($path)
+    {
+        return basename($path);
+    }
+
+    /**
      * Read GZipped file and returns content as a string.
      *
      * @param string $file_path
@@ -189,30 +214,5 @@ class Files implements SourceContract
         return $this->migrations_path . (\is_string($connection_name)
                 ? DIRECTORY_SEPARATOR . $connection_name
                 : '');
-    }
-
-    /**
-     * Converts migration name into migration path.
-     *
-     * @param string      $name
-     * @param string|null $connection_name
-     *
-     * @return string
-     */
-    public function nameToPath($name, $connection_name = null)
-    {
-        return $this->getPathForConnection($connection_name) . DIRECTORY_SEPARATOR . ltrim($name, '\\\/');
-    }
-
-    /**
-     * Converts migration path into migration name.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    public function pathToName($path)
-    {
-        return basename($path);
     }
 }
