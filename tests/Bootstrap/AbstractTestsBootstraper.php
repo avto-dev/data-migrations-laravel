@@ -2,8 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Bootstrap;
 
-use Throwable;
 use Exception;
+use Throwable;
 use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;

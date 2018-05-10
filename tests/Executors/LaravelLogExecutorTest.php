@@ -47,7 +47,7 @@ class LaravelLogExecutorTest extends AbstractTestCase
      */
     public function testExecute()
     {
-        $data = 'Test laravel log message';
+        $data          = 'Test laravel log message';
         $log_file_path = __DIR__ . '/../temp/storage/logs/laravel.log';
 
         $this->assertTrue($this->executor->execute($data));

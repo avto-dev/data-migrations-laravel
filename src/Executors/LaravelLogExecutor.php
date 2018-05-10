@@ -23,7 +23,7 @@ class LaravelLogExecutor implements ExecutorContract
 
         Log::info('Data migration executed', [
             'connection' => $connection,
-            'data' => $data
+            'data'       => $data,
         ]);
 
         return true;
