@@ -5,6 +5,7 @@ namespace AvtoDev\DataMigrationsLaravel\Tests\Executors;
 use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Executors\LaravelLogExecutor;
+use Illuminate\Support\Str;
 
 class LaravelLogExecutorTest extends AbstractTestCase
 {
@@ -54,7 +55,7 @@ class LaravelLogExecutorTest extends AbstractTestCase
      */
     public function testExecute()
     {
-        $data = 'Test laravel log message';
+        $data = 'Test laravel log message ' . Str::random();
 
         $this->assertTrue($this->executor->execute($data));
 
@@ -72,9 +73,9 @@ class LaravelLogExecutorTest extends AbstractTestCase
      */
     public function testExecuteWithCustomConnection()
     {
-        $data = 'Custom statement';
+        $data = 'Custom statement ' . Str::random();
 
-        $this->assertTrue($this->executor->execute($data, $connection = 'foo_bar'));
+        $this->assertTrue($this->executor->execute($data, $connection = Str::random()));
 
         $this->assertFileExists($this->log_file_path);
 

@@ -49,6 +49,8 @@ class MigratorTest extends AbstractTestCase
 
     public function testMigrate()
     {
-        dump($this->migrator->migrate());
+        $this->migrator->repository()->insert('foo');
+        $this->migrator->repository()->insert('bar');
+        $this->assertNotFalse($this->migrator->migrate());
     }
 }

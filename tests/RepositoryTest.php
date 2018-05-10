@@ -86,7 +86,7 @@ class RepositoryTest extends AbstractTestCase
 
         $this->repository->delete($delete);
 
-        $this->assertNotContains($delete, $this->repository->getMigrations());
+        $this->assertNotContains($delete, $this->repository->migrations());
     }
 
     /**
@@ -98,18 +98,39 @@ class RepositoryTest extends AbstractTestCase
     {
         $this->repository->createRepository();
 
-        $migrations = ['foo', 'bar', 'udaff', 'bla bla'];
-
-        foreach ($migrations as $migration_name) {
+        foreach ($migrations = ['foo', 'bar', 'udaff', 'bla bla'] as $migration_name) {
             $this->repository->insert($migration_name);
         }
 
-        $inserted_migrations = $this->repository->getMigrations();
+        $inserted_migrations = $this->repository->migrations();
 
         $this->assertCount(count($migrations), $inserted_migrations);
 
         foreach ($migrations as $migration_name) {
             $this->assertContains($migration_name, $inserted_migrations);
         }
+    }
+
+    /**
+     * Test migrations records clearing.
+     *
+     * @return void
+     */
+    public function testClear()
+    {
+        $this->repository->createRepository();
+
+        foreach ($migrations = ['foo', 'bar'] as $migration_name) {
+            $this->repository->insert($migration_name);
+        }
+
+        $inserted_migrations = $this->repository->migrations();
+
+        $this->assertCount(count($migrations), $inserted_migrations);
+
+        $this->assertTrue($this->repository->clear());
+        $this->assertEmpty($this->repository->migrations());
+
+        $this->assertFalse($this->repository->clear());
     }
 }

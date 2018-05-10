@@ -2,14 +2,14 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Sources;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use Carbon\Carbon;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
-class Files implements SourceContract, MigrationNameIsFilePathInterface
+class Files implements SourceContract
 {
     /**
      * @var Filesystem
@@ -30,7 +30,7 @@ class Files implements SourceContract, MigrationNameIsFilePathInterface
     public function __construct(Filesystem $files, $migrations_path)
     {
         $this->files           = $files;
-        $this->migrations_path = $migrations_path;
+        $this->migrations_path = rtrim($migrations_path, '\\\/');
     }
 
     /**
@@ -38,7 +38,7 @@ class Files implements SourceContract, MigrationNameIsFilePathInterface
      *
      * @return Filesystem
      */
-    public function getFilesystem()
+    public function filesystem()
     {
         return $this->files;
     }
@@ -51,26 +51,20 @@ class Files implements SourceContract, MigrationNameIsFilePathInterface
         $path = $this->getPathForConnection($connection_name);
 
         if ($this->files->isDirectory($path)) {
-            $result = array_map(function ($file) {
+            $migrations = array_map(function ($file) {
                 if ($file instanceof SplFileInfo) {
-                    return $file->getRealPath();
+                    return $this->pathToName($file->getRealPath());
                 }
 
-                return realpath((string) $file);
+                return $this->pathToName(realpath((string) $file));
             }, $this->files->files($path));
 
-            sort($result, SORT_NATURAL);
+            sort($migrations, SORT_NATURAL);
 
-            return $result;
+            return $migrations;
         }
 
-        throw new InvalidArgumentException(sprintf(
-            'Directory [%s] for %s does not exists',
-            $path,
-            \is_string($connection_name)
-                ? 'connection "' . $connection_name . '"'
-                : 'default connection'
-        ));
+        throw new InvalidArgumentException(sprintf('Directory [%s] does not exists', $path));
     }
 
     /**
@@ -112,34 +106,53 @@ class Files implements SourceContract, MigrationNameIsFilePathInterface
 
     /**
      * {@inheritdoc}
+     *
+     * Returns created migration file path.
      */
     public function create($migration_name, Carbon $date = null, $connection_name = null, $content = null)
     {
-        $file_name   = $this->generateFileName($migration_name, $date);
-        $target_dir  = $this->getPathForConnection($connection_name);
-        $target_path = $target_dir . DIRECTORY_SEPARATOR . $file_name;
+        $file_name = $this->generateFileName($migration_name, $date);
+        $file_path = $this->nameToPath($file_name, $connection_name);
 
-        if (! $this->files->isDirectory($target_dir)) {
+        if (! $this->files->isDirectory($target_dir = dirname($file_path))) {
             $this->files->makeDirectory($target_dir, 0755, true);
         }
 
-        $this->files->put($target_path, $content);
+        $this->files->put($file_path, $content);
 
-        return $target_path;
+        return $file_path;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return string
+     */
+    public function get($migration_name, $connection_name = null)
+    {
+        $migration_path = $this->nameToPath($migration_name, $connection_name);
+
+        switch (true) {
+            case Str::endsWith($migration_path, '.gz'):
+                return $this->readGZippedFile($migration_path);
+            // Case '.zip', etc
+        }
+
+        return $this->files->get($migration_path);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get($abstract)
+    public function all()
     {
-        switch (true) {
-            case Str::endsWith($abstract, '.gz'):
-                return $this->readGZippedFile($abstract);
-            // Case '.zip', etc
+        $migrations = [];
+
+        foreach (array_merge([null], $this->connections()) as $connection) {
+            $migrations[$connection] = $this->migrations($connection);
         }
 
-        return $this->files->get($abstract);
+        return $migrations;
     }
 
     /**
@@ -167,7 +180,7 @@ class Files implements SourceContract, MigrationNameIsFilePathInterface
     /**
      * Returns path for directory with migrations (using connection name).
      *
-     * @param string null $connection_name
+     * @param string|null $connection_name
      *
      * @return string
      */
@@ -176,5 +189,30 @@ class Files implements SourceContract, MigrationNameIsFilePathInterface
         return $this->migrations_path . (\is_string($connection_name)
                 ? DIRECTORY_SEPARATOR . $connection_name
                 : '');
+    }
+
+    /**
+     * Converts migration name into migration path.
+     *
+     * @param string      $name
+     * @param string|null $connection_name
+     *
+     * @return string
+     */
+    public function nameToPath($name, $connection_name = null)
+    {
+        return $this->getPathForConnection($connection_name) . DIRECTORY_SEPARATOR . ltrim($name, '\\\/');
+    }
+
+    /**
+     * Converts migration path into migration name.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function pathToName($path)
+    {
+        return basename($path);
     }
 }

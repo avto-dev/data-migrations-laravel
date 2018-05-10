@@ -2,6 +2,7 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
 use Illuminate\Contracts\Foundation\Application;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
@@ -43,6 +44,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
         $this->initializeConfigs();
 
         $this->registerRepository();
+        $this->registerSource();
         $this->registerMigrator();
 
         if ($this->app->runningInConsole()) {
@@ -75,6 +77,20 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
     }
 
     /**
+     * Register data source instance.
+     *
+     * @return void
+     */
+    protected function registerSource()
+    {
+        $this->app->bind(SourceContract::class, function (Application $app) {
+            $config = $this->getPackageConfiguration();
+
+            return new Files($app->make('files'), $config['migrations_path']);
+        });
+    }
+
+    /**
      * Register data migrator instance.
      *
      * @return void
@@ -82,11 +98,9 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
     protected function registerMigrator()
     {
         $this->app->singleton(MigratorContract::class, function (Application $app) {
-            $config = $this->getPackageConfiguration();
-
             return new Migrator(
                 $app->make(RepositoryContract::class),
-                new Files($this->app->make('files'), $config['migrations_path'])
+                $app->make(SourceContract::class)
             );
         });
     }

@@ -3,14 +3,13 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests\Sources;
 
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
 use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
-class MigrationsFilesTest extends AbstractTestCase
+class FilesTest extends AbstractTestCase
 {
     /**
      * @var Files
@@ -46,7 +45,7 @@ class MigrationsFilesTest extends AbstractTestCase
      */
     public function testGetFilesystem()
     {
-        $this->assertInstanceOf(Filesystem::class, $this->files->getFilesystem());
+        $this->assertInstanceOf(Filesystem::class, $this->files->filesystem());
     }
 
     /**
@@ -56,19 +55,13 @@ class MigrationsFilesTest extends AbstractTestCase
      */
     public function testGetMigrationsFilesForDefaultConnection()
     {
-        $files = $this->files->migrations();
+        $migrations = $this->files->migrations();
+        $names = array_values($migrations);
 
-        $this->assertNotEmpty($files);
+        $this->assertNotEmpty($migrations);
 
-        foreach ($files as $file_path) {
-            $this->assertFileExists($file_path);
-        }
-
-        foreach ($files as $file_name) {
-            $this->assertTrue(
-                Str::contains($file_name, ['2000_01_01_000001', '2000_01_01_000002'])
-            );
-        }
+        $this->assertEquals('2000_01_01_000001_simple_sql_data.sql', $names[0]);
+        $this->assertEquals('2000_01_01_000002_simple_sql_data_tarball.sql.gz', $names[1]);
     }
 
     /**
@@ -78,11 +71,11 @@ class MigrationsFilesTest extends AbstractTestCase
      */
     public function testGetMigrationsFilesForCustomConnections()
     {
-        $files = $this->files->migrations('connection_2');
-        $this->assertContains('2000_01_01_000010', $files[0]);
+        $migrations_for_connection_2 = $this->files->migrations('connection_2');
+        $this->assertEquals('2000_01_01_000010_simple_sql_data.sql', array_values($migrations_for_connection_2)[0]);
 
-        $files = $this->files->migrations('connection_3');
-        $this->assertContains('2000_01_01_000020', $files[0]);
+        $migrations_for_connection_3 = $this->files->migrations('connection_3');
+        $this->assertEquals('2000_01_01_000020_simple_sql_data.sql', array_values($migrations_for_connection_3)[0]);
     }
 
     /**
@@ -187,14 +180,51 @@ class MigrationsFilesTest extends AbstractTestCase
      */
     public function testGetContent()
     {
-        $files_list = $this->files->migrations();
+        $files_list = array_values($this->files->migrations());
         $this->assertStringStartsWith('CREATE TABLE foo_table', $this->files->get($files_list[0]));
         $this->assertStringStartsWith('INSERT INTO foo_table', $this->files->get($files_list[1]));
 
-        $files_list = $this->files->migrations('connection_2');
-        $this->assertStringStartsWith('CREATE TABLE foo_table2', $this->files->get($files_list[0]));
+        $files_list = array_values($this->files->migrations($connection_name = 'connection_2'));
+        $this->assertStringStartsWith('CREATE TABLE foo_table2', $this->files->get($files_list[0], $connection_name));
 
-        $files_list = $this->files->migrations('connection_3');
-        $this->assertStringStartsWith('CREATE TABLE foo_table3', $this->files->get($files_list[0]));
+        $files_list = array_values($this->files->migrations($connection_name = 'connection_3'));
+        $this->assertStringStartsWith('CREATE TABLE foo_table3', $this->files->get($files_list[0], $connection_name));
+    }
+
+    /**
+     * Test migration name to the file path converting (and back).
+     *
+     * @return void
+     */
+    public function testMigrationNameToPathConverting()
+    {
+        $this->files = new Files($this->app->make('files'), '/foo/');
+
+        $this->assertEquals('/foo/bar', $this->files->nameToPath('bar'));
+        $this->assertEquals('/foo/baz.sql', $this->files->nameToPath('/baz.sql'));
+
+        $this->assertEquals('bar', $this->files->pathToName('/foo/bar'));
+        $this->assertEquals('baz.sql', $this->files->pathToName('/foo/baz.sql'));
+    }
+
+    /**
+     * Teat all migrations getter method.
+     *
+     * @return void
+     */
+    public function testAll()
+    {
+        $all = $this->files->all();
+
+        foreach (['', 'connection_2', 'connection_3'] as $key_name) {
+            $this->assertArrayHasKey($key_name, $all);
+        }
+
+        $this->assertEquals('2000_01_01_000001_simple_sql_data.sql', $all[''][0]);
+        $this->assertEquals('2000_01_01_000002_simple_sql_data_tarball.sql.gz', $all[''][1]);
+
+        $this->assertEquals('2000_01_01_000010_simple_sql_data.sql', $all['connection_2'][0]);
+
+        $this->assertEquals('2000_01_01_000020_simple_sql_data.sql', $all['connection_3'][0]);
     }
 }

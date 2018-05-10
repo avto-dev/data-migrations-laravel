@@ -33,16 +33,26 @@ interface SourceContract
      * @param string|null $connection_name
      * @param string|null $content
      *
-     * @return string
+     * @return mixed|void
      */
     public function create($migration_name, Carbon $date = null, $connection_name = null, $content = null);
 
     /**
-     * Get migration content.
+     * Get migration data by migration name.
      *
-     * @param string $abstract
+     * @param string      $migration_name
+     * @param string|null $connection_name
      *
      * @return mixed
      */
-    public function get($abstract);
+    public function get($migration_name, $connection_name = null);
+
+    /**
+     * Get all migrations as an array, where array key is connection name, and value is array of migrations names.
+     *
+     * Important: migrations for default connection has kay name '' (empty string).
+     *
+     * @return array[]
+     */
+    public function all();
 }

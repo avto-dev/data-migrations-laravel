@@ -83,7 +83,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function getMigrations()
+    public function migrations()
     {
         return $this->table()
             ->orderBy('id', 'desc')
