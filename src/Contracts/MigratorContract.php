@@ -17,4 +17,12 @@ interface MigratorContract
      * @return SourceContract
      */
     public function source();
+
+    /**
+     * Get array of migrations, which is found in source but has no record in migrations repository (not migrated).
+     * Array key is connection name, and value is array of migrations names.
+     *
+     * @return array[]
+     */
+    public function notMigrated();
 }
