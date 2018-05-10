@@ -23,6 +23,7 @@
     "require-dev": {
         "ext-pdo_sqlite": "*",
         "ext-sqlite3": "*",
+        "ext-zlib": "*",
         "laravel/laravel": ">=5.4.0 <5.7.0",
         "phpunit/phpunit": "~5.7 || ^6.4 || ~7.0",
         "mockery/mockery": "0.9.* || ~1.0",
@@ -48,6 +49,9 @@
                 "AvtoDev\\DataMigrationsLaravel\\DataMigrationsServiceProvider"
             ]
         }
+    },
+    "suggest": {
+        "ext-zlib": "PHP ZLib extension for a working with compressed (gzip-ed) files"
     },
     "support": {
         "issues": "https://github.com/avto-dev/data-migrations-laravel/issues",

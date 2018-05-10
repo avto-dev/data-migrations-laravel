@@ -2,12 +2,12 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Sources;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use Carbon\Carbon;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 class Files implements SourceContract
 {
@@ -133,7 +133,35 @@ class Files implements SourceContract
      */
     public function getContent($path)
     {
+        switch (true) {
+            case Str::endsWith($path, '.gz'):
+                return $this->readGZippedFile($path);
+            // Case '.zip', etc
+        }
+
         return $this->files->get($path);
+    }
+
+    /**
+     * Read GZipped file and returns content as a string.
+     *
+     * @param string $file_path
+     * @param int    $read_length
+     *
+     * @return string
+     */
+    protected function readGZippedFile($file_path, $read_length = 4096)
+    {
+        $result   = '';
+        $resource = gzopen($file_path, 'r');
+
+        if (is_resource($resource)) {
+            while (! gzeof($resource)) {
+                $result .= gzread($resource, $read_length);
+            }
+        }
+
+        return $result;
     }
 
     /**

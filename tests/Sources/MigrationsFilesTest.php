@@ -66,7 +66,7 @@ class MigrationsFilesTest extends AbstractTestCase
 
         foreach ($files as $file_name) {
             $this->assertTrue(
-                Str::contains($file_name, ['2000_01_01_000001', '2000_01_01_000002', '2000_01_01_000003'])
+                Str::contains($file_name, ['2000_01_01_000001', '2000_01_01_000002'])
             );
         }
     }
