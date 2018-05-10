@@ -91,6 +91,14 @@ class Repository implements RepositoryContract
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function clear()
+    {
+        return $this->table()->delete() > 0;
+    }
+
+    /**
      * Get a query builder for the migration table.
      *
      * @return QueryBuilder
@@ -98,13 +106,5 @@ class Repository implements RepositoryContract
     protected function table()
     {
         return $this->getConnection()->table($this->table_name)->useWritePdo();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function clear()
-    {
-        return $this->table()->delete() > 0;
     }
 }
