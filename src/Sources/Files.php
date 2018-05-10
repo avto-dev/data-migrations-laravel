@@ -2,12 +2,12 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Sources;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use Carbon\Carbon;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 class Files implements SourceContract
 {
