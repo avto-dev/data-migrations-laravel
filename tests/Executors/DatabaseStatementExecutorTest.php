@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Executors;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Connection;
+use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Executors\DatabaseStatementExecutor;
-use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
-use Illuminate\Database\Connection;
-use Illuminate\Support\Facades\DB;
 
 class DatabaseStatementExecutorTest extends AbstractTestCase
 {

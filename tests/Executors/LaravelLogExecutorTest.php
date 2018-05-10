@@ -2,9 +2,9 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Executors;
 
+use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Executors\LaravelLogExecutor;
-use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 
 class LaravelLogExecutorTest extends AbstractTestCase
 {
@@ -47,10 +47,10 @@ class LaravelLogExecutorTest extends AbstractTestCase
      */
     public function testExecute()
     {
-        $data = "Test laravel log message";
+        $data = 'Test laravel log message';
 
         $this->executor->execute($data);
 
-        $this->assertTrue(strpos(file_get_contents($this->getLoggingFilePath()), $data) !== false);
+        $this->assertTrue(mb_strpos(file_get_contents($this->getLoggingFilePath()), $data) !== false);
     }
 }

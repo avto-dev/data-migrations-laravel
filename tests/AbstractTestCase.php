@@ -56,8 +56,6 @@ abstract class AbstractTestCase extends BaseTestCase
         return static::getTemporaryDirectoryPath() . '/database.sqlite';
     }
 
-
-
     /**
      * Возвращает путь к файлу логов, используемых для тестов.
      *

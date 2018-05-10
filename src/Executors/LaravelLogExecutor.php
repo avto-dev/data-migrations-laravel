@@ -2,8 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Executors;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use Illuminate\Support\Facades\Log;
+use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 
 /**
  * Class LaravelLogExecutor.
