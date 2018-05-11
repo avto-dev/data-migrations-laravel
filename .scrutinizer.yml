@@ -8,6 +8,10 @@ checks:
     duplication: true
 
 build:
+  project_setup:
+    before:
+      - php-scrutinizer-run
+
   environment:
     mysql: false
     postgresql: false
@@ -25,9 +29,7 @@ build:
       tests:
         override:
           -
-            command:
-              - php-scrutinizer-run
-              - vendor/bin/phpunit --coverage-clover=clover-file
+            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
             coverage:
               file: 'clover-file'
               format: 'clover'
@@ -38,9 +40,7 @@ build:
       tests:
         override:
           -
-            command:
-              - php-scrutinizer-run
-              - vendor/bin/phpunit --coverage-clover=clover-file
+            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
             coverage:
               file: 'clover-file'
               format: 'clover'
@@ -51,9 +51,7 @@ build:
       tests:
         override:
           -
-            command:
-              - php-scrutinizer-run
-              - vendor/bin/phpunit --coverage-clover=clover-file
+            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
             coverage:
               file: 'clover-file'
               format: 'clover'
@@ -64,9 +62,7 @@ build:
       tests:
         override:
           -
-            command:
-              - php-scrutinizer-run
-              - vendor/bin/phpunit --coverage-clover=clover-file
+            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
             coverage:
               file: 'clover-file'
               format: 'clover'
