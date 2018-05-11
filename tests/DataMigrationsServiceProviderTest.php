@@ -3,11 +3,11 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
 use InvalidArgumentException;
-use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Repository;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
