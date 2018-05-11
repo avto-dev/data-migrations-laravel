@@ -3,9 +3,9 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 
 use Mockery as m;
+use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\DataMigrationsLaravel\Commands\MigrateCommand;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
-use Illuminate\Contracts\Console\Kernel;
 
 class MigrateCommandTest extends AbstractCommandTestCase
 {
