@@ -43,8 +43,7 @@ return [
     | --------------------------------------------------------------------------
     |
     | Вы можете переопределить данный класс на произвольный, главное что бы он
-    | реализовывал интерфейс
-    | \AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract.
+    | реализовывал интерфейс ExecutorContract.
     */
     'executor_class' => env(
         'DATA_MIGRATIONS_EXECUTOR_CLASS',

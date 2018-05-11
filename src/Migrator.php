@@ -39,9 +39,7 @@ class Migrator implements MigratorContract
     }
 
     /**
-     * Get migrations repository instance.
-     *
-     * @return RepositoryContract
+     * {@inheritdoc}
      */
     public function repository()
     {
@@ -49,15 +47,16 @@ class Migrator implements MigratorContract
     }
 
     /**
-     * Get the migrations source instance.
-     *
-     * @return SourceContract
+     * {@inheritdoc}
      */
     public function source()
     {
         return $this->source;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function migrate($connection_name = null)
     {
         $migrated = [];
@@ -70,7 +69,7 @@ class Migrator implements MigratorContract
             // Leave only passed connection name, if passed
             if ($connection_name !== null) {
                 $not_migrated = array_filter($not_migrated, function ($not_migrated_connection) use ($connection_name) {
-                    return $not_migrated_connection !== $connection_name;
+                    return $not_migrated_connection === $connection_name;
                 }, ARRAY_FILTER_USE_KEY);
             }
 

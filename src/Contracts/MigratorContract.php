@@ -5,7 +5,7 @@ namespace AvtoDev\DataMigrationsLaravel\Contracts;
 interface MigratorContract
 {
     /**
-     * Get migrations repository instance.
+     * Get the migrations repository instance.
      *
      * @return RepositoryContract
      */
@@ -17,6 +17,15 @@ interface MigratorContract
      * @return SourceContract
      */
     public function source();
+
+    /**
+     * Make migration.
+     *
+     * @param string|null $connection_name
+     *
+     * @return string[]
+     */
+    public function migrate($connection_name = null);
 
     /**
      * Get array of migrations, which is found in source but has no record in migrations repository (not migrated).

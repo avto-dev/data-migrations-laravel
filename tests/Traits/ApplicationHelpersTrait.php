@@ -108,6 +108,12 @@ trait ApplicationHelpersTrait
         $config->set('database.default', 'sqlite');
         $config->set('database.connections.sqlite.database', $database_file_path = $this->getDatabaseFilePath());
 
+        $config->set('database.connections.connection_2.driver', 'sqlite');
+        $config->set('database.connections.connection_2.database', $database_file_path);
+
+        $config->set('database.connections.connection_3.driver', 'sqlite');
+        $config->set('database.connections.connection_3.database', $database_file_path);
+
         if (! is_dir($database_directory_path = $files->dirname($database_file_path))) {
             $files->makeDirectory($database_directory_path, 0775, true);
         }

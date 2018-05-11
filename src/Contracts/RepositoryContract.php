@@ -21,11 +21,18 @@ interface RepositoryContract
     public function repositoryExists();
 
     /**
-     * Create the migration repository data store.
+     * Create the migration repository (storage).
      *
      * @return void
      */
     public function createRepository();
+
+    /**
+     * Delete the migration repository (storage).
+     *
+     * @return void
+     */
+    public function deleteRepository();
 
     /**
      * Remove a migration record from the repository storage.

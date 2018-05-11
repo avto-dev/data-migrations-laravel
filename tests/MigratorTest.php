@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
 class MigratorTest extends AbstractTestCase
 {
@@ -67,6 +67,11 @@ class MigratorTest extends AbstractTestCase
         ], $this->migrator->notMigrated());
     }
 
+    /**
+     * Test migration method without passing connection name.
+     *
+     * @return void
+     */
     public function testMigrateWithoutPassingConnectionName()
     {
         $this->initRepositoryExcepts($excludes = [
@@ -80,7 +85,44 @@ class MigratorTest extends AbstractTestCase
 
         $this->assertRepositoryHasMigrations($excludes);
 
-        $this->assertDatabaseHas('foo_table', ['id' => 10, 'data' => 'foo1']);
+        $this->assertDatabaseHas('foo_table', ['id' => 10, 'data' => 'foo1', 'string' => 'bar2']);
+        $this->assertDatabaseHas('foo_table', ['id' => 20, 'data' => 'bar1', 'string' => 'baz2']);
+        $this->assertDatabaseHas('foo_table', ['id' => 1, 'data' => 'tarball-ed', 'string' => 'data']);
+    }
+
+    /**
+     * Test migration method WITH passing connection name.
+     *
+     * @return void
+     */
+    public function testMigrateWithPassingConnection()
+    {
+        $this->initRepositoryExcepts($excludes = [
+            $exclude = '2000_01_01_000010_simple_sql_data.sql',
+        ]);
+
+        $this->assertRepositoryHasNotMigrations($excludes);
+
+        $this->assertEquals($excludes, $this->migrator->migrate('connection_2'));
+
+        $this->assertRepositoryHasMigrations($excludes);
+
+        $this->assertDatabaseHas('foo_table2', ['id' => 1, 'data' => 'connection', 'string' => 'two']);
+    }
+
+    /**
+     * Test repository auto-creation if not exists.
+     *
+     * @return void
+     */
+    public function testAutoCreateRepositoryOnMigrate()
+    {
+        $this->migrator->repository()->deleteRepository();
+        $this->assertFalse($this->migrator->repository()->repositoryExists());
+
+        $this->migrator->migrate();
+
+        $this->assertTrue($this->migrator->repository()->repositoryExists());
     }
 
     /**

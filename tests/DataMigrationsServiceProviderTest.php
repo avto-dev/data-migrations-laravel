@@ -2,6 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
+use InvalidArgumentException;
+use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Repository;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
@@ -9,6 +11,7 @@ use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
+use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
 /**
  * Class DataMigrationsServiceProviderTest.
@@ -74,5 +77,25 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
 
         $this->assertInstanceOf(Files::class, $this->app[SourceContract::class]);
         $this->assertInstanceOf(Files::class, app(SourceContract::class));
+
+        $this->assertInstanceOf(DatabaseRawQueryExecutor::class, $this->app[ExecutorContract::class]);
+        $this->assertInstanceOf(DatabaseRawQueryExecutor::class, app(ExecutorContract::class));
+    }
+
+    /**
+     * Test throws exception on wrong executor class name in configuration.
+     *
+     * @return void
+     */
+    public function testExceptionOnInvalidExecutorClassName()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('~Invalid executor class.*~i');
+
+        $this->putenv('DATA_MIGRATIONS_EXECUTOR_CLASS', \stdClass::class);
+
+        $this->refreshApplication();
+
+        $this->app->make(ExecutorContract::class);
     }
 }
