@@ -8,7 +8,7 @@ namespace AvtoDev\DataMigrationsLaravel\Tests\Bootstrap;
 class TestsBootstraper extends AbstractTestsBootstraper
 {
     /**
-     * Возвращает путь к директории `storage`.
+     * Returns `storage` directory path.
      *
      * @return string
      */

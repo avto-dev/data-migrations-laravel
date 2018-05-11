@@ -35,7 +35,7 @@ return [
     |
     | По указанному пути будет производиться поиск файлов-миграций данных.
     */
-    'migrations_path' => env('DATA_MIGRATIONS_PATH', base_path('data_migrations')),
+    'migrations_path' => env('DATA_MIGRATIONS_PATH', storage_path('data_migrations')),
 
     /*
     | --------------------------------------------------------------------------

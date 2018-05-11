@@ -2,6 +2,7 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
+use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
@@ -27,6 +28,11 @@ abstract class AbstractTestCase extends BaseTestCase
     public function setUp()
     {
         parent::setUp();
+
+        $this->config()->set(
+            DataMigrationsServiceProvider::getConfigRootKeyName() . '.migrations_path',
+            __DIR__ . '/stubs/data_migrations'
+        );
 
         $this->prepareDatabase(true);
 

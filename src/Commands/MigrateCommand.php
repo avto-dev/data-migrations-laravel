@@ -43,18 +43,20 @@ class MigrateCommand extends Command
             $this->call('data-migrate:install');
         }
 
-        $connection_name = $this->hasOption($connection_option_name = 'connection')
-            ? trim($this->option($connection_option_name))
-            : null;
-
         if (! empty($need_to_migrate = array_flatten($migrator->needToMigrateList()))) {
-            $this->comment('Migrating next migrations:' . implode(PHP_EOL . ' ➤ ', $need_to_migrate));
+            $this->comment(
+                'Migrating next migrations:' . ($glue = PHP_EOL . ' ➤ ') . implode($glue, $need_to_migrate)
+            );
 
-            $migrated = $migrator->migrate($connection_name);
+            $migrated = $migrator->migrate($this->option('connection'));
 
-            $this->info('Migrated:' . implode(PHP_EOL . ' ✔ ', $migrated));
+            if (! empty($migrated)) {
+                $this->info(
+                    'Migrated:' . ($glue = PHP_EOL . ' ✔ ') . implode($glue, $migrated)
+                );
+            }
         } else {
-            $this->comment('Nothing to migrate');
+            $this->comment('Nothing to migrate.');
         }
     }
 
