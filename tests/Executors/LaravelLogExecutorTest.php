@@ -35,7 +35,7 @@ class LaravelLogExecutorTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->executor = new LaravelLogExecutor;
+        $this->executor = new LaravelLogExecutor($this->app);
     }
 
     /**

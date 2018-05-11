@@ -7,12 +7,12 @@ use InvalidArgumentException;
 use Illuminate\Database\Connection;
 use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
-use AvtoDev\DataMigrationsLaravel\Executors\DatabaseStatementExecutor;
+use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
-class DatabaseStatementExecutorTest extends AbstractTestCase
+class DatabaseRawQueryExecutorTest extends AbstractTestCase
 {
     /**
-     * @var DatabaseStatementExecutor
+     * @var DatabaseRawQueryExecutor
      */
     protected $executor;
 
@@ -30,7 +30,7 @@ class DatabaseStatementExecutorTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->executor = new DatabaseStatementExecutor();
+        $this->executor = new DatabaseRawQueryExecutor($this->app);
     }
 
     /**

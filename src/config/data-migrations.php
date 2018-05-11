@@ -39,13 +39,16 @@ return [
 
     /*
     | --------------------------------------------------------------------------
-    | Класс объекта, что выполняет применение миграций.
+    | Класс объекта, обслуживающего выполнение миграций
     | --------------------------------------------------------------------------
     |
     | Вы можете переопределить данный класс на произвольный, главное что бы он
     | реализовывал интерфейс
     | \AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract.
     */
-    'executor_class' => \AvtoDev\DataMigrationsLaravel\Executors\DatabaseStatementExecutor::class,
+    'executor_class' => env(
+        'DATA_MIGRATIONS_EXECUTOR_CLASS',
+        AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor::class
+    ),
 
 ];

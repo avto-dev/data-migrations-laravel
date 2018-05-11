@@ -2,15 +2,12 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Executors;
 
-use Illuminate\Support\Facades\Log;
-use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
-
 /**
  * Class LaravelLogExecutor.
  *
  * Executor for writing data into laravel log.
  */
-class LaravelLogExecutor implements ExecutorContract
+class LaravelLogExecutor extends AbstractExecutor
 {
     /**
      * {@inheritdoc}
@@ -21,7 +18,7 @@ class LaravelLogExecutor implements ExecutorContract
             ? $connection_name
             : 'default';
 
-        Log::info('Data migration executed', [
+        $this->app->make(\Psr\Log\LoggerInterface::class)->info('Data migration executed', [
             'connection' => $connection,
             'data'       => $data,
         ]);

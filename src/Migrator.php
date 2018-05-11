@@ -2,9 +2,10 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 class Migrator implements MigratorContract
 {
@@ -19,15 +20,22 @@ class Migrator implements MigratorContract
     protected $source;
 
     /**
+     * @var ExecutorContract
+     */
+    protected $executor;
+
+    /**
      * Migrator constructor.
      *
      * @param RepositoryContract $repository
      * @param SourceContract     $source
+     * @param ExecutorContract   $executor
      */
-    public function __construct(RepositoryContract $repository, SourceContract $source)
+    public function __construct(RepositoryContract $repository, SourceContract $source, ExecutorContract $executor)
     {
         $this->repository = $repository;
         $this->source     = $source;
+        $this->executor   = $executor;
     }
 
     /**
@@ -50,9 +58,40 @@ class Migrator implements MigratorContract
         return $this->source;
     }
 
-    public function migrate()
+    public function migrate($connection_name = null)
     {
-        //dump($this->notMigrated());
+        $migrated = [];
+
+        if (! $this->repository->repositoryExists()) {
+            $this->repository->createRepository();
+        }
+
+        if (! empty($all_migrations = array_flatten($not_migrated = $this->notMigrated()))) {
+            // Leave only passed connection name, if passed
+            if ($connection_name !== null) {
+                $not_migrated = array_filter($not_migrated, function ($not_migrated_connection) use ($connection_name) {
+                    return $not_migrated_connection !== $connection_name;
+                }, ARRAY_FILTER_USE_KEY);
+            }
+
+            foreach ($not_migrated as $migrations_connection_name => $migrations_names) {
+                foreach ((array) $migrations_names as $migration_name) {
+                    // Convert empty key name (used for default connection) into null
+                    $migrations_connection_name = empty($migrations_connection_name)
+                        ? null
+                        : $migrations_connection_name;
+
+                    $migration_data = $this->source->get($migration_name, $migrations_connection_name);
+
+                    if ($this->executor->execute($migration_data, $migrations_connection_name)) {
+                        $migrated[] = $migration_name;
+                        $this->repository->insert($migration_name);
+                    }
+                }
+            }
+        }
+
+        return $migrated;
     }
 
     /**

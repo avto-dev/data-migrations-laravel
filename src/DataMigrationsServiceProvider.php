@@ -2,12 +2,14 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
-use AvtoDev\DataMigrationsLaravel\Sources\Files;
-use Illuminate\Contracts\Foundation\Application;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Sources\Files;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use InvalidArgumentException;
 
 /**
  * Class DataMigrationsServiceProvider.
@@ -45,6 +47,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
 
         $this->registerRepository();
         $this->registerSource();
+        $this->registerExecutor();
         $this->registerMigrator();
 
         if ($this->app->runningInConsole()) {
@@ -91,6 +94,27 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
     }
 
     /**
+     * Register migrations executor instance.
+     *
+     * @return void
+     */
+    protected function registerExecutor()
+    {
+        $this->app->bind(ExecutorContract::class, function (Application $app) {
+            $config   = $this->getPackageConfiguration();
+            $executor = new $config['executor_class']($app);
+
+            if ($executor instanceof ExecutorContract) {
+                return $executor;
+            }
+
+            throw new InvalidArgumentException(sprintf(
+                'Invalid executor class (must implements interface %s)', ExecutorContract::class
+            ));
+        });
+    }
+
+    /**
      * Register data migrator instance.
      *
      * @return void
@@ -100,7 +124,8 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
         $this->app->singleton(MigratorContract::class, function (Application $app) {
             return new Migrator(
                 $app->make(RepositoryContract::class),
-                $app->make(SourceContract::class)
+                $app->make(SourceContract::class),
+                $app->make(ExecutorContract::class)
             );
         });
     }
