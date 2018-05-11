@@ -2,8 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 
-use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 use RuntimeException;
+use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 
 class MakeCommandTest extends AbstractCommandTestCase
 {

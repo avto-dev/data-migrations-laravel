@@ -2,10 +2,10 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 class MakeCommand extends Command
 {
