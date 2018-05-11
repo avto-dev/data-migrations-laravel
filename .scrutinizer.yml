@@ -18,10 +18,10 @@ build:
     neo4j: false
     rabbitmq: false
 
-    analysis:
-      tests:
-        override:
-          - php-scrutinizer-run
+  analysis:
+    tests:
+      override:
+        - php-scrutinizer-run
 
     php56:
       environment:
