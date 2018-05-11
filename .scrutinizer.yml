@@ -18,18 +18,15 @@ build:
     neo4j: false
     rabbitmq: false
 
-  analysis:
-    tests:
-      override:
-        - php-scrutinizer-run
-
     php56:
       environment:
         php: 5.6
       tests:
         override:
           -
-            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
+            command:
+              - php-scrutinizer-run
+              - vendor/bin/phpunit --coverage-clover=clover-file
             coverage:
               file: 'clover-file'
               format: 'clover'
@@ -40,7 +37,9 @@ build:
       tests:
         override:
           -
-            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
+            command:
+              - php-scrutinizer-run
+              - vendor/bin/phpunit --coverage-clover=clover-file
             coverage:
               file: 'clover-file'
               format: 'clover'
@@ -51,7 +50,9 @@ build:
       tests:
         override:
           -
-            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
+            command:
+              - php-scrutinizer-run
+              - vendor/bin/phpunit --coverage-clover=clover-file
             coverage:
               file: 'clover-file'
               format: 'clover'
@@ -62,7 +63,9 @@ build:
       tests:
         override:
           -
-            command: 'vendor/bin/phpunit --coverage-clover=clover-file'
+            command:
+              - php-scrutinizer-run
+              - vendor/bin/phpunit --coverage-clover=clover-file
             coverage:
               file: 'clover-file'
               format: 'clover'
