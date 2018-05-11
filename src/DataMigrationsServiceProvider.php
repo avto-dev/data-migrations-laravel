@@ -2,14 +2,14 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
+use InvalidArgumentException;
+use AvtoDev\DataMigrationsLaravel\Sources\Files;
+use Illuminate\Contracts\Foundation\Application;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
-use AvtoDev\DataMigrationsLaravel\Sources\Files;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use InvalidArgumentException;
 
 /**
  * Class DataMigrationsServiceProvider.
