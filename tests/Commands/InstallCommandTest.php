@@ -2,9 +2,9 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use Mockery as m;
 use RuntimeException;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 class InstallCommandTest extends AbstractCommandTestCase
 {
@@ -12,14 +12,6 @@ class InstallCommandTest extends AbstractCommandTestCase
      * @var RepositoryContract
      */
     protected $repository;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getCommandSignature()
-    {
-        return 'data-migrate:install';
-    }
 
     /**
      * {@inheritdoc}
@@ -70,5 +62,13 @@ class InstallCommandTest extends AbstractCommandTestCase
         $this->app->instance(RepositoryContract::class, $mock);
 
         $this->artisan($this->getCommandSignature());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getCommandSignature()
+    {
+        return 'data-migrate:install';
     }
 }

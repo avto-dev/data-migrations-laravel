@@ -2,10 +2,10 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Input\InputOption;
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 
 class MigrateCommand extends Command
 {
