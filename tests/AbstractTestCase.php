@@ -46,12 +46,16 @@ abstract class AbstractTestCase extends BaseTestCase
     }
 
     /**
-     * Возвращает путь к файлу БД sqlite, используемой для тестов.
+     * Returns connections names and paths for SQLite databases.
      *
-     * @return string
+     * @return string[]
      */
-    public function getDatabaseFilePath()
+    public function getDatabasesFilePath()
     {
-        return static::getTemporaryDirectoryPath() . '/database.sqlite';
+        return [
+            'default'      => static::getTemporaryDirectoryPath() . '/database.sqlite',
+            'connection_2' => static::getTemporaryDirectoryPath() . '/database_2.sqlite',
+            'connection_3' => static::getTemporaryDirectoryPath() . '/database_3.sqlite',
+        ];
     }
 }

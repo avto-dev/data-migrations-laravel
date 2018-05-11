@@ -25,11 +25,11 @@ trait ApplicationHelpersTrait
     abstract public function createApplication();
 
     /**
-     * Возвращает путь к файлу БД sqlite, используемой для тестов.
+     * Returns connections names and paths for SQLite databases.
      *
-     * @return string
+     * @return string[]
      */
-    abstract public function getDatabaseFilePath();
+    abstract public function getDatabasesFilePath();
 
     /**
      * Возвращает контейнер консоли.
@@ -102,29 +102,28 @@ trait ApplicationHelpersTrait
         $app = $this->resolveApplication($app);
 
         /** @var \Illuminate\Filesystem\Filesystem $files */
-        $files  = $app->make('files');
-        $config = $this->config($app);
+        $files     = $app->make('files');
+        $config    = $this->config($app);
+        $databases = $this->getDatabasesFilePath();
 
-        $config->set('database.default', 'sqlite');
-        $config->set('database.connections.sqlite.database', $database_file_path = $this->getDatabaseFilePath());
-
-        $config->set('database.connections.connection_2.driver', 'sqlite');
-        $config->set('database.connections.connection_2.database', $database_file_path);
-
-        $config->set('database.connections.connection_3.driver', 'sqlite');
-        $config->set('database.connections.connection_3.database', $database_file_path);
-
-        if (! is_dir($database_directory_path = $files->dirname($database_file_path))) {
-            $files->makeDirectory($database_directory_path, 0775, true);
-        }
-
-        if ($recreate_db === true) {
-            if (file_exists($database_file_path)) {
-                $this->assertTrue($files->delete($database_file_path));
+        foreach ($databases as $connection_name => $db_file_path) {
+            if (! is_dir($database_directory_path = $files->dirname($db_file_path))) {
+                $files->makeDirectory($database_directory_path, 0775, true);
             }
 
-            $files->put($database_file_path, null);
+            $config->set(sprintf('database.connections.%s.driver', $connection_name), 'sqlite');
+            $config->set(sprintf('database.connections.%s.database', $connection_name), $db_file_path);
+
+            if ($recreate_db === true) {
+                if (file_exists($db_file_path)) {
+                    $this->assertTrue($files->delete($db_file_path));
+                }
+
+                $files->put($db_file_path, null);
+            }
         }
+
+        $config->set(sprintf('database.default'), array_keys($databases)[0]);
 
         $app->make('db')->reconnect();
     }

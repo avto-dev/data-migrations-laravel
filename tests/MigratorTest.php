@@ -103,11 +103,15 @@ class MigratorTest extends AbstractTestCase
 
         $this->assertRepositoryHasNotMigrations($excludes);
 
-        $this->assertEquals($excludes, $this->migrator->migrate('connection_2'));
+        $this->assertEquals($excludes, $this->migrator->migrate($connection_name = 'connection_2'));
 
         $this->assertRepositoryHasMigrations($excludes);
 
-        $this->assertDatabaseHas('foo_table2', ['id' => 1, 'data' => 'connection', 'string' => 'two']);
+        $this->assertDatabaseHas('foo_table2', [
+            'id'     => 1,
+            'data'   => 'connection',
+            'string' => 'two',
+        ], $connection_name);
     }
 
     /**
