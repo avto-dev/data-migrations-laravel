@@ -2,7 +2,7 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
-use Throwable;
+use Exception;
 use RuntimeException;
 use Illuminate\Console\Command;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
@@ -46,7 +46,7 @@ class InstallCommand extends Command
             if ($repository->repositoryExists()) {
                 $this->info('Repository created successfully!');
             }
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             throw new RuntimeException(
                 'Cannot create repository in your database. ' . $e->getMessage(), $e->getCode(), $e
             );
