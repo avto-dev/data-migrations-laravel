@@ -64,7 +64,7 @@ class MigratorTest extends AbstractTestCase
         $this->assertEquals([
             ''             => [$exclude_1],
             'connection_2' => [$exclude_2],
-        ], $this->migrator->notMigrated());
+        ], $this->migrator->needToMigrateList());
     }
 
     /**
@@ -112,21 +112,6 @@ class MigratorTest extends AbstractTestCase
             'data'   => 'connection',
             'string' => 'two',
         ], $connection_name);
-    }
-
-    /**
-     * Test repository auto-creation if not exists.
-     *
-     * @return void
-     */
-    public function testAutoCreateRepositoryOnMigrate()
-    {
-        $this->migrator->repository()->deleteRepository();
-        $this->assertFalse($this->migrator->repository()->repositoryExists());
-
-        $this->migrator->migrate();
-
-        $this->assertTrue($this->migrator->repository()->repositoryExists());
     }
 
     /**

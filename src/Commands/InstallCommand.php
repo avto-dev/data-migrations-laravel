@@ -2,15 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
+use Throwable;
 use RuntimeException;
 use Illuminate\Console\Command;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
-/**
- * Class InstallCommand.
- *
- * Command for crating migration file for data migrations.
- */
 class InstallCommand extends Command
 {
     /**
@@ -18,14 +14,14 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $name = 'data-migrations:install';
+    protected $name = 'data-migrate:install';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create the data migration repository';
+    protected $description = 'Create the data migrations repository';
 
     /**
      * Execute the console command.
@@ -34,22 +30,26 @@ class InstallCommand extends Command
      *
      * @throws RuntimeException
      *
-     * @return int
+     * @return void
      */
     public function handle(RepositoryContract $repository)
     {
         if ($repository->repositoryExists()) {
             $this->comment('Repository already exists in your database');
 
-            return 0;
+            return;
         }
 
-        if ($repository->createRepository() && $repository->repositoryExists()) {
-            $this->info('Repository created successfully!');
+        try {
+            $repository->createRepository();
 
-            return 0;
+            if ($repository->repositoryExists()) {
+                $this->info('Repository created successfully!');
+            }
+        } catch (Throwable $e) {
+            throw new RuntimeException(
+                'Cannot create repository in your database. ' . $e->getMessage(), $e->getCode(), $e
+            );
         }
-
-        throw new RuntimeException('Cannot create repository in your database');
     }
 }

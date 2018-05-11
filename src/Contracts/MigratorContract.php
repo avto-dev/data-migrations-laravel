@@ -35,5 +35,5 @@ interface MigratorContract
      *
      * @return array[]
      */
-    public function notMigrated();
+    public function needToMigrateList();
 }

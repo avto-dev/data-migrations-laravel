@@ -139,6 +139,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
     {
         $this->commands([
             Commands\InstallCommand::class,
+            Commands\MigrateCommand::class,
         ]);
     }
 

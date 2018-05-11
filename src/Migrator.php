@@ -61,11 +61,7 @@ class Migrator implements MigratorContract
     {
         $migrated = [];
 
-        if (! $this->repository->repositoryExists()) {
-            $this->repository->createRepository();
-        }
-
-        if (! empty($all_migrations = array_flatten($not_migrated = $this->notMigrated()))) {
+        if (! empty($all_migrations = array_flatten($not_migrated = $this->needToMigrateList()))) {
             // Leave only passed connection name, if passed
             if ($connection_name !== null) {
                 $not_migrated = array_filter($not_migrated, function ($not_migrated_connection) use ($connection_name) {
@@ -96,7 +92,7 @@ class Migrator implements MigratorContract
     /**
      * {@inheritdoc}
      */
-    public function notMigrated()
+    public function needToMigrateList()
     {
         $migrated_names     = $this->repository->migrations();
         $found_migrations   = $this->source->all();
