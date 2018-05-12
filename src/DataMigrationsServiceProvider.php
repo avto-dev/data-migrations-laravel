@@ -141,6 +141,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
             Commands\InstallCommand::class,
             Commands\MigrateCommand::class,
             Commands\MakeCommand::class,
+            Commands\StatusCommand::class,
         ]);
     }
 

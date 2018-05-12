@@ -23,7 +23,7 @@ class MigrateCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Run the database migrations';
+    protected $description = 'Run the data migrations';
 
     /**
      * Execute the console command.
