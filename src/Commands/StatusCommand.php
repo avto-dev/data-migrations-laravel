@@ -2,9 +2,9 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use Illuminate\Console\Command;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 class StatusCommand extends Command
 {
