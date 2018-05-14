@@ -2,10 +2,12 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
+use AvtoDev\DataMigrationsLaravel\Migrator;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Input\InputOption;
-use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class MigrateCommand extends Command
 {
@@ -44,16 +46,42 @@ class MigrateCommand extends Command
         }
 
         if (! empty($need_to_migrate = array_flatten($migrator->needToMigrateList()))) {
-            $this->comment(
-                'Migrating next migrations:' . ($glue = PHP_EOL . ' ➤ ') . implode($glue, $need_to_migrate)
+            /** @var ProgressBar|null $progress */
+            $progress = null;
+
+            $migrator->migrate(
+                $this->option('connection'),
+                function ($migration_name, $status, $current, $total) use (&$progress) {
+                    if (! ($progress instanceof ProgressBar)) {
+                        $progress = $this->output->createProgressBar($total);
+                        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message% (%estimated:-6s%)');
+                        $progress->setMessage('In progress');
+                        $progress->display();
+                    }
+
+                    switch ($status) {
+                        case Migrator::STATUS_MIGRATION_READ:
+                            $progress->setMessage("Read migration data for: <info>{$migration_name}</info>");
+                            break;
+
+                        case Migrator::STATUS_MIGRATION_STARTED:
+                            $progress->setMessage("Migration <info>{$migration_name}</info> started");
+                            break;
+
+                        case Migrator::STATUS_MIGRATION_COMPLETED:
+                            $progress->setMessage("Migration <info>{$migration_name}</info> migrated");
+                            break;
+
+                        default:
+                            $progress->setMessage($migration_name);
+                    }
+
+                    $progress->setProgress($current);
+                }
             );
 
-            $migrated = $migrator->migrate($this->option('connection'));
-
-            if (! empty($migrated)) {
-                $this->info(
-                    'Migrated:' . ($glue = PHP_EOL . ' ✔ ') . implode($glue, $migrated)
-                );
+            if ($progress instanceof ProgressBar) {
+                $progress->finish();
             }
         } else {
             $this->comment('Nothing to migrate.');

@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
 class MigratorTest extends AbstractTestCase
 {
@@ -112,6 +112,77 @@ class MigratorTest extends AbstractTestCase
             'data'   => 'connection',
             'string' => 'two',
         ], $connection_name);
+    }
+
+    /**
+     * Test migration method passing closure for making migration process more interacts.
+     *
+     * @return void
+     */
+    public function testMigrateWithPassingClosure()
+    {
+        $this->initRepositoryExcepts($excludes = [
+            $exclude_1 = '2000_01_01_000001_simple_sql_data.sql',
+            $exclude_2 = '2000_01_01_000010_simple_sql_data.sql',
+        ]);
+
+        $closure_migrations_names = [];
+        $closure_statuses         = [];
+        $closure_current          = null;
+        $closure_total            = null;
+        $loop_counter             = 0;
+
+        $this->assertRepositoryHasNotMigrations($excludes);
+
+        $this->assertEquals($excludes, $migrated = $this->migrator->migrate(
+            null,
+            function ($migration_name, $status, $current, $total) use (
+                &$closure_migrations_names,
+                &$closure_statuses,
+                &$closure_current,
+                &$closure_total,
+                $exclude_1,
+                &$loop_counter
+            ) {
+                $closure_migrations_names[] = $migration_name;
+                $closure_statuses[]         = $status;
+                $closure_current            = $current;
+                $closure_total              = $total;
+
+                if ($migration_name === $exclude_1) {
+                    switch ($loop_counter) {
+                        case 0:
+                            $this->assertEquals(Migrator::STATUS_MIGRATION_READ, $status);
+                            break;
+
+                        case 1:
+                            $this->assertEquals(Migrator::STATUS_MIGRATION_STARTED, $status);
+                            break;
+
+                        case 2:
+                            $this->assertEquals(Migrator::STATUS_MIGRATION_COMPLETED, $status);
+                            break;
+
+                        default:
+                            throw new \Exception('Something wrong with counter');
+                    }
+
+                    $this->assertEquals(1, $closure_current);
+
+                    ++$loop_counter;
+                } else {
+                    $this->assertEquals(2, $closure_current);
+                }
+
+                $this->assertEquals($total, 2);
+            }
+        ));
+
+        $this->assertGreaterThanOrEqual(2, $loop_counter);
+        $this->assertEquals($excludes, $migrated);
+        $this->assertCount(6, $closure_statuses);
+
+        $this->assertRepositoryHasMigrations($excludes);
     }
 
     /**

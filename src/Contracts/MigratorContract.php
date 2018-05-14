@@ -2,6 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Contracts;
 
+use Closure;
+
 interface MigratorContract
 {
     /**
@@ -21,11 +23,20 @@ interface MigratorContract
     /**
      * Make migration.
      *
-     * @param string|null $connection_name
+     * Optionally you can pass closure for making migration process more interactive. For closure will be passed next
+     * parameters:
+     *
+     *   - $migration_name
+     *   - $status
+     *   - $current
+     *   - $total
+     *
+     * @param string|null  $connection_name
+     * @param Closure|null $migrating_closure
      *
      * @return string[]
      */
-    public function migrate($connection_name = null);
+    public function migrate($connection_name = null, Closure $migrating_closure = null);
 
     /**
      * Get array of migrations, which is found in source but has no record in migrations repository (not migrated).
