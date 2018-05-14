@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
+use Closure;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
-use Closure;
 
 class Migrator implements MigratorContract
 {
@@ -14,9 +14,9 @@ class Migrator implements MigratorContract
      * Migration statuses (for process interacting at first).
      */
     const
-        STATUS_MIGRATION_STARTED = 'migration_started',
-        STATUS_MIGRATION_COMPLETED = 'migration_completed',
-        STATUS_MIGRATION_READ = 'migration_read';
+        STATUS_MIGRATION_STARTED     = 'migration_started';
+    const STATUS_MIGRATION_COMPLETED = 'migration_completed';
+    const STATUS_MIGRATION_READ      = 'migration_read';
 
     /**
      * @var RepositoryContract
@@ -78,8 +78,8 @@ class Migrator implements MigratorContract
                 }, ARRAY_FILTER_USE_KEY);
             }
 
-            $total   = \count($all_migrations);
-            $current = 1;
+            $total       = \count($all_migrations);
+            $current     = 1;
             $use_closure = \is_callable($migrating_closure);
 
             foreach ($not_migrated as $migrations_connection_name => $migrations_names) {
@@ -108,7 +108,7 @@ class Migrator implements MigratorContract
                         }
                     }
 
-                    ++$current;
+                    $current++;
                 }
             }
         }

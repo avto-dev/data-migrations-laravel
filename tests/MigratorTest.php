@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
-use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
+use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
 class MigratorTest extends AbstractTestCase
 {
@@ -169,7 +169,7 @@ class MigratorTest extends AbstractTestCase
 
                     $this->assertEquals(1, $closure_current);
 
-                    ++$loop_counter;
+                    $loop_counter++;
                 } else {
                     $this->assertEquals(2, $closure_current);
                 }
