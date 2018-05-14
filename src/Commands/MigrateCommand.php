@@ -2,12 +2,12 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
+use AvtoDev\DataMigrationsLaravel\Migrator;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use AvtoDev\DataMigrationsLaravel\Migrator;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\ProgressBar;
-use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
+use Symfony\Component\Console\Input\InputOption;
 
 class MigrateCommand extends Command
 {
@@ -58,25 +58,7 @@ class MigrateCommand extends Command
                         $progress->setMessage('In progress');
                     }
 
-                    switch ($status) {
-                        case Migrator::STATUS_MIGRATION_READ:
-                            $progress->setMessage("Read migration data for: <info>{$migration_name}</info>");
-                            break;
-
-                        case Migrator::STATUS_MIGRATION_STARTED:
-                            $progress->setMessage("Migration <info>{$migration_name}</info> started");
-                            break;
-
-                        case Migrator::STATUS_MIGRATION_COMPLETED:
-                            $progress->setMessage("Migration <info>{$migration_name}</info> migrated");
-                            break;
-
-                        default:
-                            $progress->setMessage($migration_name);
-                    }
-
-                    $progress->display();
-                    $progress->setProgress($current);
+                    $this->updateProgressBar($progress, $migration_name, $status, $current, $total);
                 }
             );
 
@@ -94,6 +76,40 @@ class MigrateCommand extends Command
         } else {
             $this->comment('Nothing to migrate.');
         }
+    }
+
+    /**
+     * Update interactive progress bar.
+     *
+     * @param ProgressBar $progress
+     * @param string      $migration_name
+     * @param string      $status
+     * @param int         $current
+     * @param int         $total
+     *
+     * @return void
+     */
+    protected function updateProgressBar(ProgressBar $progress, $migration_name, $status, $current, $total)
+    {
+        switch ($status) {
+            case Migrator::STATUS_MIGRATION_READ:
+                $progress->setMessage("Read migration data for: <info>{$migration_name}</info>");
+                break;
+
+            case Migrator::STATUS_MIGRATION_STARTED:
+                $progress->setMessage("Migration of <info>{$migration_name}</info> started");
+                break;
+
+            case Migrator::STATUS_MIGRATION_COMPLETED:
+                $progress->setMessage("<info>{$migration_name}</info> migrated!");
+                break;
+
+            default:
+                $progress->setMessage("Work with <info>{$migration_name}</info>");
+        }
+
+        $progress->setProgress($current);
+        $progress->display();
     }
 
     /**
