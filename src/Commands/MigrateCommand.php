@@ -2,12 +2,12 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
+use AvtoDev\DataMigrationsLaravel\Migrator;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use AvtoDev\DataMigrationsLaravel\Migrator;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\ProgressBar;
-use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
+use Symfony\Component\Console\Input\InputOption;
 
 class MigrateCommand extends Command
 {
@@ -49,14 +49,13 @@ class MigrateCommand extends Command
             /** @var ProgressBar|null $progress */
             $progress = null;
 
-            $migrator->migrate(
+            $migrated = $migrator->migrate(
                 $this->option('connection'),
                 function ($migration_name, $status, $current, $total) use (&$progress) {
                     if (! ($progress instanceof ProgressBar)) {
                         $progress = $this->output->createProgressBar($total);
                         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message% (%estimated:-6s%)');
                         $progress->setMessage('In progress');
-                        $progress->display();
                     }
 
                     switch ($status) {
@@ -76,12 +75,21 @@ class MigrateCommand extends Command
                             $progress->setMessage($migration_name);
                     }
 
+                    $progress->display();
                     $progress->setProgress($current);
                 }
             );
 
             if ($progress instanceof ProgressBar) {
                 $progress->finish();
+
+                $this->output->writeln('');
+            }
+
+            if (! empty($migrated)) {
+                $this->info(
+                    'Migrated:' . ($glue = PHP_EOL . ' ✔ ') . implode($glue, $migrated)
+                );
             }
         } else {
             $this->comment('Nothing to migrate.');

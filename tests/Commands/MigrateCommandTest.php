@@ -87,7 +87,7 @@ class MigrateCommandTest extends AbstractCommandTestCase
         $output = $this->console()->output();
 
         $this->assertContains('Application In Production', $output);
-        $this->assertContains('migrated', $output);
+        $this->assertContains('Migrated', $output);
     }
 
     /**
