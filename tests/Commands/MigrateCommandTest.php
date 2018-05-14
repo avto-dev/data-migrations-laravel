@@ -61,12 +61,8 @@ class MigrateCommandTest extends AbstractCommandTestCase
         $this->artisan($this->getCommandSignature());
         $output = $this->console()->output();
 
-        $this->assertContains('Migrating next migrations', $output);
         foreach ($not_migrated as $needed_migration_name) {
             $this->assertContains($needed_migration_name, $output);
-        }
-
-        foreach ($not_migrated as $needed_migration_name) {
             $this->assertContains($needed_migration_name, $this->migrator->repository()->migrations());
         }
 

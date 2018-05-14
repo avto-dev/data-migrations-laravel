@@ -2,6 +2,7 @@
 
 namespace AvtoDev\DataMigrationsLaravel;
 
+use Closure;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
@@ -9,6 +10,14 @@ use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 class Migrator implements MigratorContract
 {
+    /**
+     * Migration statuses (for process interacting at first).
+     */
+    const
+        STATUS_MIGRATION_STARTED     = 'migration_started';
+    const STATUS_MIGRATION_COMPLETED = 'migration_completed';
+    const STATUS_MIGRATION_READ      = 'migration_read';
+
     /**
      * @var RepositoryContract
      */
@@ -57,7 +66,7 @@ class Migrator implements MigratorContract
     /**
      * {@inheritdoc}
      */
-    public function migrate($connection_name = null)
+    public function migrate($connection_name = null, Closure $migrating_closure = null)
     {
         $migrated = [];
 
@@ -69,6 +78,10 @@ class Migrator implements MigratorContract
                 }, ARRAY_FILTER_USE_KEY);
             }
 
+            $total       = \count($all_migrations);
+            $current     = 1;
+            $use_closure = \is_callable($migrating_closure);
+
             foreach ($not_migrated as $migrations_connection_name => $migrations_names) {
                 foreach ((array) $migrations_names as $migration_name) {
                     // Convert empty key name (used for default connection) into null
@@ -76,12 +89,26 @@ class Migrator implements MigratorContract
                         ? null
                         : $migrations_connection_name;
 
+                    if ($use_closure) {
+                        $migrating_closure($migration_name, static::STATUS_MIGRATION_READ, $current, $total);
+                    }
+
                     $migration_data = $this->source->get($migration_name, $migrations_connection_name);
+
+                    if ($use_closure) {
+                        $migrating_closure($migration_name, static::STATUS_MIGRATION_STARTED, $current, $total);
+                    }
 
                     if ($this->executor->execute($migration_data, $migrations_connection_name)) {
                         $migrated[] = $migration_name;
                         $this->repository->insert($migration_name);
+
+                        if ($use_closure) {
+                            $migrating_closure($migration_name, static::STATUS_MIGRATION_COMPLETED, $current, $total);
+                        }
                     }
+
+                    $current++;
                 }
             }
         }
