@@ -4,46 +4,41 @@ return [
 
     /*
     | --------------------------------------------------------------------------
-    | Имя таблицы в БД, в которой хранятся данные о миграциях
+    | Database table name in which the migration data is stored
     | --------------------------------------------------------------------------
     |
-    | Вы можете переопределить данное значение, но помните, что в этом случае
-    | вам потребуется изменить и имя таблицы в БД.
+    | You can override this value, but remember that in this case you must change
+    | existing table name.
     */
     'table_name' => env('DATA_MIGRATIONS_TABLE_NAME', 'migrations_data'),
 
     /*
     | --------------------------------------------------------------------------
-    | Имя подключения к БД, используемое для хранения таблицы миграций
+    | Database connection name used to store the migration table
     | --------------------------------------------------------------------------
     |
-    | Все подключения к БД обычно описываются в файле ./config/database.php, и
-    | значение, указанное в данном параметре - должно присутствовать в секции
-    | 'database.connections'.
+    | This value must be in config 'database.connections'. If selected 'null' value
+    | that will use the default connection.
     |
-    | Если установлено значение null - будет использование подключение по
-    | умолчанию.
-    |
-    | Возможные значения: null|%connection_name%
+    | Available values: null|%connection_name%
     */
     'connection' => env('DATA_MIGRATIONS_CONNECTION', env('DB_CONNECTION', null)),
 
     /*
     | --------------------------------------------------------------------------
-    | Путь к директории с файлами-миграций данных
+    | Path to directory with data migration files
     | --------------------------------------------------------------------------
     |
-    | По указанному пути будет производиться поиск файлов-миграций данных.
+    | The specified path will search for data migration files.
     */
     'migrations_path' => env('DATA_MIGRATIONS_PATH', storage_path('data_migrations')),
 
     /*
     | --------------------------------------------------------------------------
-    | Класс объекта, обслуживающего выполнение миграций
+    | Class for execute migrations
     | --------------------------------------------------------------------------
     |
-    | Вы можете переопределить данный класс на произвольный, главное что бы он
-    | реализовывал интерфейс ExecutorContract.
+    | This class must implement ExecutorContract.
     */
     'executor_class' => env(
         'DATA_MIGRATIONS_EXECUTOR_CLASS',
