@@ -22,10 +22,11 @@
         "ext-pdo_sqlite": "*",
         "ext-sqlite3": "*",
         "ext-zlib": "*",
-        "avto-dev/dev-tools": "^1.1",
+        "avto-dev/dev-tools": "^1.1.6",
         "laravel/laravel": ">=5.5.0 <5.7.0",
         "mockery/mockery": "0.9.* || ~1.0",
-        "phpunit/phpunit": "~6.4 || ~7.0"
+        "phpunit/phpunit": "~6.0 || ~7.0",
+        "phpstan/phpstan": "~0.9"
     },
     "autoload": {
         "psr-4": {
@@ -39,7 +40,8 @@
     },
     "scripts": {
         "test": "@php ./vendor/bin/phpunit --no-coverage",
-        "test-cover": "@php ./vendor/bin/phpunit --coverage-html='./coverage/html'"
+        "test-cover": "@php ./vendor/bin/phpunit --coverage-html='./coverage/html'",
+        "phpstan": "@php ./vendor/bin/phpstan analyse --level=1 ./src"
     },
     "extra": {
         "laravel": {
