@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\DataMigrationsLaravel\Sources;
 
 use Carbon\Carbon;
@@ -51,7 +53,7 @@ class Files implements SourceContract
         $path = $this->getPathForConnection($connection_name);
 
         if ($this->files->isDirectory($path)) {
-            $migrations = array_map(function ($file) {
+            $migrations = \array_map(function ($file) {
                 if ($file instanceof SplFileInfo) {
                     return $this->pathToName($file->getRealPath());
                 }
@@ -59,7 +61,7 @@ class Files implements SourceContract
                 return $this->pathToName(realpath((string) $file));
             }, $this->files->files($path));
 
-            sort($migrations, SORT_NATURAL);
+            \sort($migrations, SORT_NATURAL);
 
             return $migrations;
         }
@@ -72,11 +74,9 @@ class Files implements SourceContract
      */
     public function connections()
     {
-        $result = array_map(function ($directory_path) {
-            return basename($directory_path);
-        }, $this->files->directories($this->migrations_path));
+        $result = \array_map('basename', $this->files->directories($this->migrations_path));
 
-        sort($result, SORT_NATURAL);
+        \sort($result, SORT_NATURAL);
 
         return $result;
     }
@@ -99,7 +99,7 @@ class Files implements SourceContract
 
         return implode('_', [
                 $when->format('Y_m_d'),
-                \str_pad($when->secondsSinceMidnight(), 6, '0', STR_PAD_LEFT),
+                \str_pad((string) $when->secondsSinceMidnight(), 6, '0', STR_PAD_LEFT),
                 Str::slug($migration_name, '_'),
             ]) . '.' . ltrim($extension, '. ');
     }
@@ -114,7 +114,7 @@ class Files implements SourceContract
         $file_name = $this->generateFileName($migration_name, $date);
         $file_path = $this->nameToPath($file_name, $connection_name);
 
-        if (! $this->files->isDirectory($target_dir = dirname($file_path))) {
+        if (! $this->files->isDirectory($target_dir = \dirname($file_path))) {
             $this->files->makeDirectory($target_dir, 0755, true);
         }
 
@@ -148,7 +148,7 @@ class Files implements SourceContract
     {
         $migrations = [];
 
-        foreach (array_merge([null], $this->connections()) as $connection) {
+        foreach (\array_merge([null], $this->connections()) as $connection) {
             $migrations[$connection] = $this->migrations($connection);
         }
 
@@ -177,7 +177,7 @@ class Files implements SourceContract
      */
     public function pathToName($path)
     {
-        return basename($path);
+        return \basename($path);
     }
 
     /**
@@ -193,9 +193,9 @@ class Files implements SourceContract
         $result   = '';
         $resource = gzopen($file_path, 'r');
 
-        if (is_resource($resource)) {
-            while (! gzeof($resource)) {
-                $result .= gzread($resource, $read_length);
+        if (\is_resource($resource)) {
+            while (! \gzeof($resource)) {
+                $result .= \gzread($resource, $read_length);
             }
         }
 

@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\DataMigrationsLaravel\Executors;
 
 /**
- * Class LaravelLogExecutor.
- *
  * Executor for writing data into laravel log.
  */
 class LaravelLogExecutor extends AbstractExecutor

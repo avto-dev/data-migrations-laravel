@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\DataMigrationsLaravel\Executors;
 
 use Illuminate\Contracts\Foundation\Application;

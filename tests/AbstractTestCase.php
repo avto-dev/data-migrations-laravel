@@ -2,18 +2,18 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
+use AvtoDev\DataMigrationsLaravel\Tests\Bootstrap\TestsBootstrapper;
+use AvtoDev\DevTools\Tests\PHPUnit\AbstractLaravelTestCase;
+use Illuminate\Foundation\Application;
 
 /**
  * Class AbstractTestCase.
  */
-abstract class AbstractTestCase extends BaseTestCase
+abstract class AbstractTestCase extends AbstractLaravelTestCase
 {
-    use Traits\CreatesApplicationTrait,
-        Traits\AdditionalAssertsTrait,
-        Traits\ApplicationHelpersTrait;
+    use Traits\ApplicationHelpersTrait;
 
     /**
      * Create data migrations table into database?
@@ -21,6 +21,22 @@ abstract class AbstractTestCase extends BaseTestCase
      * @var bool
      */
     protected $create_repository = true;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function beforeApplicationBootstrapped(Application $app)
+    {
+        $app->useStoragePath(TestsBootstrapper::getStorageDirectoryPath());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function afterApplicationBootstrapped(Application $app)
+    {
+        $app->register(DataMigrationsServiceProvider::class);
+    }
 
     /**
      * {@inheritdoc}

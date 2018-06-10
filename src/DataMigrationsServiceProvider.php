@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\DataMigrationsLaravel;
 
 use InvalidArgumentException;
@@ -23,7 +25,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      */
     public static function getConfigRootKeyName()
     {
-        return basename(static::getConfigPath(), '.php');
+        return \basename(static::getConfigPath(), '.php');
     }
 
     /**

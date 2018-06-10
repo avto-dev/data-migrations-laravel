@@ -5,6 +5,7 @@ namespace AvtoDev\DataMigrationsLaravel\Tests;
 use InvalidArgumentException;
 use Illuminate\Database\Connection;
 use AvtoDev\DataMigrationsLaravel\Repository;
+use PHPUnit\Framework\AssertionFailedError;
 
 class RepositoryTest extends AbstractTestCase
 {
@@ -126,11 +127,52 @@ class RepositoryTest extends AbstractTestCase
 
         $inserted_migrations = $this->repository->migrations();
 
-        $this->assertCount(count($migrations), $inserted_migrations);
+        $this->assertCount(\count($migrations), $inserted_migrations);
 
         $this->assertTrue($this->repository->clear());
         $this->assertEmpty($this->repository->migrations());
 
         $this->assertFalse($this->repository->clear());
+    }
+
+    /**
+     * Assert that database has table.
+     *
+     * @param string      $table_name
+     * @param string|null $connection
+     *
+     * @throws AssertionFailedError
+     *
+     * @return void
+     */
+    public function assertTableExists($table_name, $connection = null)
+    {
+        $this->assertTrue($this->tableExists($table_name, $connection));
+    }
+
+    /**
+     * Assert that database has no table.
+     *
+     * @param string      $table_name
+     * @param string|null $connection
+     *
+     * @throws AssertionFailedError
+     *
+     * @return void
+     */
+    public function assertTableNotExists($table_name, $connection = null)
+    {
+        $this->assertFalse($this->tableExists($table_name, $connection));
+    }
+
+    /**
+     * @param string      $table_name
+     * @param string|null $connection
+     *
+     * @return bool
+     */
+    protected function tableExists($table_name, $connection = null): bool
+    {
+        return $this->app->make('db')->connection($connection)->getSchemaBuilder()->hasTable($table_name);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
 use Illuminate\Console\Command;

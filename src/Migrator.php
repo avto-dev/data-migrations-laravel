@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\DataMigrationsLaravel;
 
 use Closure;
@@ -13,8 +15,7 @@ class Migrator implements MigratorContract
     /**
      * Migration statuses (for process interacting at first).
      */
-    const
-        STATUS_MIGRATION_STARTED     = 'migration_started';
+    const STATUS_MIGRATION_STARTED   = 'migration_started';
     const STATUS_MIGRATION_COMPLETED = 'migration_completed';
     const STATUS_MIGRATION_READ      = 'migration_read';
 
@@ -123,11 +124,11 @@ class Migrator implements MigratorContract
     {
         $migrated_names     = $this->repository->migrations();
         $found_migrations   = $this->source->all();
-        $not_migrated_names = array_diff(array_flatten($found_migrations), $migrated_names);
+        $not_migrated_names = \array_diff(array_flatten($found_migrations), $migrated_names);
 
-        return array_filter(array_map(function (array $for_connection) use (&$not_migrated_names) {
-            return array_filter($for_connection, function ($migrations_name) use (&$not_migrated_names) {
-                return in_array($migrations_name, $not_migrated_names, true);
+        return \array_filter(\array_map(function (array $for_connection) use (&$not_migrated_names) {
+            return \array_filter($for_connection, function ($migrations_name) use (&$not_migrated_names) {
+                return \in_array($migrations_name, $not_migrated_names, true);
             });
         }, $found_migrations));
     }

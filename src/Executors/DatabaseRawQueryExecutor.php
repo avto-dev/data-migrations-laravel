@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\DataMigrationsLaravel\Executors;
 
 use Illuminate\Database\ConnectionInterface;
 
 /**
- * Class DatabaseRawQueryExecutor.
- *
  * Executor that writing data into database.
  */
 class DatabaseRawQueryExecutor extends AbstractExecutor
