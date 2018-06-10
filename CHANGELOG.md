@@ -5,7 +5,7 @@
 ### Changed
 
 - CI config updated
-- Package PHPUnit minimal version now is `5.7.10`
+- Package PHPUnit minimal version now is `6.4`
 - Unimportant PHPDoc blocks removed
 - Code a little bit refactored
 
