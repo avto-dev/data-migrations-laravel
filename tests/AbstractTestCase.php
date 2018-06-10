@@ -2,11 +2,11 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
+use Illuminate\Foundation\Application;
+use AvtoDev\DevTools\Tests\PHPUnit\AbstractLaravelTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 use AvtoDev\DataMigrationsLaravel\Tests\Bootstrap\TestsBootstrapper;
-use AvtoDev\DevTools\Tests\PHPUnit\AbstractLaravelTestCase;
-use Illuminate\Foundation\Application;
 
 /**
  * Class AbstractTestCase.
@@ -21,22 +21,6 @@ abstract class AbstractTestCase extends AbstractLaravelTestCase
      * @var bool
      */
     protected $create_repository = true;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function beforeApplicationBootstrapped(Application $app)
-    {
-        $app->useStoragePath(TestsBootstrapper::getStorageDirectoryPath());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function afterApplicationBootstrapped(Application $app)
-    {
-        $app->register(DataMigrationsServiceProvider::class);
-    }
 
     /**
      * {@inheritdoc}
@@ -79,5 +63,21 @@ abstract class AbstractTestCase extends AbstractLaravelTestCase
             'connection_2' => static::getTemporaryDirectoryPath() . '/database_2.sqlite',
             'connection_3' => static::getTemporaryDirectoryPath() . '/database_3.sqlite',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function beforeApplicationBootstrapped(Application $app)
+    {
+        $app->useStoragePath(TestsBootstrapper::getStorageDirectoryPath());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function afterApplicationBootstrapped(Application $app)
+    {
+        $app->register(DataMigrationsServiceProvider::class);
     }
 }

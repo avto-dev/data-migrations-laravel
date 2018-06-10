@@ -4,8 +4,8 @@ namespace AvtoDev\DataMigrationsLaravel\Tests;
 
 use InvalidArgumentException;
 use Illuminate\Database\Connection;
-use AvtoDev\DataMigrationsLaravel\Repository;
 use PHPUnit\Framework\AssertionFailedError;
+use AvtoDev\DataMigrationsLaravel\Repository;
 
 class RepositoryTest extends AbstractTestCase
 {
