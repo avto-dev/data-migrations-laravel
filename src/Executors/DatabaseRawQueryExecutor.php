@@ -14,7 +14,7 @@ class DatabaseRawQueryExecutor extends AbstractExecutor
     /**
      * {@inheritdoc}
      */
-    public function execute($data, $connection_name = null)
+    public function execute($data, string $connection_name = null): bool
     {
         if (\is_string($data) && ! empty($data)) {
             /** @var ConnectionInterface $connection */

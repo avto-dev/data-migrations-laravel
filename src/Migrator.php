@@ -51,7 +51,7 @@ class Migrator implements MigratorContract
     /**
      * {@inheritdoc}
      */
-    public function repository()
+    public function repository(): RepositoryContract
     {
         return $this->repository;
     }
@@ -59,7 +59,7 @@ class Migrator implements MigratorContract
     /**
      * {@inheritdoc}
      */
-    public function source()
+    public function source(): SourceContract
     {
         return $this->source;
     }
@@ -67,7 +67,7 @@ class Migrator implements MigratorContract
     /**
      * {@inheritdoc}
      */
-    public function migrate($connection_name = null, Closure $migrating_closure = null)
+    public function migrate(string $connection_name = null, Closure $migrating_closure = null): array
     {
         $migrated = [];
 
@@ -120,7 +120,7 @@ class Migrator implements MigratorContract
     /**
      * {@inheritdoc}
      */
-    public function needToMigrateList()
+    public function needToMigrateList(): array
     {
         $migrated_names     = $this->repository->migrations();
         $found_migrations   = $this->source->all();

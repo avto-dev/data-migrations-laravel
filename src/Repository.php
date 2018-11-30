@@ -37,7 +37,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function getConnection()
+    public function getConnection(): Connection
     {
         return $this->connection;
     }
@@ -45,7 +45,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function repositoryExists()
+    public function repositoryExists(): bool
     {
         return $this->getConnection()->getSchemaBuilder()->hasTable($this->table_name);
     }
@@ -77,7 +77,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function delete($name)
+    public function delete(string $name)
     {
         $this->table()->where('migration', $name)->delete();
     }
@@ -85,7 +85,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function insert($name)
+    public function insert(string $name)
     {
         $record = ['migration' => $name, 'migrated_at' => Carbon::now()];
 
@@ -95,7 +95,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function migrations()
+    public function migrations(): array
     {
         return $this->table()
             ->orderBy('id', 'desc')
@@ -105,7 +105,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function clear()
+    public function clear(): bool
     {
         return $this->table()->delete() > 0;
     }
@@ -115,7 +115,7 @@ class Repository implements RepositoryContract
      *
      * @return QueryBuilder
      */
-    protected function table()
+    protected function table(): QueryBuilder
     {
         return $this->getConnection()->table($this->table_name)->useWritePdo();
     }

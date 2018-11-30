@@ -29,7 +29,7 @@ class Files implements SourceContract
      * @param Filesystem $files
      * @param string     $migrations_path
      */
-    public function __construct(Filesystem $files, $migrations_path)
+    public function __construct(Filesystem $files, string $migrations_path)
     {
         $this->files           = $files;
         $this->migrations_path = rtrim($migrations_path, '\\\/');
@@ -40,7 +40,7 @@ class Files implements SourceContract
      *
      * @return Filesystem
      */
-    public function filesystem()
+    public function filesystem(): Filesystem
     {
         return $this->files;
     }
@@ -48,7 +48,7 @@ class Files implements SourceContract
     /**
      * {@inheritdoc}
      */
-    public function migrations($connection_name = null)
+    public function migrations(string $connection_name = null): array
     {
         $path = $this->getPathForConnection($connection_name);
 
@@ -72,7 +72,7 @@ class Files implements SourceContract
     /**
      * {@inheritdoc}
      */
-    public function connections()
+    public function connections(): array
     {
         $result = \array_map('basename', $this->files->directories($this->migrations_path));
 
@@ -109,7 +109,10 @@ class Files implements SourceContract
      *
      * Returns created migration file path.
      */
-    public function create($migration_name, Carbon $date = null, $connection_name = null, $content = null)
+    public function create(string $migration_name,
+                           Carbon $date = null,
+                           string $connection_name = null,
+                           string $content = null): string
     {
         $file_name = $this->generateFileName($migration_name, $date);
         $file_path = $this->nameToPath($file_name, $connection_name);
@@ -128,7 +131,7 @@ class Files implements SourceContract
      *
      * @return string
      */
-    public function get($migration_name, $connection_name = null)
+    public function get(string $migration_name, string $connection_name = null): string
     {
         $migration_path = $this->nameToPath($migration_name, $connection_name);
 
@@ -144,7 +147,7 @@ class Files implements SourceContract
     /**
      * {@inheritdoc}
      */
-    public function all()
+    public function all(): array
     {
         $migrations = [];
 
@@ -163,9 +166,9 @@ class Files implements SourceContract
      *
      * @return string
      */
-    public function nameToPath($name, $connection_name = null)
+    public function nameToPath(string $name, string $connection_name = null): string
     {
-        return $this->getPathForConnection($connection_name) . DIRECTORY_SEPARATOR . ltrim($name, '\\\/');
+        return $this->getPathForConnection($connection_name) . DIRECTORY_SEPARATOR . ltrim($name, '\\/');
     }
 
     /**
@@ -175,7 +178,7 @@ class Files implements SourceContract
      *
      * @return string
      */
-    public function pathToName($path)
+    public function pathToName(string $path): string
     {
         return \basename($path);
     }
@@ -188,10 +191,10 @@ class Files implements SourceContract
      *
      * @return string
      */
-    protected function readGZippedFile($file_path, $read_length = 4096)
+    protected function readGZippedFile(string $file_path, int $read_length = 4096): string
     {
         $result   = '';
-        $resource = gzopen($file_path, 'r');
+        $resource = \gzopen($file_path, 'r');
 
         if (\is_resource($resource)) {
             while (! \gzeof($resource)) {
@@ -209,7 +212,7 @@ class Files implements SourceContract
      *
      * @return string
      */
-    protected function getPathForConnection($connection_name = null)
+    protected function getPathForConnection(string $connection_name = null): string
     {
         return $this->migrations_path . (\is_string($connection_name)
                 ? DIRECTORY_SEPARATOR . $connection_name

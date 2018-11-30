@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.2.0
+
+### Changed
+
+- Maximal PHP version now is undefined
+- Maximal Laravel version now is `5.7.*`
+- Source code a little bit refactored
+- CI changed to [Travis CI][travis]
+- [CodeCov][codecov] integrated
+- Issue templates updated
+
+[travis]:https://travis-ci.org/
+[codecov]:https://codecov.io/
+
 ## v1.1.0
 
 ### Changed

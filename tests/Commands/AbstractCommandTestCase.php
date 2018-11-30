@@ -7,6 +7,13 @@ use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 abstract class AbstractCommandTestCase extends AbstractTestCase
 {
     /**
+     * Indicates if the console output should be mocked.
+     *
+     * @var bool
+     */
+    public $mockConsoleOutput = false;
+
+    /**
      * Check command exists test.
      *
      * @return void

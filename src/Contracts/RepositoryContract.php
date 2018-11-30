@@ -11,14 +11,14 @@ interface RepositoryContract
      *
      * @return Connection
      */
-    public function getConnection();
+    public function getConnection(): Connection;
 
     /**
      * Determine if the migration repository exists.
      *
      * @return bool
      */
-    public function repositoryExists();
+    public function repositoryExists(): bool;
 
     /**
      * Create the migration repository (storage).
@@ -41,7 +41,7 @@ interface RepositoryContract
      *
      * @return void
      */
-    public function delete($name);
+    public function delete(string $name);
 
     /**
      * Insert migration record into table.
@@ -50,19 +50,19 @@ interface RepositoryContract
      *
      * @return void
      */
-    public function insert($name);
+    public function insert(string $name);
 
     /**
      * Get list of migrations.
      *
      * @return string[]
      */
-    public function migrations();
+    public function migrations(): array;
 
     /**
      * Remove all migrations records.
      *
      * @return bool
      */
-    public function clear();
+    public function clear(): bool;
 }

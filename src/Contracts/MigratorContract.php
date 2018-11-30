@@ -11,14 +11,14 @@ interface MigratorContract
      *
      * @return RepositoryContract
      */
-    public function repository();
+    public function repository(): RepositoryContract;
 
     /**
      * Get the migrations source instance.
      *
      * @return SourceContract
      */
-    public function source();
+    public function source(): SourceContract;
 
     /**
      * Make migration.
@@ -36,7 +36,7 @@ interface MigratorContract
      *
      * @return string[]
      */
-    public function migrate($connection_name = null, Closure $migrating_closure = null);
+    public function migrate(string $connection_name = null, Closure $migrating_closure = null): array;
 
     /**
      * Get array of migrations, which is found in source but has no record in migrations repository (not migrated).
@@ -46,5 +46,5 @@ interface MigratorContract
      *
      * @return array[]
      */
-    public function needToMigrateList();
+    public function needToMigrateList(): array;
 }

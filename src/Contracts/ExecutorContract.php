@@ -12,5 +12,5 @@ interface ExecutorContract
      *
      * @return bool
      */
-    public function execute($data, $connection_name = null);
+    public function execute($data, string $connection_name = null): bool;
 }

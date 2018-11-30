@@ -23,7 +23,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return string
      */
-    public static function getConfigRootKeyName()
+    public static function getConfigRootKeyName(): string
     {
         return \basename(static::getConfigPath(), '.php');
     }
@@ -33,7 +33,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return string
      */
-    public static function getConfigPath()
+    public static function getConfigPath(): string
     {
         return __DIR__ . '/config/data-migrations.php';
     }
@@ -62,7 +62,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return array
      */
-    protected function getPackageConfiguration()
+    protected function getPackageConfiguration(): array
     {
         return $this->app->make('config')->get(static::getConfigRootKeyName());
     }

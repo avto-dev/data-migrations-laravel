@@ -16,14 +16,14 @@ interface SourceContract
      *
      * @return string[]
      */
-    public function migrations($connection_name = null);
+    public function migrations(string $connection_name = null): array;
 
     /**
      * Get array of all available connections names.
      *
      * @return string[]
      */
-    public function connections();
+    public function connections(): array;
 
     /**
      * Create migration.
@@ -35,7 +35,10 @@ interface SourceContract
      *
      * @return mixed|void
      */
-    public function create($migration_name, Carbon $date = null, $connection_name = null, $content = null);
+    public function create(string $migration_name,
+                           Carbon $date = null,
+                           string $connection_name = null,
+                           string $content = null);
 
     /**
      * Get migration data by migration name.
@@ -45,7 +48,7 @@ interface SourceContract
      *
      * @return mixed
      */
-    public function get($migration_name, $connection_name = null);
+    public function get(string $migration_name, string $connection_name = null);
 
     /**
      * Get all migrations as an array, where array key is connection name, and value is array of migrations names.
@@ -54,5 +57,5 @@ interface SourceContract
      *
      * @return array[]
      */
-    public function all();
+    public function all(): array;
 }
