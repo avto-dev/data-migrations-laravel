@@ -24,7 +24,7 @@
         "ext-zlib": "*",
         "avto-dev/dev-tools": "^1.6",
         "laravel/laravel": ">=5.5.0 <5.8.0",
-        "mockery/mockery": "0.9.* || ~1.0",
+        "mockery/mockery": "^0.9.5 || ~1.0",
         "phpunit/phpunit": "~6.0 || ~7.0",
         "phpstan/phpstan": "~0.9 || ^0.10"
     },
