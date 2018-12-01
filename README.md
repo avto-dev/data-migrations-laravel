@@ -117,7 +117,7 @@ This is open-sourced software licensed under the [MIT License][link_license].
 
 [badge_packagist_version]:https://img.shields.io/packagist/v/avto-dev/data-migrations-laravel.svg?maxAge=180
 [badge_php_version]:https://img.shields.io/packagist/php-v/avto-dev/data-migrations-laravel.svg?longCache=true
-[badge_build_status]:https://travis-ci.com/avto-dev/data-migrations-laravel.svg?branch=master
+[badge_build_status]:https://travis-ci.org/avto-dev/data-migrations-laravel.svg?branch=master
 [badge_code_quality]:https://img.shields.io/scrutinizer/g/avto-dev/data-migrations-laravel.svg?maxAge=180
 [badge_coverage]:https://img.shields.io/codecov/c/github/avto-dev/data-migrations-laravel/master.svg?maxAge=60
 [badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/data-migrations-laravel.svg?maxAge=180
@@ -128,7 +128,7 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [badge_pulls]:https://img.shields.io/github/issues-pr/avto-dev/data-migrations-laravel.svg?style=flat-square&maxAge=180
 [link_releases]:https://github.com/avto-dev/data-migrations-laravel/releases
 [link_packagist]:https://packagist.org/packages/avto-dev/data-migrations-laravel
-[link_build_status]:https://travis-ci.com/avto-dev/data-migrations-laravel
+[link_build_status]:https://travis-ci.org/avto-dev/data-migrations-laravel
 [link_coverage]:https://codecov.io/gh/avto-dev/data-migrations-laravel/
 [link_changes_log]:https://github.com/avto-dev/data-migrations-laravel/blob/master/CHANGELOG.md
 [link_code_quality]:https://scrutinizer-ci.com/g/avto-dev/data-migrations-laravel/
