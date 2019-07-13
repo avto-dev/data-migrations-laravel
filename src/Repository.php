@@ -53,7 +53,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function createRepository()
+    public function createRepository(): void
     {
         $schema = $this->getConnection()->getSchemaBuilder();
 
@@ -67,7 +67,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function deleteRepository()
+    public function deleteRepository(): void
     {
         $schema = $this->getConnection()->getSchemaBuilder();
 
@@ -77,7 +77,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function delete(string $name)
+    public function delete(string $name): void
     {
         $this->table()->where('migration', $name)->delete();
     }
@@ -85,7 +85,7 @@ class Repository implements RepositoryContract
     /**
      * {@inheritdoc}
      */
-    public function insert(string $name)
+    public function insert(string $name): void
     {
         $record = ['migration' => $name, 'migrated_at' => Carbon::now()];
 

@@ -1,13 +1,14 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace AvtoDev\DataMigrationsLaravel;
 
 use Closure;
+use Illuminate\Support\Arr;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 class Migrator implements MigratorContract
@@ -15,9 +16,11 @@ class Migrator implements MigratorContract
     /**
      * Migration statuses (for process interacting at first).
      */
-    const STATUS_MIGRATION_STARTED   = 'migration_started';
-    const STATUS_MIGRATION_COMPLETED = 'migration_completed';
-    const STATUS_MIGRATION_READ      = 'migration_read';
+    public const STATUS_MIGRATION_STARTED   = 'migration_started';
+
+    public const STATUS_MIGRATION_COMPLETED = 'migration_completed';
+
+    public const STATUS_MIGRATION_READ      = 'migration_read';
 
     /**
      * @var RepositoryContract
@@ -67,7 +70,7 @@ class Migrator implements MigratorContract
     /**
      * {@inheritdoc}
      */
-    public function migrate(string $connection_name = null, Closure $migrating_closure = null): array
+    public function migrate(?string $connection_name = null, ?Closure $migrating_closure = null): array
     {
         $migrated = [];
 
@@ -76,27 +79,26 @@ class Migrator implements MigratorContract
             if ($connection_name !== null) {
                 $not_migrated = array_filter($not_migrated, function ($not_migrated_connection) use ($connection_name) {
                     return $not_migrated_connection === $connection_name;
-                }, ARRAY_FILTER_USE_KEY);
+                }, \ARRAY_FILTER_USE_KEY);
             }
 
-            $total       = \count($all_migrations);
-            $current     = 1;
-            $use_closure = \is_callable($migrating_closure);
+            $total   = \count($all_migrations);
+            $current = 1;
 
             foreach ($not_migrated as $migrations_connection_name => $migrations_names) {
                 foreach ((array) $migrations_names as $migration_name) {
                     // Convert empty key name (used for default connection) into null
                     $migrations_connection_name = empty($migrations_connection_name)
                         ? null
-                        : $migrations_connection_name;
+                        : (string) $migrations_connection_name;
 
-                    if ($use_closure) {
+                    if (\is_callable($migrating_closure)) {
                         $migrating_closure($migration_name, static::STATUS_MIGRATION_READ, $current, $total);
                     }
 
                     $migration_data = $this->source->get($migration_name, $migrations_connection_name);
 
-                    if ($use_closure) {
+                    if (\is_callable($migrating_closure)) {
                         $migrating_closure($migration_name, static::STATUS_MIGRATION_STARTED, $current, $total);
                     }
 
@@ -104,7 +106,7 @@ class Migrator implements MigratorContract
                         $migrated[] = $migration_name;
                         $this->repository->insert($migration_name);
 
-                        if ($use_closure) {
+                        if (\is_callable($migrating_closure)) {
                             $migrating_closure($migration_name, static::STATUS_MIGRATION_COMPLETED, $current, $total);
                         }
                     }
@@ -124,7 +126,7 @@ class Migrator implements MigratorContract
     {
         $migrated_names     = $this->repository->migrations();
         $found_migrations   = $this->source->all();
-        $not_migrated_names = \array_diff(array_flatten($found_migrations), $migrated_names);
+        $not_migrated_names = \array_diff(Arr::flatten($found_migrations), $migrated_names);
 
         return \array_filter(\array_map(function (array $for_connection) use (&$not_migrated_names) {
             return \array_filter($for_connection, function ($migrations_name) use (&$not_migrated_names) {

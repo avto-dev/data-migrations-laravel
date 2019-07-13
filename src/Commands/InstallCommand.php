@@ -34,7 +34,7 @@ class InstallCommand extends Command
      *
      * @return void
      */
-    public function handle(RepositoryContract $repository)
+    public function handle(RepositoryContract $repository): void
     {
         if ($repository->repositoryExists()) {
             $this->comment('Repository already exists in your database');

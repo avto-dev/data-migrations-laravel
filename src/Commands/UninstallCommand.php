@@ -34,7 +34,7 @@ class UninstallCommand extends Command
      *
      * @return void
      */
-    public function handle(RepositoryContract $repository)
+    public function handle(RepositoryContract $repository): void
     {
         if (! $repository->repositoryExists()) {
             $this->comment('Repository already not exists in your database');

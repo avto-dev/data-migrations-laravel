@@ -16,7 +16,7 @@ class UninstallCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

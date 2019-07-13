@@ -32,7 +32,7 @@ class StatusCommand extends Command
      *
      * @return void
      */
-    public function handle(RepositoryContract $repository, SourceContract $source)
+    public function handle(RepositoryContract $repository, SourceContract $source): void
     {
         if (! $repository->repositoryExists()) {
             $this->error('No migrations found (repository not installed)');

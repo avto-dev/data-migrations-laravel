@@ -12,7 +12,7 @@ class LaravelLogExecutor extends AbstractExecutor
     /**
      * {@inheritdoc}
      */
-    public function execute($data, string $connection_name = null): bool
+    public function execute($data, ?string $connection_name = null): bool
     {
         $connection = \is_string($connection_name)
             ? $connection_name

@@ -32,13 +32,37 @@ class MakeCommand extends Command
      *
      * @return void
      */
-    public function handle(SourceContract $source)
+    public function handle(SourceContract $source): void
     {
-        $result = $source->create($this->argument('name'), null, $this->option('connection'));
+        $result = $source->create($this->getMigrationName(), null, $this->getConnectionName());
 
         if (\is_string($result)) {
-            $this->line(sprintf('<info>Created Migration:</info> %s', $result));
+            $this->line("<info>Created Migration:</info> {$result}");
         }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getMigrationName(): string
+    {
+        $name = $this->argument('name');
+
+        return \is_string($name)
+            ? $name
+            : 'noname';
+    }
+
+    /**
+     * @return string|null
+     */
+    protected function getConnectionName(): ?string
+    {
+        $connection = $this->option('connection');
+
+        return \is_string($connection)
+            ? $connection
+            : null;
     }
 
     /**
@@ -46,7 +70,7 @@ class MakeCommand extends Command
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the migration.'],
@@ -58,7 +82,7 @@ class MakeCommand extends Command
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['connection', 'c', InputOption::VALUE_OPTIONAL, 'Connection name.'],

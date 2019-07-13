@@ -36,7 +36,7 @@ interface MigratorContract
      *
      * @return string[]
      */
-    public function migrate(string $connection_name = null, Closure $migrating_closure = null): array;
+    public function migrate(?string $connection_name = null, ?Closure $migrating_closure = null): array;
 
     /**
      * Get array of migrations, which is found in source but has no record in migrations repository (not migrated).
