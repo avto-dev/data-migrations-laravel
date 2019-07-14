@@ -7,8 +7,8 @@ namespace AvtoDev\DataMigrationsLaravel;
 use Closure;
 use Illuminate\Support\Arr;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
-use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 class Migrator implements MigratorContract
