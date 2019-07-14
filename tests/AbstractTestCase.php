@@ -3,15 +3,12 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
 use Illuminate\Foundation\Application;
-use AvtoDev\DevTools\Tests\PHPUnit\AbstractLaravelTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
-use AvtoDev\DataMigrationsLaravel\Tests\Bootstrap\TestsBootstrapper;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Testing\TestCase;
 
-/**
- * Class AbstractTestCase.
- */
-abstract class AbstractTestCase extends AbstractLaravelTestCase
+abstract class AbstractTestCase extends TestCase
 {
     use Traits\ApplicationHelpersTrait;
 
@@ -56,7 +53,7 @@ abstract class AbstractTestCase extends AbstractLaravelTestCase
      *
      * @return string[]
      */
-    public function getDatabasesFilePath()
+    public function getDatabasesFilePath(): array
     {
         return [
             'default'      => $this->getTemporaryDirectoryPath() . '/database.sqlite',
@@ -66,18 +63,21 @@ abstract class AbstractTestCase extends AbstractLaravelTestCase
     }
 
     /**
-     * {@inheritdoc}
+     * Creates the application.
+     *
+     * @return Application
      */
-    protected function beforeApplicationBootstrapped(Application $app)
+    public function createApplication(): Application
     {
-        $app->useStoragePath(TestsBootstrapper::getStorageDirectoryPath());
-    }
+        $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function afterApplicationBootstrapped(Application $app)
-    {
+        $app->useStoragePath(__DIR__ . '/temp/storage');
+
+        $app->make(Kernel::class)->bootstrap();
+
+        // Register our service-provider manually
         $app->register(DataMigrationsServiceProvider::class);
+
+        return $app;
     }
 }

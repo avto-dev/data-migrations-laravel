@@ -5,6 +5,9 @@ namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 use RuntimeException;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Commands\MakeCommand
+ */
 class MakeCommandTest extends AbstractCommandTestCase
 {
     /**
@@ -12,7 +15,7 @@ class MakeCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testCommandExecution()
+    public function testCommandExecution(): void
     {
         $this->config()->set(
             DataMigrationsServiceProvider::getConfigRootKeyName() . '.migrations_path',
@@ -38,7 +41,7 @@ class MakeCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testCommandExecutionFailedWithoutName()
+    public function testCommandExecutionFailedWithoutName(): void
     {
         $this->expectException(RuntimeException::class);
 
@@ -49,7 +52,7 @@ class MakeCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getCommandSignature()
+    protected function getCommandSignature(): string
     {
         return 'make:data-migration';
     }

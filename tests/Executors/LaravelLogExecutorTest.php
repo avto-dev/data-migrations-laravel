@@ -7,6 +7,9 @@ use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Executors\LaravelLogExecutor;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Executors\LaravelLogExecutor<extended>
+ */
 class LaravelLogExecutorTest extends AbstractTestCase
 {
     /**
@@ -43,7 +46,7 @@ class LaravelLogExecutorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf(ExecutorContract::class, $this->executor);
     }
@@ -53,7 +56,7 @@ class LaravelLogExecutorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testExecute()
+    public function testExecute(): void
     {
         $data = 'Test laravel log message ' . Str::random();
 
@@ -71,7 +74,7 @@ class LaravelLogExecutorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testExecuteWithCustomConnection()
+    public function testExecuteWithCustomConnection(): void
     {
         $data = 'Custom statement ' . Str::random();
 

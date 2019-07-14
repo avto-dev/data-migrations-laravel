@@ -8,6 +8,9 @@ use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Migrator<extended>
+ */
 class MigratorTest extends AbstractTestCase
 {
     /**
@@ -34,7 +37,7 @@ class MigratorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetSource()
+    public function testGetSource(): void
     {
         $this->assertInstanceOf(SourceContract::class, $this->migrator->source());
     }
@@ -44,7 +47,7 @@ class MigratorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetRepository()
+    public function testGetRepository(): void
     {
         $this->assertInstanceOf(RepositoryContract::class, $this->migrator->repository());
     }
@@ -54,7 +57,7 @@ class MigratorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testNotMigrated()
+    public function testNotMigrated(): void
     {
         $this->initRepositoryExcepts([
             $exclude_1 = '2000_01_01_000001_simple_sql_data.sql',
@@ -72,7 +75,7 @@ class MigratorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testMigrateWithoutPassingConnectionName()
+    public function testMigrateWithoutPassingConnectionName(): void
     {
         $this->initRepositoryExcepts($excludes = [
             $exclude_1 = '2000_01_01_000001_simple_sql_data.sql',
@@ -95,7 +98,7 @@ class MigratorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testMigrateWithPassingConnection()
+    public function testMigrateWithPassingConnection(): void
     {
         $this->initRepositoryExcepts($excludes = [
             $exclude = '2000_01_01_000010_simple_sql_data.sql',
@@ -119,7 +122,7 @@ class MigratorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testMigrateWithPassingClosure()
+    public function testMigrateWithPassingClosure(): void
     {
         $this->initRepositoryExcepts($excludes = [
             $exclude_1 = '2000_01_01_000001_simple_sql_data.sql',

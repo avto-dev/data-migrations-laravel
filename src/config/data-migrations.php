@@ -22,7 +22,7 @@ return [
     |
     | Available values: null|%connection_name%
     */
-    'connection' => env('DATA_MIGRATIONS_CONNECTION', env('DB_CONNECTION', null)),
+    'connection' => env('DATA_MIGRATIONS_CONNECTION', env('DB_CONNECTION')),
 
     /*
     | --------------------------------------------------------------------------

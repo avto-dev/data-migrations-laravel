@@ -7,6 +7,9 @@ use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\DataMigrationsLaravel\Commands\MigrateCommand;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Commands\MigrateCommand
+ */
 class MigrateCommandTest extends AbstractCommandTestCase
 {
     /**
@@ -29,7 +32,7 @@ class MigrateCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testRepositoryAutoCreation()
+    public function testRepositoryAutoCreation(): void
     {
         $this->migrator->repository()->deleteRepository();
 
@@ -42,7 +45,7 @@ class MigrateCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testCommandExecution()
+    public function testCommandExecution(): void
     {
         $not_migrated = ['2000_01_01_000020_simple_sql_data.sql'];
         $all          = array_flatten($this->migrator->source()->all());
@@ -76,7 +79,7 @@ class MigrateCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testForceFlagWorking()
+    public function testForceFlagWorking(): void
     {
         $this->setAppEnvironment('production');
         $command = m::mock(sprintf('%s[%s]', MigrateCommand::class, $what = 'confirm'));
@@ -95,7 +98,7 @@ class MigrateCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testExecutionOnProductionFailed()
+    public function testExecutionOnProductionFailed(): void
     {
         $this->setAppEnvironment('production');
         $command = m::mock(sprintf('%s[%s]', MigrateCommand::class, $what = 'confirm'));
@@ -112,7 +115,7 @@ class MigrateCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getCommandSignature()
+    protected function getCommandSignature(): string
     {
         return 'data-migrate';
     }

@@ -7,6 +7,9 @@ use Illuminate\Database\Connection;
 use PHPUnit\Framework\AssertionFailedError;
 use AvtoDev\DataMigrationsLaravel\Repository;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Repository<extended>
+ */
 class RepositoryTest extends AbstractTestCase
 {
     /**
@@ -44,7 +47,7 @@ class RepositoryTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testRepositoryTableCreation()
+    public function testRepositoryTableCreation(): void
     {
         $this->assertFalse($this->repository->repositoryExists());
         $this->assertTableNotExists($this->table_name);
@@ -55,7 +58,7 @@ class RepositoryTest extends AbstractTestCase
         $this->assertTableExists($this->table_name);
     }
 
-    public function testGetConnection()
+    public function testGetConnection(): void
     {
         $this->assertInstanceOf(Connection::class, $this->repository->getConnection());
     }
@@ -65,7 +68,7 @@ class RepositoryTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetWrongConnectionException()
+    public function testGetWrongConnectionException(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -77,7 +80,7 @@ class RepositoryTest extends AbstractTestCase
         $this->repository->getConnection();
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->repository->createRepository();
 
@@ -95,7 +98,7 @@ class RepositoryTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testInsert()
+    public function testInsert(): void
     {
         $this->repository->createRepository();
 
@@ -117,7 +120,7 @@ class RepositoryTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testClear()
+    public function testClear(): void
     {
         $this->repository->createRepository();
 

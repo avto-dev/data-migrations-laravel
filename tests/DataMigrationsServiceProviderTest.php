@@ -14,7 +14,7 @@ use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
 /**
- * Class DataMigrationsServiceProviderTest.
+ * @covers \AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider<extended>
  *
  * @group provider
  */
@@ -47,7 +47,7 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testConfigExists()
+    public function testConfigExists(): void
     {
         $config = $this->app->make('config')->get($this->config_root_key);
 
@@ -67,7 +67,7 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testServiceProviderLoading()
+    public function testServiceProviderLoading(): void
     {
         $this->assertInstanceOf(Repository::class, $this->app[RepositoryContract::class]);
         $this->assertInstanceOf(Repository::class, app(RepositoryContract::class));
@@ -87,7 +87,7 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testExceptionOnInvalidExecutorClassName()
+    public function testExceptionOnInvalidExecutorClassName(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageRegExp('~Invalid executor class.*~i');

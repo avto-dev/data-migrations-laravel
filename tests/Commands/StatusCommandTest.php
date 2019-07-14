@@ -5,6 +5,9 @@ namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Commands\StatusCommand
+ */
 class StatusCommandTest extends AbstractCommandTestCase
 {
     /**
@@ -27,7 +30,7 @@ class StatusCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testCommandExecution()
+    public function testCommandExecution(): void
     {
         $not_migrated = ['2000_01_01_000020_simple_sql_data.sql'];
         $all          = array_flatten($this->migrator->source()->all());
@@ -60,7 +63,7 @@ class StatusCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testCommandExecutionWithoutRepositoryInstalled()
+    public function testCommandExecutionWithoutRepositoryInstalled(): void
     {
         $this->migrator->repository()->deleteRepository();
 
@@ -73,7 +76,7 @@ class StatusCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testCommandExecutionWithoutMigrations()
+    public function testCommandExecutionWithoutMigrations(): void
     {
         $this->config()->set(
             DataMigrationsServiceProvider::getConfigRootKeyName() . '.migrations_path',
@@ -88,7 +91,7 @@ class StatusCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getCommandSignature()
+    protected function getCommandSignature(): string
     {
         return 'data-migrate:status';
     }
