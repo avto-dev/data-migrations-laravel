@@ -18,6 +18,11 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - Dependency `laravel/framework` changed to `illuminate/*`
 - Composer scripts
 - Package contacts signatures _(method parameters types, method return types)_
+- Service provider dependency `\Illuminate\Contracts\Foundation\Application` changed to `\Illuminate\Contracts\Container\Container`
+
+### Removed
+
+- Dev-dependency `avto-dev/dev-tools`
 
 ## v1.2.0
 
