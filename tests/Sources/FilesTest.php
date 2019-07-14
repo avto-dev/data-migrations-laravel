@@ -136,7 +136,7 @@ class FilesTest extends AbstractTestCase
     {
         /** @var Filesystem $files */
         $files = $this->app->make('files');
-        $path  = static::getTemporaryDirectoryPath() . DIRECTORY_SEPARATOR . 'test_migrations_creating';
+        $path  = $this->getTemporaryDirectoryPath() . DIRECTORY_SEPARATOR . 'test_migrations_creating';
 
         // Cleanup at first
         if ($files->isDirectory($path)) {

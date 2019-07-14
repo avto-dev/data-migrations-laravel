@@ -43,6 +43,8 @@ class UninstallCommandTest extends AbstractCommandTestCase
     /**
      * Test command execution with uninstalled repository.
      *
+     * @covers \AvtoDev\DataMigrationsLaravel\Repository
+     *
      * @return void
      */
     public function testCommandExecutionWithUninstalledRepository(): void
