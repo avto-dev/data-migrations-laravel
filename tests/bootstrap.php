@@ -9,7 +9,7 @@ require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
 $files = new Illuminate\Filesystem\Filesystem;
 
-if ($files->isDirectory($storage = __DIR__ . '/../temp/storage')) {
+if ($files->isDirectory($storage = __DIR__ . '/temp/storage')) {
     $files->deleteDirectory($storage);
 }
 
