@@ -13,4 +13,4 @@ if ($files->isDirectory($storage = __DIR__ . '/../temp/storage')) {
     $files->deleteDirectory($storage);
 }
 
-$files->copyDirectory(__DIR__ . '/../../vendor/laravel/laravel/storage', $storage);
+$files->copyDirectory(__DIR__ . '/../vendor/laravel/laravel/storage', $storage);

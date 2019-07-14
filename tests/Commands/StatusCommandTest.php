@@ -4,6 +4,7 @@ namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * @covers \AvtoDev\DataMigrationsLaravel\Commands\StatusCommand
