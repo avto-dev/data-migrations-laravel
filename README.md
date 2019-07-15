@@ -19,7 +19,7 @@
 Require this package with composer using the following command:
 
 ```shell
-$ composer require avto-dev/data-migrations-laravel "^1.1"
+$ composer require avto-dev/data-migrations-laravel "^2.0"
 ```
 
 > Installed `composer` is required ([how to install composer][getcomposer]).
@@ -28,14 +28,14 @@ $ composer require avto-dev/data-migrations-laravel "^1.1"
 
 Опубликуйте конфигурационный файл, при помощи которого вы можете переопределить имя таблицы в БД для хранения данных о миграциях, имя соединения и прочие настройки:
 
-```shell
-$ ./artisan vendor:publish --provider="AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider"
+```bash
+$ php ./artisan vendor:publish --provider="AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider"
 ```
 
 После чего отредактируйте файл `./config/data-migrations.php` на своё усмотрение и завершите установку, выполнив команду:
 
-```shell
-./artisan data-migrate:install
+```bash
+$ php ./artisan data-migrate:install
 ```
 
 ## Использование
@@ -46,9 +46,9 @@ $ ./artisan vendor:publish --provider="AvtoDev\DataMigrationsLaravel\DataMigrati
 
 Для этого вам необходимо выполнить 2 команды:
 
-```shell
-./artisan make:data-migration "Add some data into first table"
-./artisan make:data-migration --connection="second_db" "Add some data into second table"
+```bash
+$ ./artisan make:data-migration "Add some data into first table"
+$ ./artisan make:data-migration --connection="second_db" "Add some data into second table"
 ```
 
 После выполнения которых создадутся 2 файла:
@@ -60,7 +60,7 @@ $ ./artisan vendor:publish --provider="AvtoDev\DataMigrationsLaravel\DataMigrati
 
 После этого вам достаточно выполнить:
 
-```shell
+```bash
 $ ./artisan data-migrate
 ```
 
@@ -89,12 +89,12 @@ $ ./artisan data-migrate
 
 ### Testing
 
-For package testing we use `phpunit` framework. Just write into your terminal:
+For package testing we use `phpunit` framework and `docker-ce` + `docker-compose` as develop environment. So, just write into your terminal after repository cloning:
 
-```shell
-$ git clone git@github.com:avto-dev/data-migrations-laravel.git ./data-migrations-laravel && cd $_
-$ composer install
-$ composer test
+```bash
+$ make build
+$ make latest # or 'make lowest'
+$ make test
 ```
 
 ## Changes log
