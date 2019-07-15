@@ -83,7 +83,6 @@ class MigratorTest extends AbstractTestCase
         ]);
 
         $this->assertRepositoryHasNotMigrations($excludes);
-
         $this->assertEquals($excludes, $this->migrator->migrate());
 
         $this->assertRepositoryHasMigrations($excludes);

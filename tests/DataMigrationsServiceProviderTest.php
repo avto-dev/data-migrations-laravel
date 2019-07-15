@@ -51,7 +51,7 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
     {
         $config = $this->app->make('config')->get($this->config_root_key);
 
-        $this->assertIsArray($config);
+        $this->assertInternalType('array', $config);
 
         foreach (['table_name', 'connection', 'migrations_path', 'executor_class'] as $key) {
             $this->assertArrayHasKey($key, $config);
