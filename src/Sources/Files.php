@@ -55,10 +55,10 @@ class Files implements SourceContract
         if ($this->files->isDirectory($path)) {
             $migrations = \array_map(function ($file) {
                 if ($file instanceof SplFileInfo) {
-                    return $this->pathToName($file->getRealPath());
+                    return $this->pathToName((string) $file->getRealPath());
                 }
 
-                return $this->pathToName(realpath((string) $file));
+                return $this->pathToName((string) \realpath((string) $file));
             }, $this->files->files($path));
 
             \sort($migrations, SORT_NATURAL);
@@ -90,14 +90,14 @@ class Files implements SourceContract
      *
      * @return string
      */
-    public function generateFileName($migration_name, Carbon $date = null, $extension = 'sql')
+    public function generateFileName($migration_name, Carbon $date = null, $extension = 'sql'): string
     {
         /** @var Carbon $when */
         $when = $date instanceof Carbon
             ? $date->copy()
             : Carbon::now();
 
-        return implode('_', [
+        return \implode('_', [
                 $when->format('Y_m_d'),
                 \str_pad((string) $when->secondsSinceMidnight(), 6, '0', STR_PAD_LEFT),
                 Str::slug($migration_name, '_'),
@@ -110,9 +110,9 @@ class Files implements SourceContract
      * Returns created migration file path.
      */
     public function create(string $migration_name,
-                           Carbon $date = null,
-                           string $connection_name = null,
-                           string $content = null): string
+                           ?Carbon $date = null,
+                           ?string $connection_name = null,
+                           ?string $content = null): string
     {
         $file_name = $this->generateFileName($migration_name, $date);
         $file_path = $this->nameToPath($file_name, $connection_name);
@@ -121,7 +121,7 @@ class Files implements SourceContract
             $this->files->makeDirectory($target_dir, 0755, true);
         }
 
-        $this->files->put($file_path, $content);
+        $this->files->put($file_path, (string) $content);
 
         return $file_path;
     }
@@ -131,7 +131,7 @@ class Files implements SourceContract
      *
      * @return string
      */
-    public function get(string $migration_name, string $connection_name = null): string
+    public function get(string $migration_name, ?string $connection_name = null): string
     {
         $migration_path = $this->nameToPath($migration_name, $connection_name);
 

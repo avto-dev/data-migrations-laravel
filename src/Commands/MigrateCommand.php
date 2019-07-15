@@ -36,7 +36,7 @@ class MigrateCommand extends Command
      *
      * @return void
      */
-    public function handle(MigratorContract $migrator)
+    public function handle(MigratorContract $migrator): void
     {
         if (! $this->confirmToProceed()) {
             return;
@@ -52,7 +52,7 @@ class MigrateCommand extends Command
             $progress = null;
 
             $migrated = $migrator->migrate(
-                $this->option('connection'),
+                $this->getConnectionName(),
                 function ($migration_name, $status, $current, $total) use (&$progress) {
                     if (! ($progress instanceof ProgressBar)) {
                         $progress = $this->output->createProgressBar($total);
@@ -81,6 +81,18 @@ class MigrateCommand extends Command
     }
 
     /**
+     * @return string|null
+     */
+    protected function getConnectionName(): ?string
+    {
+        $connection_name = $this->option('connection');
+
+        return \is_string($connection_name)
+            ? $connection_name
+            : null;
+    }
+
+    /**
      * Update interactive progress bar.
      *
      * @param ProgressBar $progress
@@ -91,7 +103,7 @@ class MigrateCommand extends Command
      *
      * @return void
      */
-    protected function updateProgressBar(ProgressBar $progress, $migration_name, $status, $current, $total)
+    protected function updateProgressBar(ProgressBar $progress, $migration_name, $status, $current, $total): void
     {
         switch ($status) {
             case Migrator::STATUS_MIGRATION_READ:
@@ -117,9 +129,9 @@ class MigrateCommand extends Command
     /**
      * Get the console command options.
      *
-     * @return array
+     * @return array[]
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [
             ['connection', 'c', InputOption::VALUE_OPTIONAL, 'Use only passed connection name.'],

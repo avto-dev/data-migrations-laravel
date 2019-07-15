@@ -9,6 +9,9 @@ use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor<extended>
+ */
 class DatabaseRawQueryExecutorTest extends AbstractTestCase
 {
     /**
@@ -26,7 +29,7 @@ class DatabaseRawQueryExecutorTest extends AbstractTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -38,7 +41,7 @@ class DatabaseRawQueryExecutorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf(ExecutorContract::class, $this->executor);
     }
@@ -48,7 +51,7 @@ class DatabaseRawQueryExecutorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testExecute()
+    public function testExecute(): void
     {
         $this->assertFalse($this->executor->execute(''));
         $this->assertFalse($this->executor->execute(null));
@@ -71,7 +74,7 @@ class DatabaseRawQueryExecutorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testExecuteWithExceptionOnUnknownConnection()
+    public function testExecuteWithExceptionOnUnknownConnection(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -83,7 +86,7 @@ class DatabaseRawQueryExecutorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testExecuteWithExceptionOnWrongSqlStatement()
+    public function testExecuteWithExceptionOnWrongSqlStatement(): void
     {
         $this->expectException(PDOException::class);
 

@@ -3,15 +3,12 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
 use Illuminate\Foundation\Application;
-use AvtoDev\DevTools\Tests\PHPUnit\AbstractLaravelTestCase;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Testing\TestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
-use AvtoDev\DataMigrationsLaravel\Tests\Bootstrap\TestsBootstrapper;
 
-/**
- * Class AbstractTestCase.
- */
-abstract class AbstractTestCase extends AbstractLaravelTestCase
+abstract class AbstractTestCase extends TestCase
 {
     use Traits\ApplicationHelpersTrait;
 
@@ -25,7 +22,7 @@ abstract class AbstractTestCase extends AbstractLaravelTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -44,11 +41,11 @@ abstract class AbstractTestCase extends AbstractLaravelTestCase
     /**
      * Возвращает путь к директории, в которой хранятся временные файлы.
      *
-     * @return bool|string
+     * @return string
      */
-    public function getTemporaryDirectoryPath()
+    public function getTemporaryDirectoryPath(): string
     {
-        return realpath(__DIR__ . '/temp');
+        return (string) \realpath(__DIR__ . '/temp');
     }
 
     /**
@@ -56,28 +53,31 @@ abstract class AbstractTestCase extends AbstractLaravelTestCase
      *
      * @return string[]
      */
-    public function getDatabasesFilePath()
+    public function getDatabasesFilePath(): array
     {
         return [
-            'default'      => static::getTemporaryDirectoryPath() . '/database.sqlite',
-            'connection_2' => static::getTemporaryDirectoryPath() . '/database_2.sqlite',
-            'connection_3' => static::getTemporaryDirectoryPath() . '/database_3.sqlite',
+            'default'      => $this->getTemporaryDirectoryPath() . '/database.sqlite',
+            'connection_2' => $this->getTemporaryDirectoryPath() . '/database_2.sqlite',
+            'connection_3' => $this->getTemporaryDirectoryPath() . '/database_3.sqlite',
         ];
     }
 
     /**
-     * {@inheritdoc}
+     * Creates the application.
+     *
+     * @return Application
      */
-    protected function beforeApplicationBootstrapped(Application $app)
+    public function createApplication(): Application
     {
-        $app->useStoragePath(TestsBootstrapper::getStorageDirectoryPath());
-    }
+        $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function afterApplicationBootstrapped(Application $app)
-    {
+        $app->useStoragePath(__DIR__ . '/temp/storage');
+
+        $app->make(Kernel::class)->bootstrap();
+
+        // Register our service-provider manually
         $app->register(DataMigrationsServiceProvider::class);
+
+        return $app;
     }
 }

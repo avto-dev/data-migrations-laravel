@@ -5,17 +5,14 @@ declare(strict_types=1);
 namespace AvtoDev\DataMigrationsLaravel;
 
 use InvalidArgumentException;
+use Illuminate\Contracts\Container\Container;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
-use Illuminate\Contracts\Foundation\Application;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
-/**
- * Class DataMigrationsServiceProvider.
- */
 class DataMigrationsServiceProvider extends IlluminateServiceProvider
 {
     /**
@@ -43,7 +40,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->initializeConfigs();
 
@@ -72,9 +69,9 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function registerRepository()
+    protected function registerRepository(): void
     {
-        $this->app->singleton(RepositoryContract::class, function (Application $app) {
+        $this->app->singleton(RepositoryContract::class, function (Container $app): RepositoryContract {
             $config = $this->getPackageConfiguration();
 
             return new Repository($app->make('db')->connection($config['connection']), $config['table_name']);
@@ -86,9 +83,9 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function registerSource()
+    protected function registerSource(): void
     {
-        $this->app->bind(SourceContract::class, function (Application $app) {
+        $this->app->bind(SourceContract::class, function (Container $app): SourceContract {
             $config = $this->getPackageConfiguration();
 
             return new Files($app->make('files'), $config['migrations_path']);
@@ -100,9 +97,9 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function registerExecutor()
+    protected function registerExecutor(): void
     {
-        $this->app->bind(ExecutorContract::class, function (Application $app) {
+        $this->app->bind(ExecutorContract::class, function (Container $app): ExecutorContract {
             $config   = $this->getPackageConfiguration();
             $executor = new $config['executor_class']($app);
 
@@ -121,9 +118,9 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function registerMigrator()
+    protected function registerMigrator(): void
     {
-        $this->app->singleton(MigratorContract::class, function (Application $app) {
+        $this->app->singleton(MigratorContract::class, function (Container $app): MigratorContract {
             return new Migrator(
                 $app->make(RepositoryContract::class),
                 $app->make(SourceContract::class),
@@ -137,7 +134,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function registerArtisanCommands()
+    protected function registerArtisanCommands(): void
     {
         $this->commands([
             Commands\InstallCommand::class,
@@ -153,12 +150,12 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      *
      * @return void
      */
-    protected function initializeConfigs()
+    protected function initializeConfigs(): void
     {
         $this->mergeConfigFrom(static::getConfigPath(), static::getConfigRootKeyName());
 
         $this->publishes([
-            realpath(static::getConfigPath()) => config_path(basename(static::getConfigPath())),
+            \realpath(static::getConfigPath()) => config_path(\basename(static::getConfigPath())),
         ], 'config');
     }
 }

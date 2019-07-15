@@ -9,6 +9,9 @@ use AvtoDev\DataMigrationsLaravel\Sources\Files;
 use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Sources\Files<extended>
+ */
 class FilesTest extends AbstractTestCase
 {
     /**
@@ -26,7 +29,7 @@ class FilesTest extends AbstractTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -43,7 +46,7 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetFilesystem()
+    public function testGetFilesystem(): void
     {
         $this->assertInstanceOf(Filesystem::class, $this->files->filesystem());
     }
@@ -53,7 +56,7 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetMigrationsFilesForDefaultConnection()
+    public function testGetMigrationsFilesForDefaultConnection(): void
     {
         $migrations = $this->files->migrations();
         $names      = array_values($migrations);
@@ -69,7 +72,7 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetMigrationsFilesForCustomConnections()
+    public function testGetMigrationsFilesForCustomConnections(): void
     {
         $migrations_for_connection_2 = $this->files->migrations('connection_2');
         $this->assertEquals('2000_01_01_000010_simple_sql_data.sql', array_values($migrations_for_connection_2)[0]);
@@ -83,7 +86,7 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetMigrationsFilesExceptionWithInvalidConnectionName()
+    public function testGetMigrationsFilesExceptionWithInvalidConnectionName(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageRegExp('~Directory.*does not exists~i');
@@ -96,7 +99,7 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGenerateFileName()
+    public function testGenerateFileName(): void
     {
         $now = Carbon::now();
 
@@ -129,11 +132,11 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         /** @var Filesystem $files */
         $files = $this->app->make('files');
-        $path  = static::getTemporaryDirectoryPath() . DIRECTORY_SEPARATOR . 'test_migrations_creating';
+        $path  = $this->getTemporaryDirectoryPath() . DIRECTORY_SEPARATOR . 'test_migrations_creating';
 
         // Cleanup at first
         if ($files->isDirectory($path)) {
@@ -168,7 +171,7 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetConnectionsNames()
+    public function testGetConnectionsNames(): void
     {
         $this->assertEquals(['connection_2', 'connection_3'], $this->files->connections());
     }
@@ -178,7 +181,7 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetContent()
+    public function testGetContent(): void
     {
         $files_list = array_values($this->files->migrations());
         $this->assertStringStartsWith('CREATE TABLE foo_table', $this->files->get($files_list[0]));
@@ -196,7 +199,7 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testMigrationNameToPathConverting()
+    public function testMigrationNameToPathConverting(): void
     {
         $this->files = new Files($this->app->make('files'), '/foo/');
 
@@ -212,7 +215,7 @@ class FilesTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testAll()
+    public function testAll(): void
     {
         $all = $this->files->all();
 

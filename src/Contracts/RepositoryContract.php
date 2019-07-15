@@ -25,14 +25,14 @@ interface RepositoryContract
      *
      * @return void
      */
-    public function createRepository();
+    public function createRepository(): void;
 
     /**
      * Delete the migration repository (storage).
      *
      * @return void
      */
-    public function deleteRepository();
+    public function deleteRepository(): void;
 
     /**
      * Remove a migration record from the repository storage.
@@ -41,7 +41,7 @@ interface RepositoryContract
      *
      * @return void
      */
-    public function delete(string $name);
+    public function delete(string $name): void;
 
     /**
      * Insert migration record into table.
@@ -50,7 +50,7 @@ interface RepositoryContract
      *
      * @return void
      */
-    public function insert(string $name);
+    public function insert(string $name): void;
 
     /**
      * Get list of migrations.

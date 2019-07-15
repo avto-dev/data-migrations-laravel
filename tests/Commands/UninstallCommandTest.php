@@ -6,6 +6,9 @@ use Mockery as m;
 use RuntimeException;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Commands\UninstallCommand
+ */
 class UninstallCommandTest extends AbstractCommandTestCase
 {
     /**
@@ -16,7 +19,7 @@ class UninstallCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +31,7 @@ class UninstallCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testCommandExecution()
+    public function testCommandExecution(): void
     {
         $this->artisan($this->getCommandSignature());
         $this->assertContains('Repository removed successfully', $this->console()->output());
@@ -40,9 +43,11 @@ class UninstallCommandTest extends AbstractCommandTestCase
     /**
      * Test command execution with uninstalled repository.
      *
+     * @covers \AvtoDev\DataMigrationsLaravel\Repository
+     *
      * @return void
      */
-    public function testCommandExecutionWithUninstalledRepository()
+    public function testCommandExecutionWithUninstalledRepository(): void
     {
         $this->repository->deleteRepository();
 
@@ -55,7 +60,7 @@ class UninstallCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testExceptionThrows()
+    public function testExceptionThrows(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessageRegExp('~Cannot remove repository in your database~');
@@ -76,7 +81,7 @@ class UninstallCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getCommandSignature()
+    protected function getCommandSignature(): string
     {
         return 'data-migrate:uninstall';
     }

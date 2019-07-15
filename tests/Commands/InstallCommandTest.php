@@ -6,6 +6,9 @@ use Mockery as m;
 use RuntimeException;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
+/**
+ * @covers \AvtoDev\DataMigrationsLaravel\Commands\InstallCommand
+ */
 class InstallCommandTest extends AbstractCommandTestCase
 {
     /**
@@ -16,7 +19,7 @@ class InstallCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +31,7 @@ class InstallCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testCommandExecution()
+    public function testCommandExecution(): void
     {
         $this->repository->deleteRepository();
 
@@ -44,7 +47,7 @@ class InstallCommandTest extends AbstractCommandTestCase
      *
      * @return void
      */
-    public function testExceptionThrows()
+    public function testExceptionThrows(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessageRegExp('~Cannot create repository in your database~');
@@ -67,7 +70,7 @@ class InstallCommandTest extends AbstractCommandTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getCommandSignature()
+    protected function getCommandSignature(): string
     {
         return 'data-migrate:install';
     }
