@@ -2,8 +2,8 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 
-use Illuminate\Support\Arr;
 use Mockery as m;
+use Illuminate\Support\Arr;
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\DataMigrationsLaravel\Commands\MigrateCommand;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
+use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use Illuminate\Support\Arr;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\ProgressBar;

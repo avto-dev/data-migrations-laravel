@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
-use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Console\Command;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
