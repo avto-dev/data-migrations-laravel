@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AvtoDev\DataMigrationsLaravel\Commands;
 
+use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
@@ -40,7 +41,7 @@ class StatusCommand extends Command
             return;
         }
 
-        $summary = array_unique(array_merge($migrated = $repository->migrations(), array_flatten($source->all())));
+        $summary = array_unique(array_merge($migrated = $repository->migrations(), Arr::flatten($source->all())));
 
         if (\count($summary) > 0) {
             $table_rows = array_map(function ($migration_name) use (&$migrated) {
