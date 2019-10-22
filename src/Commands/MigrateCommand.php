@@ -6,6 +6,7 @@ namespace AvtoDev\DataMigrationsLaravel\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Support\Arr;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -47,7 +48,7 @@ class MigrateCommand extends Command
             $this->call('data-migrate:install');
         }
 
-        if (! empty($need_to_migrate = array_flatten($migrator->needToMigrateList()))) {
+        if (! empty($need_to_migrate = Arr::flatten($migrator->needToMigrateList()))) {
             /** @var ProgressBar|null $progress */
             $progress = null;
 

@@ -2,6 +2,7 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests;
 
+use Illuminate\Support\Arr;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
@@ -224,7 +225,7 @@ class MigratorTest extends AbstractTestCase
      */
     protected function initRepositoryExcepts(array $migrations_names)
     {
-        $all      = array_flatten($this->migrator->source()->all());
+        $all      = Arr::flatten($this->migrator->source()->all());
         $filtered = array_filter($all, function ($migration_name) use (&$migrations_names) {
             return ! in_array($migration_name, $migrations_names, true);
         });

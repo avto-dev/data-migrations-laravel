@@ -74,7 +74,7 @@ class Migrator implements MigratorContract
     {
         $migrated = [];
 
-        if (! empty($all_migrations = array_flatten($not_migrated = $this->needToMigrateList()))) {
+        if (! empty($all_migrations = Arr::flatten($not_migrated = $this->needToMigrateList()))) {
             // Leave only passed connection name, if passed
             if ($connection_name !== null) {
                 $not_migrated = array_filter($not_migrated, function ($not_migrated_connection) use ($connection_name) {

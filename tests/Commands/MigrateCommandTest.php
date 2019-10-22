@@ -2,6 +2,7 @@
 
 namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 
+use Illuminate\Support\Arr;
 use Mockery as m;
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\DataMigrationsLaravel\Commands\MigrateCommand;
@@ -48,7 +49,7 @@ class MigrateCommandTest extends AbstractCommandTestCase
     public function testCommandExecution(): void
     {
         $not_migrated = ['2000_01_01_000020_simple_sql_data.sql'];
-        $all          = array_flatten($this->migrator->source()->all());
+        $all          = Arr::flatten($this->migrator->source()->all());
         $filtered     = array_filter($all, function ($migration_name) use (&$not_migrated) {
             return ! in_array($migration_name, $not_migrated, true);
         });
