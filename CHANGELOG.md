@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - Minimal required PHP version now is `7.2`
 - `config` directory was moved from `./src` to the root directory
 - `DataMigrationsServiceProvider` renamed to `ServiceProvider`
+- Minimal `symfony/console` version now is `^4.4` _(reason: <https://github.com/symfony/symfony/issues/32750>)_
 
 ### Added
 
