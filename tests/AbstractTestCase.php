@@ -5,8 +5,8 @@ namespace AvtoDev\DataMigrationsLaravel\Tests;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase;
-use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\ServiceProvider;
+use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 
 abstract class AbstractTestCase extends TestCase
 {

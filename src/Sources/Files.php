@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Finder\SplFileInfo;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 class Files implements SourceContract
@@ -94,10 +93,10 @@ class Files implements SourceContract
             : Carbon::now();
 
         return \implode('_', [
-                $when->format('Y_m_d'),
-                \str_pad((string) $when->secondsSinceMidnight(), 6, '0', STR_PAD_LEFT),
-                Str::slug($migration_name, '_'),
-            ]) . '.' . ltrim($extension, '. ');
+            $when->format('Y_m_d'),
+            \str_pad((string) $when->secondsSinceMidnight(), 6, '0', STR_PAD_LEFT),
+            Str::slug($migration_name, '_'),
+        ]) . '.' . ltrim($extension, '. ');
     }
 
     /**
