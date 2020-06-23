@@ -3,7 +3,7 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 
 use RuntimeException;
-use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
+use AvtoDev\DataMigrationsLaravel\ServiceProvider;
 
 /**
  * @covers \AvtoDev\DataMigrationsLaravel\Commands\MakeCommand
@@ -18,7 +18,7 @@ class MakeCommandTest extends AbstractCommandTestCase
     public function testCommandExecution(): void
     {
         $this->config()->set(
-            DataMigrationsServiceProvider::getConfigRootKeyName() . '.migrations_path',
+            ServiceProvider::getConfigRootKeyName() . '.migrations_path',
             $out_directory = __DIR__ . '/../temp/storage'
         );
 

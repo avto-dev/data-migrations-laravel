@@ -6,7 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
+use AvtoDev\DataMigrationsLaravel\ServiceProvider;
 
 abstract class AbstractTestCase extends TestCase
 {
@@ -27,7 +27,7 @@ abstract class AbstractTestCase extends TestCase
         parent::setUp();
 
         $this->config()->set(
-            DataMigrationsServiceProvider::getConfigRootKeyName() . '.migrations_path',
+            ServiceProvider::getConfigRootKeyName() . '.migrations_path',
             __DIR__ . '/stubs/data_migrations'
         );
 
@@ -76,7 +76,7 @@ abstract class AbstractTestCase extends TestCase
         $app->make(Kernel::class)->bootstrap();
 
         // Register our service-provider manually
-        $app->register(DataMigrationsServiceProvider::class);
+        $app->register(ServiceProvider::class);
 
         return $app;
     }

@@ -54,11 +54,7 @@ class Files implements SourceContract
 
         if ($this->files->isDirectory($path)) {
             $migrations = \array_map(function ($file) {
-                if ($file instanceof SplFileInfo) {
-                    return $this->pathToName((string) $file->getRealPath());
-                }
-
-                return $this->pathToName((string) \realpath((string) $file));
+                return $this->pathToName((string) $file->getRealPath());
             }, $this->files->files($path));
 
             \sort($migrations, SORT_NATURAL);

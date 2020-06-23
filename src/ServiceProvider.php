@@ -11,9 +11,8 @@ use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
-class DataMigrationsServiceProvider extends IlluminateServiceProvider
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
      * Get config root key name.
@@ -32,7 +31,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
      */
     public static function getConfigPath(): string
     {
-        return __DIR__ . '/config/data-migrations.php';
+        return __DIR__ . '/../config/data-migrations.php';
     }
 
     /**
@@ -57,7 +56,7 @@ class DataMigrationsServiceProvider extends IlluminateServiceProvider
     /**
      * Returns package configuration as an array.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getPackageConfiguration(): array
     {
