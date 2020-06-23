@@ -3,8 +3,8 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 
 use Illuminate\Support\Arr;
-use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\ServiceProvider;
+use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 
 /**
  * @covers \AvtoDev\DataMigrationsLaravel\Commands\StatusCommand
