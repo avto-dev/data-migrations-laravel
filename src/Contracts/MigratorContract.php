@@ -34,7 +34,7 @@ interface MigratorContract
      * @param string|null  $connection_name
      * @param Closure|null $migrating_closure
      *
-     * @return string[]
+     * @return array<string>
      */
     public function migrate(?string $connection_name = null, ?Closure $migrating_closure = null): array;
 
@@ -42,9 +42,9 @@ interface MigratorContract
      * Get array of migrations, which is found in source but has no record in migrations repository (not migrated).
      * Array key is connection name, and value is array of migrations names.
      *
-     * Important: migrations for default connection has kay name '' (empty string).
+     * Important: migrations for default connection has '' (empty string) key name.
      *
-     * @return array[]
+     * @return array<string, array<string>>
      */
     public function needToMigrateList(): array;
 }

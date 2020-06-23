@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     | --------------------------------------------------------------------------
     | Database table name for storing migrations state
@@ -44,5 +43,4 @@ return [
         'DATA_MIGRATIONS_EXECUTOR_CLASS',
         AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor::class
     ),
-
 ];

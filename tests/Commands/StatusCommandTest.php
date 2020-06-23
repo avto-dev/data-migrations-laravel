@@ -3,8 +3,8 @@
 namespace AvtoDev\DataMigrationsLaravel\Tests\Commands;
 
 use Illuminate\Support\Arr;
+use AvtoDev\DataMigrationsLaravel\ServiceProvider;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
-use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 
 /**
  * @covers \AvtoDev\DataMigrationsLaravel\Commands\StatusCommand
@@ -80,7 +80,7 @@ class StatusCommandTest extends AbstractCommandTestCase
     public function testCommandExecutionWithoutMigrations(): void
     {
         $this->config()->set(
-            DataMigrationsServiceProvider::getConfigRootKeyName() . '.migrations_path',
+            ServiceProvider::getConfigRootKeyName() . '.migrations_path',
             $out_directory = __DIR__ . '/../temp/storage/framework/testing' // <- empty directory
         );
 

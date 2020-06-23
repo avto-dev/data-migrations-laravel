@@ -5,10 +5,9 @@
 # Миграция данных БД для Laravel
 
 [![Version][badge_packagist_version]][link_packagist]
-[![Version][badge_php_version]][link_packagist]
+[![PHP Version][badge_php_version]][link_packagist]
 [![Build Status][badge_build_status]][link_build_status]
 [![Coverage][badge_coverage]][link_coverage]
-[![Code quality][badge_code_quality]][link_code_quality]
 [![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
 
@@ -29,7 +28,7 @@ $ composer require avto-dev/data-migrations-laravel "^2.0"
 Опубликуйте конфигурационный файл, при помощи которого вы можете переопределить имя таблицы в БД для хранения данных о миграциях, имя соединения и прочие настройки:
 
 ```bash
-$ php ./artisan vendor:publish --provider="AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider"
+$ php ./artisan vendor:publish --provider="AvtoDev\\DataMigrationsLaravel\\ServiceProvider"
 ```
 
 После чего отредактируйте файл `./config/data-migrations.php` на своё усмотрение и завершите установку, выполнив команду:
@@ -40,7 +39,7 @@ $ php ./artisan data-migrate:install
 
 ## Использование
 
-Проблема, которую решает данный пакет - это отсутствие встроенного в Laravel механизма мигрирования "боевых" данных в ваше приложение (`seeds` это механизм заполнения фейковыми данными изначально, а миграции БД несут ответственность за схему и т.д., но _не_ данные). 
+Проблема, которую решает данный пакет - это отсутствие встроенного в Laravel механизма мигрирования "боевых" данных в ваше приложение (`seeds` это механизм заполнения фейковыми данными изначально, а миграции БД несут ответственность за схему и т.д., но _не_ данные).
 
 Для того, что бы лучше ознакомиться с "механикой" работы данного пакета рассмотрим следующую ситуацию - ваше приложение использует 2 подключения к различным БД (`default` и `second_db`), и вам необходимо в каждом из них в уже существующие таблицы добавить какие-либо данные.
 
@@ -117,8 +116,7 @@ This is open-sourced software licensed under the [MIT License][link_license].
 
 [badge_packagist_version]:https://img.shields.io/packagist/v/avto-dev/data-migrations-laravel.svg?maxAge=180
 [badge_php_version]:https://img.shields.io/packagist/php-v/avto-dev/data-migrations-laravel.svg?longCache=true
-[badge_build_status]:https://travis-ci.org/avto-dev/data-migrations-laravel.svg?branch=master
-[badge_code_quality]:https://img.shields.io/scrutinizer/g/avto-dev/data-migrations-laravel.svg?maxAge=180
+[badge_build_status]:https://img.shields.io/github/workflow/status/avto-dev/data-migrations-laravel/tests/master
 [badge_coverage]:https://img.shields.io/codecov/c/github/avto-dev/data-migrations-laravel/master.svg?maxAge=60
 [badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/data-migrations-laravel.svg?maxAge=180
 [badge_license]:https://img.shields.io/packagist/l/avto-dev/data-migrations-laravel.svg?longCache=true
@@ -131,7 +129,6 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [link_build_status]:https://travis-ci.org/avto-dev/data-migrations-laravel
 [link_coverage]:https://codecov.io/gh/avto-dev/data-migrations-laravel/
 [link_changes_log]:https://github.com/avto-dev/data-migrations-laravel/blob/master/CHANGELOG.md
-[link_code_quality]:https://scrutinizer-ci.com/g/avto-dev/data-migrations-laravel/
 [link_issues]:https://github.com/avto-dev/data-migrations-laravel/issues
 [link_create_issue]:https://github.com/avto-dev/data-migrations-laravel/issues/new/choose
 [link_commits]:https://github.com/avto-dev/data-migrations-laravel/commits

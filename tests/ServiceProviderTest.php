@@ -6,19 +6,19 @@ use InvalidArgumentException;
 use AvtoDev\DataMigrationsLaravel\Migrator;
 use AvtoDev\DataMigrationsLaravel\Repository;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
+use AvtoDev\DataMigrationsLaravel\ServiceProvider;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
-use AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider;
 use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
 /**
- * @covers \AvtoDev\DataMigrationsLaravel\DataMigrationsServiceProvider<extended>
+ * @covers \AvtoDev\DataMigrationsLaravel\ServiceProvider<extended>
  *
  * @group provider
  */
-class DataMigrationsServiceProviderTest extends AbstractTestCase
+class ServiceProviderTest extends AbstractTestCase
 {
     /**
      * @var string
@@ -26,7 +26,7 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
     protected $config_root_key;
 
     /**
-     * @var DataMigrationsServiceProvider
+     * @var ServiceProvider
      */
     protected $provider_instance;
 
@@ -37,9 +37,9 @@ class DataMigrationsServiceProviderTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->config_root_key = DataMigrationsServiceProvider::getConfigRootKeyName();
+        $this->config_root_key = ServiceProvider::getConfigRootKeyName();
 
-        $this->provider_instance = new DataMigrationsServiceProvider($this->app);
+        $this->provider_instance = new ServiceProvider($this->app);
     }
 
     /**
