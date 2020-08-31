@@ -1,7 +1,7 @@
 parameters:
   level: 'max'
   ignoreErrors:
-    - '#Call to an undefined method Illuminate\\Support\\Fluent::unique()#'
+    - '#Call to an undefined method Illuminate\\Support\\Fluent::unique\(\)#'
   reportUnmatchedIgnoredErrors: false
   paths:
     - src
