@@ -65,7 +65,7 @@ class LaravelLogExecutorTest extends AbstractTestCase
         $this->assertFileExists($this->log_file_path);
 
         foreach ([$data, 'default', 'Data migration executed'] as $needle) {
-            $this->assertContains($needle, file_get_contents($this->log_file_path));
+            $this->assertStringContainsString($needle, file_get_contents($this->log_file_path));
         }
     }
 
@@ -83,7 +83,7 @@ class LaravelLogExecutorTest extends AbstractTestCase
         $this->assertFileExists($this->log_file_path);
 
         foreach ([$data, $connection, 'Data migration executed'] as $needle) {
-            $this->assertContains($needle, file_get_contents($this->log_file_path));
+            $this->assertStringContainsString($needle, file_get_contents($this->log_file_path));
         }
     }
 }

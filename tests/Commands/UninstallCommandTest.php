@@ -34,10 +34,10 @@ class UninstallCommandTest extends AbstractCommandTestCase
     public function testCommandExecution(): void
     {
         $this->artisan($this->getCommandSignature());
-        $this->assertContains('Repository removed successfully', $this->console()->output());
+        $this->assertStringContainsString('Repository removed successfully', $this->console()->output());
 
         $this->artisan($this->getCommandSignature());
-        $this->assertContains('Repository already not exists in your database', $this->console()->output());
+        $this->assertStringContainsString('Repository already not exists in your database', $this->console()->output());
     }
 
     /**
@@ -52,7 +52,7 @@ class UninstallCommandTest extends AbstractCommandTestCase
         $this->repository->deleteRepository();
 
         $this->artisan($this->getCommandSignature());
-        $this->assertContains('Repository already not exists in your database', $this->console()->output());
+        $this->assertStringContainsString('Repository already not exists in your database', $this->console()->output());
     }
 
     /**
@@ -63,7 +63,7 @@ class UninstallCommandTest extends AbstractCommandTestCase
     public function testExceptionThrows(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~Cannot remove repository in your database~');
+        $this->expectExceptionMessageMatches('~Cannot remove repository in your database~');
 
         $mock = m::mock(clone $this->repository)
             ->makePartial()

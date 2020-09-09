@@ -89,7 +89,7 @@ class FilesTest extends AbstractTestCase
     public function testGetMigrationsFilesExceptionWithInvalidConnectionName(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('~Directory.*does not exists~i');
+        $this->expectExceptionMessageMatches('~Directory.*does not exists~i');
 
         $this->files->migrations('foobar');
     }
