@@ -51,7 +51,7 @@ class ServiceProviderTest extends AbstractTestCase
     {
         $config = $this->app->make('config')->get($this->config_root_key);
 
-        $this->assertInternalType('array', $config);
+        $this->assertIsArray($config);
 
         foreach (['table_name', 'connection', 'migrations_path', 'executor_class'] as $key) {
             $this->assertArrayHasKey($key, $config);
@@ -90,7 +90,7 @@ class ServiceProviderTest extends AbstractTestCase
     public function testExceptionOnInvalidExecutorClassName(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('~Invalid executor class.*~i');
+        $this->expectExceptionMessageMatches('~Invalid executor class.*~i');
 
         $this->putenv('DATA_MIGRATIONS_EXECUTOR_CLASS', \stdClass::class);
 

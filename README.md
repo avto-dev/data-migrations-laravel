@@ -18,7 +18,7 @@
 Require this package with composer using the following command:
 
 ```shell
-$ composer require avto-dev/data-migrations-laravel "^2.0"
+$ composer require avto-dev/data-migrations-laravel "^2.3"
 ```
 
 > Installed `composer` is required ([how to install composer][getcomposer]).

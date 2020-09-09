@@ -36,10 +36,10 @@ class InstallCommandTest extends AbstractCommandTestCase
         $this->repository->deleteRepository();
 
         $this->artisan($this->getCommandSignature());
-        $this->assertContains('Repository created successfully', $this->console()->output());
+        $this->assertStringContainsString('Repository created successfully', $this->console()->output());
 
         $this->artisan($this->getCommandSignature());
-        $this->assertContains('Repository already exists in your database', $this->console()->output());
+        $this->assertStringContainsString('Repository already exists in your database', $this->console()->output());
     }
 
     /**
@@ -50,7 +50,7 @@ class InstallCommandTest extends AbstractCommandTestCase
     public function testExceptionThrows(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessageRegExp('~Cannot create repository in your database~');
+        $this->expectExceptionMessageMatches('~Cannot create repository in your database~');
 
         $this->repository->deleteRepository();
 

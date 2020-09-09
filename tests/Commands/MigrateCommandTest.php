@@ -38,7 +38,7 @@ class MigrateCommandTest extends AbstractCommandTestCase
         $this->migrator->repository()->deleteRepository();
 
         $this->artisan($this->getCommandSignature());
-        $this->assertContains('Repository created successfully', $this->console()->output());
+        $this->assertStringContainsString('Repository created successfully', $this->console()->output());
     }
 
     /**
@@ -66,13 +66,13 @@ class MigrateCommandTest extends AbstractCommandTestCase
         $output = $this->console()->output();
 
         foreach ($not_migrated as $needed_migration_name) {
-            $this->assertContains($needed_migration_name, $output);
+            $this->assertStringContainsString($needed_migration_name, $output);
             $this->assertContains($needed_migration_name, $this->migrator->repository()->migrations());
         }
 
         // And at last
         $this->artisan($this->getCommandSignature());
-        $this->assertContains('Nothing to migrate', $this->console()->output());
+        $this->assertStringContainsString('Nothing to migrate', $this->console()->output());
     }
 
     /**
@@ -90,8 +90,8 @@ class MigrateCommandTest extends AbstractCommandTestCase
         $this->artisan($this->getCommandSignature());
         $output = $this->console()->output();
 
-        $this->assertContains('Application In Production', $output);
-        $this->assertContains('Migrated', $output);
+        $this->assertStringContainsString('Application In Production', $output);
+        $this->assertStringContainsString('Migrated', $output);
     }
 
     /**
@@ -109,8 +109,8 @@ class MigrateCommandTest extends AbstractCommandTestCase
         $this->artisan($this->getCommandSignature());
         $output = $this->console()->output();
 
-        $this->assertContains('Application In Production', $output);
-        $this->assertContains('Command Cancel', $output);
+        $this->assertStringContainsString('Application In Production', $output);
+        $this->assertStringContainsString('Command Cancel', $output);
     }
 
     /**
