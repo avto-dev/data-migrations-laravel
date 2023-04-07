@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## Unrealised
+
+### Changed
+
+- Minimal Laravel version now is `9.0`
+- Minimal require PHP version now is `8.1`
+
 ## v2.4.0
 
 ### Added
