@@ -97,9 +97,12 @@ class Repository implements RepositoryContract
      */
     public function migrations(): array
     {
-        return $this->table()
+        /** @var string[] $migrations */
+        $migrations = $this->table()
             ->orderBy('id', 'desc')
             ->pluck('migration')->all();
+
+        return $migrations;
     }
 
     /**

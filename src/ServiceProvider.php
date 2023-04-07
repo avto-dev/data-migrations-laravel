@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace AvtoDev\DataMigrationsLaravel;
 
 use InvalidArgumentException;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Database\DatabaseManager;
 use Illuminate\Contracts\Container\Container;
 use AvtoDev\DataMigrationsLaravel\Sources\Files;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\MigratorContract;
 use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -60,7 +63,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function getPackageConfiguration(): array
     {
-        return $this->app->make('config')->get(static::getConfigRootKeyName());
+        /** @var ConfigRepository $repository */
+        $repository = $this->app->make('config');
+
+        /** @var array<string, mixed> $config */
+        $config = $repository->get(static::getConfigRootKeyName());
+
+        return $config;
     }
 
     /**
@@ -71,9 +80,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function registerRepository(): void
     {
         $this->app->singleton(RepositoryContract::class, function (Container $app): RepositoryContract {
+            /** @var array{connection: string|null, table_name: string} $config */
             $config = $this->getPackageConfiguration();
 
-            return new Repository($app->make('db')->connection($config['connection']), $config['table_name']);
+            /** @var DatabaseManager $db */
+            $db = $app->make('db');
+
+            return new Repository($db->connection($config['connection']), $config['table_name']);
         });
     }
 
@@ -85,9 +98,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function registerSource(): void
     {
         $this->app->bind(SourceContract::class, function (Container $app): SourceContract {
+            /** @var Filesystem $files */
+            $files = $app->make('files');
+
+            /** @var array{migrations_path: string} $config */
             $config = $this->getPackageConfiguration();
 
-            return new Files($app->make('files'), $config['migrations_path']);
+            return new Files($files, $config['migrations_path']);
         });
     }
 
@@ -120,11 +137,16 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function registerMigrator(): void
     {
         $this->app->singleton(MigratorContract::class, function (Container $app): MigratorContract {
-            return new Migrator(
-                $app->make(RepositoryContract::class),
-                $app->make(SourceContract::class),
-                $app->make(ExecutorContract::class)
-            );
+            /** @var RepositoryContract $repository */
+            $repository = $app->make(RepositoryContract::class);
+
+            /** @var SourceContract $source */
+            $source = $app->make(SourceContract::class);
+
+            /** @var ExecutorContract $executor */
+            $executor = $app->make(ExecutorContract::class);
+
+            return new Migrator($repository, $source, $executor);
         });
     }
 
