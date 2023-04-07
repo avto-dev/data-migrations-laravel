@@ -26,14 +26,14 @@ class MakeCommandTest extends AbstractCommandTestCase
             'name' => 'Some test',
         ]);
 
-        $this->assertRegExp('~Created Migration.*some_test\.sql~', $this->console()->output());
+        $this->assertMatchesRegularExpression('~Created Migration.*some_test\.sql~', $this->console()->output());
 
         $this->artisan($this->getCommandSignature(), [
             'name'         => 'Some test 2',
             '--connection' => $connection = 'foobar',
         ]);
 
-        $this->assertRegExp("~Created Migration.*{$connection}\\/[\S]*some_test_2.sql~", $this->console()->output());
+        $this->assertMatchesRegularExpression("~Created Migration.*{$connection}/[\S]*some_test_2.sql~", $this->console()->output());
     }
 
     /**
@@ -46,7 +46,7 @@ class MakeCommandTest extends AbstractCommandTestCase
         $this->expectException(RuntimeException::class);
 
         $this->artisan($this->getCommandSignature());
-        $this->assertRegExp('~missing.*name~', $this->console()->output());
+        $this->assertMatchesRegularExpression('~missing.*name~', $this->console()->output());
     }
 
     /**

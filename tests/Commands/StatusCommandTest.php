@@ -51,11 +51,11 @@ class StatusCommandTest extends AbstractCommandTestCase
         $output = $this->console()->output();
 
         foreach ($filtered as $item) {
-            $this->assertRegExp("~Y\s+\|\s{$item}~", $output);
+            $this->assertMatchesRegularExpression("~Y\s+\|\s{$item}~", $output);
         }
 
         foreach ($not_migrated as $item) {
-            $this->assertRegExp("~N\s+\|\s{$item}~", $output);
+            $this->assertMatchesRegularExpression("~N\s+\|\s{$item}~", $output);
         }
     }
 
@@ -69,7 +69,7 @@ class StatusCommandTest extends AbstractCommandTestCase
         $this->migrator->repository()->deleteRepository();
 
         $this->artisan($this->getCommandSignature());
-        $this->assertRegExp('~No migrations found.+repository not installed~i', $this->console()->output());
+        $this->assertMatchesRegularExpression('~No migrations found.+repository not installed~i', $this->console()->output());
     }
 
     /**
@@ -86,7 +86,7 @@ class StatusCommandTest extends AbstractCommandTestCase
 
         $this->artisan($this->getCommandSignature());
 
-        $this->assertRegExp('~No migrations found~i', $this->console()->output());
+        $this->assertMatchesRegularExpression('~No migrations found~i', $this->console()->output());
     }
 
     /**

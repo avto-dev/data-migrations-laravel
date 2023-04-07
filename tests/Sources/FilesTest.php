@@ -10,7 +10,7 @@ use AvtoDev\DataMigrationsLaravel\Tests\AbstractTestCase;
 use AvtoDev\DataMigrationsLaravel\Contracts\SourceContract;
 
 /**
- * @covers \AvtoDev\DataMigrationsLaravel\Sources\Files<extended>
+ * @covers \AvtoDev\DataMigrationsLaravel\Sources\Files
  */
 class FilesTest extends AbstractTestCase
 {
@@ -143,11 +143,11 @@ class FilesTest extends AbstractTestCase
             $files->deleteDirectory($path);
         }
 
-        $this->assertDirectoryNotExists($path);
+        $this->assertDirectoryDoesNotExist($path);
 
         $migration_files = new Files($files, $path);
 
-        $this->assertFileNotExists(
+        $this->assertFileDoesNotExist(
             $expected_path = $path . DIRECTORY_SEPARATOR . $migration_files->generateFileName($name = 'test_migration')
         );
         $result = $migration_files->create($name);

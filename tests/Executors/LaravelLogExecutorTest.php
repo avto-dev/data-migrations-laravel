@@ -8,7 +8,7 @@ use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Executors\LaravelLogExecutor;
 
 /**
- * @covers \AvtoDev\DataMigrationsLaravel\Executors\LaravelLogExecutor<extended>
+ * @covers \AvtoDev\DataMigrationsLaravel\Executors\LaravelLogExecutor
  */
 class LaravelLogExecutorTest extends AbstractTestCase
 {

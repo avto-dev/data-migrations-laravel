@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
          bootstrap="./tests/bootstrap.php"
          colors="true"
-         forceCoversAnnotation="true">
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./src</directory>
-        </include>
-        <exclude>
-            <directory>./vendor</directory>
-        </exclude>
-        <report>
-            <clover outputFile="./coverage/clover.xml"/>
-            <text outputFile="php://stdout"/>
-            <xml outputDirectory="./coverage/xml"/>
-        </report>
-    </coverage>
-    <testsuites>
-        <testsuite name="Unit">
-            <directory>./tests</directory>
-        </testsuite>
-    </testsuites>
-    <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="APP_LOG" value="single"/>
-        <env name="LOG_CHANNEL" value="single"/>
-        <env name="APP_LOG_LEVEL" value="debug"/>
-        <env name="CACHE_DRIVER" value="array"/>
-    </php>
+         cacheDirectory=".phpunit.cache"
+         requireCoverageMetadata="true">
+  <coverage>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+    <exclude>
+      <directory>./vendor</directory>
+    </exclude>
+    <report>
+      <clover outputFile="./coverage/clover.xml"/>
+      <html outputDirectory="./coverage/html"/>
+      <text outputFile="php://stdout"/>
+      <xml outputDirectory="./coverage/xml"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="Unit">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <env name="APP_ENV" value="testing"/>
+    <env name="APP_LOG" value="single"/>
+    <env name="LOG_CHANNEL" value="single"/>
+    <env name="APP_LOG_LEVEL" value="debug"/>
+    <env name="CACHE_DRIVER" value="array"/>
+  </php>
 </phpunit>

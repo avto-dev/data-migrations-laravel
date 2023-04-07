@@ -10,7 +10,7 @@ use AvtoDev\DataMigrationsLaravel\Contracts\ExecutorContract;
 use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
 /**
- * @covers \AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor<extended>
+ * @covers \AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor
  */
 class DatabaseRawQueryExecutorTest extends AbstractTestCase
 {

@@ -83,14 +83,13 @@ class MigrateCommandTest extends AbstractCommandTestCase
     public function testForceFlagWorking(): void
     {
         $this->setAppEnvironment('production');
-        $command = m::mock(sprintf('%s[%s]', MigrateCommand::class, $what = 'confirm'));
-        $command->shouldReceive($what)->once()->andReturn(true);
+        $command = m::mock(sprintf('%s[%s]', MigrateCommand::class, $what = 'confirmToProceed'));
+        $command->shouldReceive($what)->andReturnTrue();
         $this->app->make(Kernel::class)->registerCommand($command);
 
         $this->artisan($this->getCommandSignature());
         $output = $this->console()->output();
 
-        $this->assertStringContainsString('Application In Production', $output);
         $this->assertStringContainsString('Migrated', $output);
     }
 
@@ -102,15 +101,14 @@ class MigrateCommandTest extends AbstractCommandTestCase
     public function testExecutionOnProductionFailed(): void
     {
         $this->setAppEnvironment('production');
-        $command = m::mock(sprintf('%s[%s]', MigrateCommand::class, $what = 'confirm'));
-        $command->shouldReceive($what)->once()->andReturn(false);
+        $command = m::mock(sprintf('%s[%s]', MigrateCommand::class, $what = 'confirmToProceed'));
+        $command->shouldReceive($what)->andReturnFalse();
         $this->app->make(Kernel::class)->registerCommand($command);
 
         $this->artisan($this->getCommandSignature());
         $output = $this->console()->output();
 
-        $this->assertStringContainsString('Application In Production', $output);
-        $this->assertStringContainsString('Command Cancel', $output);
+        $this->assertEmpty($output);
     }
 
     /**
