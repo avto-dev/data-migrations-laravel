@@ -130,7 +130,7 @@ class MigrateCommand extends Command
     /**
      * Get the console command options.
      *
-     * @return array[]
+     * @return mixed[][]
      */
     protected function getOptions(): array
     {

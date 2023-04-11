@@ -55,7 +55,7 @@ interface SourceContract
      *
      * Important: migrations for default connection has kay name '' (empty string).
      *
-     * @return array[]
+     * @return string[][]
      */
     public function all(): array;
 }

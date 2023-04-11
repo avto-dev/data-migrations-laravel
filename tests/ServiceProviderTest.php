@@ -14,7 +14,7 @@ use AvtoDev\DataMigrationsLaravel\Contracts\RepositoryContract;
 use AvtoDev\DataMigrationsLaravel\Executors\DatabaseRawQueryExecutor;
 
 /**
- * @covers \AvtoDev\DataMigrationsLaravel\ServiceProvider<extended>
+ * @covers \AvtoDev\DataMigrationsLaravel\ServiceProvider
  *
  * @group provider
  */

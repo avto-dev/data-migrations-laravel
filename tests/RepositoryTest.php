@@ -8,7 +8,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use AvtoDev\DataMigrationsLaravel\Repository;
 
 /**
- * @covers \AvtoDev\DataMigrationsLaravel\Repository<extended>
+ * @covers \AvtoDev\DataMigrationsLaravel\Repository
  */
 class RepositoryTest extends AbstractTestCase
 {
