@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
-         bootstrap="./tests/bootstrap.php"
-         colors="true"
-         cacheDirectory=".phpunit.cache"
-         requireCoverageMetadata="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" bootstrap="./tests/bootstrap.php" colors="true" cacheDirectory=".phpunit.cache" requireCoverageMetadata="true">
   <coverage>
-    <include>
-      <directory suffix=".php">./src</directory>
-    </include>
-    <exclude>
-      <directory>./vendor</directory>
-    </exclude>
     <report>
       <clover outputFile="./coverage/clover.xml"/>
       <html outputDirectory="./coverage/html"/>
@@ -31,4 +20,12 @@
     <env name="APP_LOG_LEVEL" value="debug"/>
     <env name="CACHE_DRIVER" value="array"/>
   </php>
+  <source>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+    <exclude>
+      <directory>./vendor</directory>
+    </exclude>
+  </source>
 </phpunit>
